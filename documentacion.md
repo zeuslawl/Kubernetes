@@ -11,18 +11,19 @@
 
 	- [Instalación](#Instalación)
 
-	- [Tags, selectores, etc...](#Tags,selectores,etc...)
+	- [Tags, selectores, etc...](#Tags)
 
 	- [Deployments](#Deployments)
 
-	- [Servicios y endpoints](#Servicios y endpoints) 
+	- [Servicios y endpoints](#Servicios) 
 
+	- [Instalación en entorno de pruebas](#Instalación)
 
 # Arquitectura<a name="Arquitectura"></a>
 texto arquitectura 
 
 
-# Instalar entorno de pruebas
+# Instalación de entorno de pruebas<a name="Instalación"></a>
 Necesitamos docker, kubectl y minikube.
 
 **kubectl** Aplicación que gestiona kubernetes
