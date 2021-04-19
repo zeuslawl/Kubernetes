@@ -44,6 +44,8 @@ Hemos seleccionado kubernetes para nuestro proyecto final porque creemos que tie
 
 
 # Arquitectura<a name="Arquitectura"></a>
+
+https://kubernetes.io/es/docs/concepts/architecture/
 texto arquitectura 
 
 
@@ -53,4 +55,16 @@ Necesitamos **docker**, **kubectl** y **minikube**.
 **kubectl** Aplicación que gestiona kubernetes
 
 **minikube** Entorno de pruebas para aprender kubernetes, crea un cluster de nodos donde se pueden hacer todo tipo de pruebas.
+
+
+Tutorial interactivo - crear un clúster
+
+
+
+# Bibliografía<a name="Bibliografía"></a>
+
+[Crear un cluster](https://kubernetes.io/es/docs/tutorials/kubernetes-basics/create-cluster/)
+
+[Web editor md](https://stackedit.io/app#)
+
 
