@@ -30,7 +30,7 @@
 
 	- [Instalación en entorno de pruebas](#Instalación)
 
-- [Bibliografía](#Bibliográfia) 
+- [Bibliografía](#Bibliografía) 
 
 
 # Introducción<a name="Introducción"></a>
