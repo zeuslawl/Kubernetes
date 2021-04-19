@@ -2,7 +2,6 @@
 
  [Introducción](#Introducción)
 
-
 - [Kubernetes](#kubernetes)
 	
 	- [ ¿Qué es Kubernetes?](#Que)
@@ -12,18 +11,27 @@
 		
 		- [Componentes](#Componentes)
 
+	- [Instalación en entorno de pruebas](#Instalación)
 
-	- [Instalación](#Instalación)
+	- [Objetos de Kubernetes](#Objetos)
 
-	- [Tags, selectores, etc...](#Tags)
+		- [Pod](#Pod)
 
-	- [Deployments](#Deployments)
+		- [Replicaset](#replicaset)
 
-	- [Servicios y endpoints](#Servicios) 
+		- [Deployments](#Deployments)
+
+		- [Tags & selectors](#Tags)
+
+		- [Service & Endpoints](#Service)
+
+		- [Volume](#Volume)
+ 
 
 	- [Instalación en entorno de pruebas](#Instalación)
 
 - [Bibliografía](#Bibliográfia) 
+
 
 # Introducción<a name="Introducción"></a>
 
@@ -40,7 +48,7 @@ texto arquitectura
 
 
 # Instalación de entorno de pruebas<a name="Instalación"></a>
-Necesitamos docker, kubectl y minikube.
+Necesitamos **docker**, **kubectl** y **minikube**.
 
 **kubectl** Aplicación que gestiona kubernetes
 
