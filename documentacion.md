@@ -1,25 +1,25 @@
 # Indice 
 
- [Introducción] (#Introducción)
+ [Introducción](#Introducción)
 
-- [Kubernetes] (#kubernetes)
+- [Kubernetes](#kubernetes)
 
-	- [Arquitectura] (#Arquitectura)
+	- [Arquitectura](#Arquitectura)
 		
-		- [Componentes] (#Componentes)
+		- [Componentes](#Componentes)
 
 
-	- [Instalación] (#Instalación)
+	- [Instalación](#Instalación)
 
-	- [Tags, selectores, etc...] (#Tags,selectores,etc...)
+	- [Tags, selectores, etc...](#Tags,selectores,etc...)
 
-	- [Deployments] (#Deployments)
+	- [Deployments](#Deployments)
 
-	- [Servicios y endpoints] (#Servicios y endpoints) 
+	- [Servicios y endpoints](#Servicios y endpoints) 
 
 
 # Arquitectura<a name="Arquitectura"></a>
-
+texto arquitectura 
 
 
 # Instalar entorno de pruebas
