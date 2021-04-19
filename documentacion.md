@@ -2,7 +2,11 @@
 
  [Introducción](#Introducción)
 
+
 - [Kubernetes](#kubernetes)
+	
+	- [ ¿Qué es Kubernetes?](#Que)
+
 
 	- [Arquitectura](#Arquitectura)
 		
@@ -18,6 +22,17 @@
 	- [Servicios y endpoints](#Servicios) 
 
 	- [Instalación en entorno de pruebas](#Instalación)
+
+
+# Introducción<a name="Introducción"></a>
+
+Somos Roberto Martínez y Alejandro López, dos alumnos de (Hisix2) Administración y sistemas en red.
+
+Hemos seleccionado kubernetes para nuestro proyecto final porque creemos que tiene mucho potencial en la virtualización y alta disponibilidad y nos puede servir en nuestra vida laboral.
+
+
+# ¿Qué es Kubernetes?<a name="Que"></a>
+
 
 # Arquitectura<a name="Arquitectura"></a>
 texto arquitectura 
