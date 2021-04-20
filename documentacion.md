@@ -77,3 +77,5 @@ Tutorial interactivo - crear un clúster
 [explicación](https://www.itshellws.org/kubernetes/)
 
 [Componentes arquitectura](https://aprenderdevops.com/arquitectura-de-kubernetes/)
+
+[pdf universidad](https://core.ac.uk/download/pdf/288501998.pdf)
