@@ -6,14 +6,11 @@
 	
 	- [ ¿Qué es Kubernetes?](#Que)
 
-
 	- [Arquitectura](#Arquitectura)
 		
 		- [Componentes](#Componentes)
 
-	- [Instalación en entorno de pruebas](#Instalación)
-
-	- [Objetos de Kubernetes](#Objetos)
+	- [Elementos de Kubernetes](#elementos)
 
 		- [Pod](#Pod)
 
@@ -79,4 +76,4 @@ Tutorial interactivo - crear un clúster
 
 [explicación](https://www.itshellws.org/kubernetes/)
 
-
+[Componentes arquitectura](https://aprenderdevops.com/arquitectura-de-kubernetes/)
