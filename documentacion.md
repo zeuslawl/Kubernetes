@@ -1,8 +1,8 @@
-# Indice 
+# Índice 
 
-- [Introducción](#Introducción)
+- **[Introducción](#Introducción)**
 
-- [Kubernetes](#kubernetes)
+- **[Kubernetes](#kubernetes)**
 	
 	- **[¿Qué es Kubernetes?](#quees)**
 
@@ -48,9 +48,13 @@
 		- **[DNS](#dns)**
  
 
-	- **[Instalación en entorno de pruebas](#Instalación)**
+	- **[Instalación](#Instalación)**
+	
+		- **[Requisitos hardware](#requisitos)**
+
 
 - **[Bibliografía](#biblio)** 
+
 
 
 # Introducción<a name="introduccion"></a>
@@ -78,11 +82,37 @@ texto arquitectura
 
 
 # Instalación de entorno de pruebas<a name="Instalación"></a>
-Necesitamos **docker**, **kubectl** y **minikube**.
 
-**kubectl** Aplicación que gestiona kubernetes
+## Requisitos:
 
-**minikube** Entorno de pruebas para aprender kubernetes, crea un cluster de nodos donde se pueden hacer todo tipo de pruebas.
+- Sistema operativo:
+	- Ubuntu 16.+
+	- Debian 9+
+	- CentOS 7+
+	- Red Had Enterprise Linux (RHEL)7
+	- Fedora25+
+	- HypriotOS v1.0.1+
+	- etc.
+
+- 2GB mínimo de RAM para el masters nodes
+- 1GB mínimo de RAM para workers nodes
+- 2 CPUs mínimo
+
+
+
+Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
+
+Debemos instalar: 
+
+- **kubectl** Aplicación que gestiona kubernetes
+
+- **kubeadm**
+
+- **kubelet**
+
+- **minikube** Entorno de pruebas para aprender kubernetes, crea un cluster de nodos donde se pueden hacer todo tipo de pruebas.
+
+		# dnf -y install kubeadm kubelet kubectl
 
 
 Tutorial interactivo - crear un clúster
