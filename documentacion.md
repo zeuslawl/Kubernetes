@@ -4,40 +4,64 @@
 
 - [Kubernetes](#kubernetes)
 	
-	- [ ¿Qué es Kubernetes?](#Que)
+	- [¿Qué es Kubernetes?](#quees)
 
-	- [Arquitectura](#Arquitectura)
+	- [Arquitectura](#arquitectura)
 		
-		- [Componentes](#Componentes)
+		- [Componentes](#componentes)
+
+			- [Master](#master)
+
+				-[API-server](#api)
+				
+				-[Scheduler](#scheduler)
+
+				-[Controller-manager](#controller)
+
+				-[etcd](#etcd)				
+
+			- [Workers](#workers)
+				
+				-[Kubetet](#kubelet)
+
+				-[Container-runtime](#containerruntime)
+
+				-[Kube Proxy](#kubeproxy)
 
 	- [Elementos de Kubernetes](#elementos)
 
-		- [Pod](#Pod)
+		- [Pods](#pods)
 
-		- [Replicaset](#replicaset)
+		- [Nodes](#nodes)
 
-		- [Deployments](#Deployments)
+		- [Clusters](#clusters)
 
-		- [Tags & selectors](#Tags)
+		- [Volumes](#volumes)
 
-		- [Service & Endpoints](#Service)
+		- [Deployments/Statefulsets](#deployments)
 
-		- [Volume](#Volume)
+		- [Tags & selectors](#tags)
+
+		- [Service & Endpoints](#services)
+
+		- [ConfigMap](#configmaps)
+
+		- [DNS](#dns)
  
 
 	- [Instalación en entorno de pruebas](#Instalación)
 
-- [Bibliografía](#Bibliografía) 
+- [Bibliografía](#biblio) 
 
 
-# Introducción<a name="Introducción"></a>
+# Introducción<a name="introduccion"></a>
 
 Somos Roberto Martínez y Alejandro López, dos alumnos de (Hisix2) Administración y sistemas en red.
 
 Hemos seleccionado kubernetes para nuestro proyecto final porque creemos que tiene mucho potencial en la virtualización y alta disponibilidad y nos puede servir en nuestra vida laboral.
 
 
-# ¿Qué es Kubernetes?<a name="Que"></a>
+# ¿Qué es Kubernetes?<a name="quees"></a>
 
 Kubernetes es una plataforma portable y extensible de código abierto para administrar cargas de trabajo y servicios.
 Kubernetes facilita la automatización y la configuración declarativa. Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramientas y los servicios para Kubernetes están ampliamente disponibles.
@@ -47,7 +71,7 @@ Google liberó el proyecto Kubernetes en el año 2014. Kubernetes se basa en la 
 
 
 
-# Arquitectura<a name="Arquitectura"></a>
+# Arquitectura<a name="arquitectura"></a>
 
 https://kubernetes.io/es/docs/concepts/architecture/
 
@@ -66,7 +90,7 @@ Tutorial interactivo - crear un clúster
 
 
 
-# Bibliografía<a name="Bibliografía"></a>
+# Bibliografía<a name="bibliografia"></a>
 
 [Arquitectura](https://kubernetes.io/es/docs/concepts/architecture/)
 
