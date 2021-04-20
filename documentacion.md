@@ -1,57 +1,56 @@
 # Indice 
 
- [Introducción](#Introducción)
+·[Introducción](#Introducción)
 
-- [Kubernetes](#kubernetes)
-	
-	- [¿Qué es Kubernetes?](#quees)
+·[¿Qué es Kubernetes?](#quees)
 
-	- [Arquitectura](#arquitectura)
+·[Arquitectura](#arquitectura)
 		
-		- [Componentes](#componentes)
+	- [Componentes](#componentes)
 
-			- [Master](#master)
+		- [Master](#master)
 
-				-[API-server](#api)
+			-[API-server](#api)
+			
+			-[Scheduler](#scheduler)
+
+			-[Controller-manager](#controller)
+
+			-[etcd](#etcd)				
+
+		- [Workers](#workers)
 				
-				-[Scheduler](#scheduler)
+			-[Kubetet](#kubelet)
 
-				-[Controller-manager](#controller)
+			-[Container-runtime](#containerruntime)
 
-				-[etcd](#etcd)				
+			-[Kube Proxy](#kubeproxy)
 
-			- [Workers](#workers)
-				
-				-[Kubetet](#kubelet)
+·[Elementos de Kubernetes](#elementos)
 
-				-[Container-runtime](#containerruntime)
+	- [Pods](#pods)
 
-				-[Kube Proxy](#kubeproxy)
+	- [Nodes](#nodes)
 
-	- [Elementos de Kubernetes](#elementos)
+	- [Clusters](#clusters)
 
-		- [Pods](#pods)
+	- [Volumes](#volumes)
 
-		- [Nodes](#nodes)
+	- [Deployments/Statefulsets](#deployments)
 
-		- [Clusters](#clusters)
+	- [Tags & selectors](#tags)
 
-		- [Volumes](#volumes)
+	- [Service & Endpoints](#services)
 
-		- [Deployments/Statefulsets](#deployments)
+	- [ConfigMap](#configmaps)
 
-		- [Tags & selectors](#tags)
-
-		- [Service & Endpoints](#services)
-
-		- [ConfigMap](#configmaps)
-
-		- [DNS](#dns)
+	- [DNS](#dns)
  
 
-	- [Instalación en entorno de pruebas](#Instalación)
+·[Instalación en entorno de pruebas](#Instalación)
 
-- [Bibliografía](#biblio) 
+
+[Bibliografía](#biblio) 
 
 
 # Introducción<a name="introduccion"></a>
@@ -87,7 +86,6 @@ Necesitamos **docker**, **kubectl** y **minikube**.
 
 
 Tutorial interactivo - crear un clúster
-
 
 
 # Bibliografía<a name="bibliografia"></a>
