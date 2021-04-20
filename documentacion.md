@@ -1,24 +1,25 @@
 # Indice 
 
-·[Introducción](#Introducción)
+- [Introducción](#Introducción)
 
-·[¿Qué es Kubernetes?](#quees)
+- [Kubernetes](#kubernetes)
+	
+	- **[¿Qué es Kubernetes?](#quees)**
 
-·[Arquitectura](#arquitectura)
+	- **[Arquitectura](#arquitectura)**
 		
-	- [Componentes](#componentes)
 
-		- [Master](#master)
+		- **[Master](#master)**
 
 			-[API-server](#api)
-			
+				
 			-[Scheduler](#scheduler)
 
 			-[Controller-manager](#controller)
 
 			-[etcd](#etcd)				
 
-		- [Workers](#workers)
+		- **[Workers](#workers)**
 				
 			-[Kubetet](#kubelet)
 
@@ -26,31 +27,30 @@
 
 			-[Kube Proxy](#kubeproxy)
 
-·[Elementos de Kubernetes](#elementos)
+	- **[Elementos de Kubernetes](#elementos)**
 
-	- [Pods](#pods)
+		- **[Pods](#pods)**
 
-	- [Nodes](#nodes)
+		- **[Nodes](#nodes)**
 
-	- [Clusters](#clusters)
+		- **[Clusters](#clusters)**
 
-	- [Volumes](#volumes)
+		- **[Volumes](#volumes)**
 
-	- [Deployments/Statefulsets](#deployments)
+		- **[Deployments/Statefulsets](#deployments)**
 
-	- [Tags & selectors](#tags)
+		- **[Tags & selectors](#tags)**
 
-	- [Service & Endpoints](#services)
+		- **[Service & Endpoints](#services)**
 
-	- [ConfigMap](#configmaps)
+		- **[ConfigMap](#configmaps)**
 
-	- [DNS](#dns)
+		- **[DNS](#dns)**
  
 
-·[Instalación en entorno de pruebas](#Instalación)
+	- **[Instalación en entorno de pruebas](#Instalación)**
 
-
-[Bibliografía](#biblio) 
+- **[Bibliografía](#biblio)** 
 
 
 # Introducción<a name="introduccion"></a>
@@ -86,6 +86,7 @@ Necesitamos **docker**, **kubectl** y **minikube**.
 
 
 Tutorial interactivo - crear un clúster
+
 
 
 # Bibliografía<a name="bibliografia"></a>
