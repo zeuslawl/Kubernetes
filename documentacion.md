@@ -83,7 +83,7 @@ texto arquitectura
 
 # Instalación de entorno de pruebas<a name="instalacion"></a>
 
-## Requisitos:
+## Requisitos:<a name="requisitos"></a>
 
 - Sistema operativo:
 	- Ubuntu 16.+
