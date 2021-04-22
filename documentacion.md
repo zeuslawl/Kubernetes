@@ -1,6 +1,6 @@
 # Índice 
 
-- **[Introducción](#Introducción)**
+- **[Introducción](#introduccion)**
 
 - **[Kubernetes](#kubernetes)**
 	
@@ -48,7 +48,7 @@
 		- **[DNS](#dns)**
  
 
-	- **[Instalación](#Instalación)**
+	- **[Instalación](#instalacion)**
 	
 		- **[Requisitos hardware](#requisitos)**
 
@@ -81,7 +81,7 @@ https://kubernetes.io/es/docs/concepts/architecture/
 texto arquitectura 
 
 
-# Instalación de entorno de pruebas<a name="Instalación"></a>
+# Instalación de entorno de pruebas<a name="instalacion"></a>
 
 ## Requisitos:
 
