@@ -132,3 +132,5 @@ Tutorial interactivo - crear un clúster
 [Componentes arquitectura](https://aprenderdevops.com/arquitectura-de-kubernetes/)
 
 [pdf universidad](https://core.ac.uk/download/pdf/288501998.pdf)
+
+[video arquitectura](https://www.youtube.com/watch?v=8C_SCDbUJTg)
