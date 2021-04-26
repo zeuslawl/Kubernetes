@@ -19,3 +19,7 @@ A
 minikube start
 
 
+BORRAR PV 
+kubectl delete pv nombre_pv
+kubectl delete pv mysql-pv
+
