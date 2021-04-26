@@ -4,7 +4,7 @@
 
 - **[Kubernetes](#kubernetes)**
 	
-	- **[¿Qué es Kubernetes?](#quees)**
+	- **[¿Qué es Kubernetes?](#queeskubernetes)**
 
 	- **[Arquitectura](#arquitectura)**
 		
@@ -41,17 +41,20 @@
 
 		- **[Tags & selectors](#tags)**
 
-		- **[Service & Endpoints](#services)**
+		- **[Services](#services)**
 
-		- **[ConfigMap](#configmaps)**
-
-		- **[DNS](#dns)**
+		- **[Namespaces](#namespaces)**
  
 
 	- **[Instalación](#instalacion)**
 	
 		- **[Requisitos hardware](#requisitos)**
 
+	- **[Minikube](#minikube)**
+
+		- **[¿Qué es?](#queesminikube)**
+		
+		- **[Instalación](#instalacionminikube)
 
 - **[Bibliografía](#biblio)** 
 
