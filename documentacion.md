@@ -54,7 +54,7 @@
 
 		- **[¿Qué es?](#queesminikube)**
 		
-		- **[Instalación](#instalacionminikube)
+		- **[Instalación](#instalacionminikube)**
 
 - **[Bibliografía](#biblio)** 
 
