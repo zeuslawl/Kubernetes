@@ -10,54 +10,60 @@
 
 
 - **[Arquitectura](#arquitectura)**
-		
-	- **[Master](#master)**
 
-		-[API-server](#api)
-				
-		-[Scheduler](#scheduler)
-
-		-[Controller-manager](#controller)
-
-		-[etcd](#etcd)				
-
-	- **[Workers](#workers)**
-
-		-[Container-runtime](#containerruntime)
-
-		-[Kubetet](#kubelet)
-
-		-[Kube Proxy](#kubeproxy)
-
-
-- **[Elementos de Kubernetes](#elementos)**
-
-	- **[Pods](#pods)**
+	- **[Clústers](#clusters)**
 
 	- **[Nodes](#nodes)**
+		
+		- **[Master](#master)**
 
-	- **[Clusters](#clusters)**
+			-[API-server](#api)
+				
+			-[Scheduler](#scheduler)
 
-	- **[Volumes](#volumes)**
+			-[Controller-manager](#controller)
 
-	- **[Deployments/Statefulsets](#deployments)**
+			-[etcd](#etcd)				
 
-	- **[Tags & selectors](#tags)**
+		- **[Workers](#workers)**
 
-	- **[Services](#services)**
+			-[Container-runtime](#containerruntime)
 
-	- **[Namespaces](#namespaces)**
+			-[Kubetet](#kubelet)
+
+			-[Kube Proxy](#kubeproxy)
 
 
 - **[Instalación](#instalacion)**
 	
 	- **[Requisitos hardware](#requisitos)**
 
+	- **[Elementos](#elenmentos)**
+
 	- **[Minikube](#minikube)**
 
 		- **[¿Qué es?](#queesminikube)**
 		
 		- **[Instalación](#instalacionminikube)**
+
+		- **[Comandos básicos minikube](#comandosminikube)**
+
+
+
+- **[Deployments/Statefulsets](#deployments)**
+
+
+- **[Volumes](#volumnes)**
+
+
+- **[Tags & selectors](#tags)**
+
+
+- **[Services](#services)**
+
+
+- **[Namespaces](#namespaces)**
+
 
 - **[Bibliografía](#biblio)** 
 
