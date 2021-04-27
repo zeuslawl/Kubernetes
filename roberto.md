@@ -1,13 +1,13 @@
-# INTRODUCCIÓN(#introduccion)
+# INTRODUCCIÓN
 
-## **¿Qué es Kubernetes?(#queeskubernetes)**
+## **¿Qué es Kubernetes?**
 
 Kubernetes (timonel o piloto en griego) es un software de orquestación de código abierto que permite implementar, administrar y escalar aplicaciones en  unidades lógicas para gestionarlas y darles visibilidad. 
 Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramientas y los servicios para Kubernetes están ampliamente disponibles.
 Kubernetes ofrece un entorno de administración centrado en contenedores, orquesta la infraestructura de cómputo, redes y almacenamiento para que las cargas de trabajo de los usuarios no tengan que hacerlo.
 Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyecto Borg y donado a la Cloud Native Foundation.
 
-## **¿Qué ofrece?(#queofrece)** 
+## **¿Qué ofrece?** 
 
 Las principales carácterísticas de K8s son las siguientes:
 
@@ -31,7 +31,8 @@ Las principales carácterísticas de K8s son las siguientes:
 
 
 
-# ARQUITECTURA(#arquitectura)
+
+# ARQUITECTURA
 
 ![](images/archi3.png)
 
