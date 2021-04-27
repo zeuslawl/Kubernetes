@@ -29,7 +29,7 @@ Las principales carácterísticas de K8s son las siguientes:
 
 # Arquitectura<a name="arquitectura"></a>
 
-![](images/archi1.png)
+![](images/archi3.png)
 
 ## **Clúster**
 
