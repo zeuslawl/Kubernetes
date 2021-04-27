@@ -29,6 +29,8 @@ Las principales carácterísticas de K8s son las siguientes:
 
 # Arquitectura<a name="arquitectura"></a>
 
+!(images/archi1.png)
+
 ## **Clúster**
 
 Un clúster de Kubernetes es un conjunto de máquinas de nodos que ejecutan aplicaciones en contenedores. Si ejecuta Kubernetes, está ejecutando un clúster.
@@ -85,3 +87,4 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 
 
 ## **Pods**
+
