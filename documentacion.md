@@ -49,11 +49,13 @@
 		- **[Comandos básicos minikube](#comandosminikube)**
 
 
+- **[Gestión de clúster y pods](#gestion)**
+
 
 - **[Deployments/Statefulsets](#deployments)**
 
 
-- **[Volumes](#volumnes)**
+- **[Replicaset](#replicaset)**
 
 
 - **[Tags & selectors](#tags)**
@@ -65,7 +67,11 @@
 - **[Namespaces](#namespaces)**
 
 
+- **[Volumes](#volumnes)**
+
+
 - **[Bibliografía](#biblio)** 
+
 
 
 # Introducción<a name="introduccion"></a>
@@ -110,14 +116,15 @@ texto arquitectura
 - 2 CPUs mínimo
 
 
-
 Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
+	- poner enlace docker 
 
-Debemos instalar: 
+
+Debemos instalar los siguientes componentes: 
 
 - **kubectl** Aplicación que gestiona kubernetes
 
-- **kubeadm**
+- **kubeadm** 
 
 - **kubelet**
 
