@@ -97,7 +97,7 @@ Para instalar Kubectl vamos a habilitar un YUM repo de Google e instalar el paqu
 
 		sudo dnf install kubectl 
 
-**Tener instaldo un hipervisor*+
+**Tener instaldo un hipervisor**
 
 Se requiere tener instalado un hipervisor, el Minikube soporta varios pero en este caso
 vamos a instalar KVM. Para revisar si lo tenemos instalado podemos validar si está 
