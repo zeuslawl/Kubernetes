@@ -1,9 +1,6 @@
 # Índice 
 
 - **[Introducción](#introduccion)**
-
-
-- **[Kubernetes](#kubernetes)**
 	
 	- **[¿Qué es Kubernetes?](#queeskubernetes)**
 	
