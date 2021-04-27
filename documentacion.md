@@ -38,7 +38,7 @@
 	
 	- **[Requisitos hardware](#requisitos)**
 
-	- **[Elementos](#elenmentos)**
+	- **[Elementos](#elementos)**
 
 	- **[Minikube](#minikube)**
 
