@@ -22,10 +22,10 @@
 		-[etcd](#etcd)				
 
 	- **[Workers](#workers)**
-				
-		-[Kubetet](#kubelet)
 
 		-[Container-runtime](#containerruntime)
+
+		-[Kubetet](#kubelet)
 
 		-[Kube Proxy](#kubeproxy)
 

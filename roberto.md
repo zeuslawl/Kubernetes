@@ -9,7 +9,7 @@ Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyect
 
 ## **¿Qué ofrece?** 
 
-Las principales carácterísticas de K8s son las siguientes:
+Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las siguientes:
 
 - **Escalado vertical.** En función del uso de CPU que hagamos Kubernetes nos permite el escalado vertical de nuestras aplicaciones de manera automática (autoescalado) o manual (comando).
 
@@ -68,15 +68,16 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 	· **Controller-manager:**
 	Es el componente que ejecuta los controles de k8s. Cada controlador es un proceso independiente, pero para reducir la complejidad, todos se compilan en un único binario y se ejecuta en un mismo proceso. Estos controladores incluyen:
 
-    - **Controlador de nodo:** es el responsable de detectar y responder cuándo un nodo deja de funcionar.
+    	- **Controlador de nodo:** es el responsable de detectar y responder cuándo un nodo deja de funcionar.
 
-    - **Controlador de replicación:** es el responsable de mantener el número correcto de pods para cada controlador de replicación del sistema.
+    	- **Controlador de replicación:** es el responsable de mantener el número correcto de pods para cada controlador de replicación del sistema.
     
-    - **Controlador de endpoints:** construye el objeto Endpoints, es decir, hace una unión entre los Services y los Pods.
+    	- **Controlador de endpoints:** construye el objeto Endpoints, es decir, hace una unión entre los Services y los Pods.
 
-    - **Controladores de tokens y cuentas de servicio:** crean cuentas y tokens de acceso a la API por defecto para los nuevos Namespaces
+    	- **Controladores de tokens y cuentas de servicio:** crean cuentas y tokens de acceso a la API por defecto para los nuevos Namespaces
 
-	· **Etcd:** Es la base de datos donde se guarda toda la informació que utiliza el cluster.
+
+	· **Etcd:** Es la base de datos donde se guarda toda la información que utiliza el cluster.
 
 
 
@@ -86,7 +87,7 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 
 	· **Container runtime:** es el software responsable de la ejecución y gestión de los contenedores.
 
-	· **Kubelet:** es el agente que se ejecuta en cada nodo de un clúster. Se asegura de que los contenedores estén corriendo en un pod.
+	· **Kubelet:** es el agente que se ejecuta en cada nodo de un clúster y se comunica con los componentes del control plane. Recibe las definiciones del pod del API Server e interacciona con el container runtime para ejecutar contenedores asociados al pod.
 
 	· **Kube-proxy:** es la implementación de un proxy de red y balanceador de carga soportando la abstracción del servicio junto con otras operaciones de red. Es responsable del enrutamiento del tráfico hacia el contenedor correcto basado en la dirección IP y el número de puerto indicados por el control plane
 
