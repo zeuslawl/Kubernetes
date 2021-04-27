@@ -45,6 +45,8 @@ Podemos crear clusters en local, en el cloud, híbridos y también minikube, vir
 
 ## **Nodos**
 
+![](images/archi_cluster.png)
+
 Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como minion. Un nodo puede ser una máquina virtual o física, dependiendo del tipo de clúster. Hay dos tipos de nodos: master o control plane y workers. Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
 - ### **Node master:**
