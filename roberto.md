@@ -50,13 +50,21 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 	El plano de control está en contacto permanente con las máquinas informáticas. Garantiza que el clúster se ejecute según la configuración que hayamos elegido.
 	Consta de diferentes procesos:
 
-	· **API-Server:**
+	· **API-Server:** Es el componenete que interactúa con el cliente. Se trata del frontend de Kubernetes, recibe las peticiones y actualiza acordemente el estado en etcd.
 
-	· **Scheduler:**
+	· **Scheduler:** Este proceso se encarga de decidir en qúe nodo se ejecutaran los pods. Para ello tiene en cuenta los siguientes factores: requisitos de recursos, restricciones de hardware/software/políticas, afinidad y anti-afinidad, localización de datos dependientes, entre otros.
 
-	· **Controller-manager:**
+	· **Controller-manager:** Es el componente que ejecuta los controles de k8s. Cada controlador es un proceso independiente, pero para reducir la complejidad, todos se compilan en un único binario y se ejecuta en un mismo proceso. Estos controladores incluyen:
 
-	· **Etcd:**
+    	· Controlador de nodos: es el responsable de detectar y responder cuándo un nodo deja de funcionar.
+
+    	· Controlador de replicación: es el responsable de mantener el número correcto de pods para cada controlador de replicación del sistema.
+    
+    	· Controlador de endpoints: construye el objeto Endpoints, es decir, hace una unión entre los Services y los Pods.
+
+    	· Controladores de tokens y cuentas de servicio: crean cuentas y tokens de acceso a la API por defecto para los nuevos Namespaces
+
+	· **Etcd:** Es la base de datos donde se guarda toda la informació que utiliza el cluster.
 
 
 - ### **Node worker:**
