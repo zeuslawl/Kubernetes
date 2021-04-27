@@ -80,7 +80,9 @@ Somos Roberto Martínez y Alejandro López, dos alumnos de Administración y sis
 
 Hemos seleccionado kubernetes para nuestro proyecto final porque creemos que tiene mucho potencial en la virtualización y alta disponibilidad y nos puede ser de mucha utilidad en nuestra vida laboral.
 
+
 ![](images/timon2.jpg)
+
 
 ## **¿Qué es Kubernetes?**
 
