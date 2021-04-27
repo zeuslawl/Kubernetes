@@ -2,53 +2,57 @@
 
 - **[Introducción](#introduccion)**
 
+
 - **[Kubernetes](#kubernetes)**
 	
 	- **[¿Qué es Kubernetes?](#queeskubernetes)**
-
-	- **[Arquitectura](#arquitectura)**
-		
-
-		- **[Master](#master)**
-
-			-[API-server](#api)
-				
-			-[Scheduler](#scheduler)
-
-			-[Controller-manager](#controller)
-
-			-[etcd](#etcd)				
-
-		- **[Workers](#workers)**
-				
-			-[Kubetet](#kubelet)
-
-			-[Container-runtime](#containerruntime)
-
-			-[Kube Proxy](#kubeproxy)
-
-	- **[Elementos de Kubernetes](#elementos)**
-
-		- **[Pods](#pods)**
-
-		- **[Nodes](#nodes)**
-
-		- **[Clusters](#clusters)**
-
-		- **[Volumes](#volumes)**
-
-		- **[Deployments/Statefulsets](#deployments)**
-
-		- **[Tags & selectors](#tags)**
-
-		- **[Services](#services)**
-
-		- **[Namespaces](#namespaces)**
- 
-
-	- **[Instalación](#instalacion)**
 	
-		- **[Requisitos hardware](#requisitos)**
+	- **[¿Para ofrece?](#queofrece)**
+
+
+- **[Arquitectura](#arquitectura)**
+		
+	- **[Master](#master)**
+
+		-[API-server](#api)
+				
+		-[Scheduler](#scheduler)
+
+		-[Controller-manager](#controller)
+
+		-[etcd](#etcd)				
+
+	- **[Workers](#workers)**
+				
+		-[Kubetet](#kubelet)
+
+		-[Container-runtime](#containerruntime)
+
+		-[Kube Proxy](#kubeproxy)
+
+
+- **[Elementos de Kubernetes](#elementos)**
+
+	- **[Pods](#pods)**
+
+	- **[Nodes](#nodes)**
+
+	- **[Clusters](#clusters)**
+
+	- **[Volumes](#volumes)**
+
+	- **[Deployments/Statefulsets](#deployments)**
+
+	- **[Tags & selectors](#tags)**
+
+	- **[Services](#services)**
+
+	- **[Namespaces](#namespaces)**
+
+
+- **[Instalación](#instalacion)**
+	
+	- **[Requisitos hardware](#requisitos)**
 
 	- **[Minikube](#minikube)**
 
@@ -57,7 +61,6 @@
 		- **[Instalación](#instalacionminikube)**
 
 - **[Bibliografía](#biblio)** 
-
 
 
 # Introducción<a name="introduccion"></a>
