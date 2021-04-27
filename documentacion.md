@@ -140,5 +140,3 @@ Tutorial interactivo - crear un clúster
 
 [instalación minikube](https://marvin.monge.me/post/instalar-minikube-en-fedora-32/)
 
-roberto
-
