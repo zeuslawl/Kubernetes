@@ -30,7 +30,8 @@ Las principales carácterísticas de K8s son las siguientes:
 - **Clusters grandes y heterogéneos.** Kubernetes puede desplegarse en clusters muy grandes, incluyendo contenedores Docker. Por otro lado, nos permite crear un clúster como resultado de combinar diferentes máquinas virtuales o servidores locales.
 
 
-# ARQUITECTURA(<a name="arquitectura"></a>)
+
+# ARQUITECTURA(#arquitectura)
 
 ![](images/archi3.png)
 
