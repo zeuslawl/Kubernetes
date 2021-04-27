@@ -29,7 +29,7 @@ Las principales carácterísticas de K8s son las siguientes:
 
 # Arquitectura<a name="arquitectura"></a>
 
-**Clúster**
+## **Clúster**
 
 Un clúster de Kubernetes es un conjunto de máquinas de nodos que ejecutan aplicaciones en contenedores. Si ejecuta Kubernetes, está ejecutando un clúster.
 
@@ -51,15 +51,12 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 	Consta de diferentes procesos:
 
 	· **API-Server:**
-
 	Es el componenete que interactúa con el cliente. Se trata del frontend de Kubernetes, recibe las peticiones y actualiza acordemente el estado en etcd.
 
 	· **Scheduler:**
-
 	Este proceso se encarga de decidir en qúe nodo se ejecutaran los pods. Para ello tiene en cuenta los siguientes factores: requisitos de recursos, restricciones de hardware/software/políticas, afinidad y anti-afinidad, localización de datos dependientes, entre otros.
 
 	· **Controller-manager:**
-
 	Es el componente que ejecuta los controles de k8s. Cada controlador es un proceso independiente, pero para reducir la complejidad, todos se compilan en un único binario y se ejecuta en un mismo proceso. Estos controladores incluyen:
 
     - **Controlador de nodo:** es el responsable de detectar y responder cuándo un nodo deja de funcionar.
