@@ -76,9 +76,9 @@
 
 # INTRODUCCIÓN
 
-Somos Roberto Martínez y Alejandro López, dos alumnos de Administración y sistemas en Red.
+Somos Roberto Martínez y Alejandro López, dos alumnos de Administración de Sistemas Informáticos en Red.
 
-Hemos seleccionado kubernetes para nuestro proyecto final porque creemos que tiene mucho potencial en la virtualización y alta disponibilidad y nos puede ser de mucha utilidad en nuestra vida laboral.
+Hemos seleccionado  Kubernetes para nuestro proyecto final porque creemos que actualmente es la tecnología puntera en virtualización y alta disponibilidad, lo cual nos puede ser de mucha utilidad en nuestra vida laboral.
 
 
 ![](images/timon2.jpg)
