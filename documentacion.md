@@ -1,3 +1,5 @@
+![](images/intro.jpg)
+
 # Índice 
 
 - **[Introducción](#introduccion)**
