@@ -40,11 +40,11 @@ La ventaja más importante de Kubernetes es la capacidad de programar y ejecutar
 Podemos crear clusters en local, en el cloud, híbridos y también minikube, virtualización de un cluster en un solo nodo virtual que se utiliza para hacer tests y que luego explicaremos con más detalle.
 
 
-**Nodos**
+##**Nodos**
 
 Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como minion. Un nodo puede ser una máquina virtual o física, dependiendo del tipo de clúster. Hay dos tipos de nodos: master o control plane y workers. Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
-- **Node master:**
+- ###**Node master:**
 
 	Aquí se encuentran los elementos de Kubernetes que controlan el clúster, junto con los datos sobre su estado y configuración. Los elementos principales de Kubernetes tienen la importante tarea de garantizar que los contenedores se ejecuten en cantidades suficientes y con los recursos necesarios. 
 	El plano de control está en contacto permanente con las máquinas informáticas. Garantiza que el clúster se ejecute según la configuración que hayamos elegido.
@@ -59,7 +59,7 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 	· **Etcd:**
 
 
-- **Node worker:**
+- ###**Node worker:**
 
 	El worker node, nos proporcionara un entrono de ejecución para las aplicaciones. Estas aplicaciones que se encuentran contenerizadas en pods y son controladas por los anteriores processos que hemos descrito del Control Plane que se ejecutan en el Master Node.
 
@@ -68,7 +68,7 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 	· **Kubelet:**
 
 	· **Kube-proxy:**
-	
+
 
 
 **Pods**
