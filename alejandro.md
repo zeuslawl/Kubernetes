@@ -10,7 +10,7 @@ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/miniku
   && chmod +x minikube
   
 sudo mkdir -p /usr/local/bin/
-sudo dnf install minikube /usr/local/bin/
+sudo install minikube /usr/local/bin/
 
 Comprobar 
 minikube status
