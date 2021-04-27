@@ -46,22 +46,29 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 
 - **Node master:**
 
-Aquí se encuentran los elementos de Kubernetes que controlan el clúster, junto con los datos sobre su estado y configuración. Los elementos principales de Kubernetes tienen la importante tarea de garantizar que los contenedores se ejecuten en cantidades suficientes y con los recursos necesarios. 
-El plano de control está en contacto permanente con las máquinas informáticas. Garantiza que el clúster se ejecute según la configuración que hayamos elegido.
-Consta de diferentes procesos:
+	Aquí se encuentran los elementos de Kubernetes que controlan el clúster, junto con los datos sobre su estado y configuración. Los elementos principales de Kubernetes tienen la importante tarea de garantizar que los contenedores se ejecuten en cantidades suficientes y con los recursos necesarios. 
+	El plano de control está en contacto permanente con las máquinas informáticas. Garantiza que el clúster se ejecute según la configuración que hayamos elegido.
+	Consta de diferentes procesos:
 
-· **API-Server:** 
-· **Scheduler:**
-· **Controller-manager:**
-· **Etcd:**
+	· **API-Server:**
+
+	· **Scheduler:**
+
+	· **Controller-manager:**
+
+	· **Etcd:**
+
 
 - **Node worker:**
 
-El worker node, nos proporcionara un entrono de ejecución para las aplicaciones. Estas aplicaciones que se encuentran contenerizadas en pods y son controladas por los anteriores processos que hemos descrito del Control Plane que se ejecutan en el Master Node.
+	El worker node, nos proporcionara un entrono de ejecución para las aplicaciones. Estas aplicaciones que se encuentran contenerizadas en pods y son controladas por los anteriores processos que hemos descrito del Control Plane que se ejecutan en el Master Node.
 
-· **Container runtime:** 
-· **Kubelet:**
-· **Kube-proxy:**
+	· **Container runtime:**
+
+	· **Kubelet:**
+
+	· **Kube-proxy:**
+	
 
 
 **Pods**
