@@ -139,3 +139,4 @@ Tutorial interactivo - crear un clúster
 [video arquitectura](https://www.youtube.com/watch?v=8C_SCDbUJTg)
 
 [instalación minikube](https://marvin.monge.me/post/instalar-minikube-en-fedora-32/)
+
