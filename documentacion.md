@@ -42,15 +42,6 @@
 
 	- **[Minikube](#minikube)**
 
-		- **[¿Qué es?](#queesminikube)**
-		
-		- **[Instalación](#instalacionminikube)**
-
-		- **[Comandos básicos minikube](#comandosminikube)**
-
-
-- **[Gestión de clúster y pods](#gestion)**
-
 
 - **[Replicaset](#replicaset)**
 
@@ -206,7 +197,7 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 
 ---
 
-# INSTALACIÓN EN ENETORNO DE PRUEBAS<a name="instalacion"></a>
+# INSTALACIÓN EN ENTORNO DE PRUEBAS<a name="instalacion"></a>
 
 ## Requisitos:<a name="requisitos"></a>
 
@@ -222,6 +213,8 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 - 2GB mínimo de RAM para el masters nodes
 - 1GB mínimo de RAM para workers nodes
 - 2 CPUs mínimo
+
+## Elementos:<a name="elementos"></a>
 
 
 Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
@@ -243,7 +236,7 @@ Debemos instalar los siguientes componentes:
 		dnf -y install kubeadm kubelet kubectl
 
 
-## Instalar Minikube en Fedora 32<a name="instalacionminikube"></a>
+## Instalar Minikube en Fedora 32<a name="minikube"></a>
 
 Para trabajar con ambientes de Kubernetes normalmente es más sencillo poder instalar 
 un cluster local en nuestro equipo que nos permita probar de una forma más expedita sin 
