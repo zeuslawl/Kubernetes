@@ -241,7 +241,7 @@ Debemos instalar los siguientes componentes:
 
 - **minikube** Entorno de pruebas para aprender kubernetes, crea un cluster de nodos donde se pueden hacer todo tipo de pruebas.
 
-		# dnf -y install kubeadm kubelet kubectl
+		 dnf -y install kubeadm kubelet kubectl
 
 ## Instalar Minikube en Fedora 32
 
@@ -256,17 +256,17 @@ Para instalar Minikube, se debe validar los siguientes requisitos:
 
 **Validar que la virtualización está soportada en el linux**
 
-		# grep -E --color 'vmx|svm' /proc/cpuinfo
+		 grep -E --color 'vmx|svm' /proc/cpuinfo
 
 **Tener instalado Kubectl**
 
-		# kubectl version --client 
+		 kubectl version --client 
 
 Si no lo tenemos instalado, lo instalamos.
 
 Para instalar Kubectl vamos a habilitar un YUM repo de Google e instalar el paquete kubectl.
 
-		# sudo tee /etc/yum.repos.d/kubernetes.repo<<EOF
+		 sudo tee /etc/yum.repos.d/kubernetes.repo<<EOF
 		 [kubernetes]
 		 name=Kubernetes
 		 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
@@ -286,7 +286,7 @@ Se requiere tener instalado un hipervisor, el Minikube soporta varios pero en es
 vamos a instalar KVM. Para revisar si lo tenemos instalado podemos validar si está 
 habilitado el módulo en el Kernel ejecutando el comando:
 
-		# lsmod | grep kvm
+		 lsmod | grep kvm
 
 
 En caso de no tenerlo instalado, lo instalamos.
