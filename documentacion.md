@@ -219,7 +219,7 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 
 Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
 	
-[](https://docs.docker.com/engine/install/)
+https://docs.docker.com/engine/install/
 
 
 Debemos instalar los siguientes componentes: 
