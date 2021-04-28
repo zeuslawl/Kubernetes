@@ -1,4 +1,4 @@
-![](images/intro.jpg)
+![](images/timon2.jpg)
 
 # Índice 
 
@@ -74,20 +74,21 @@
 
 
 
-# INTRODUCCIÓN
+# INTRODUCCIÓN<a name="introduccion"></a>
 
 Somos Roberto Martínez y Alejandro López, dos alumnos de Administración de Sistemas Informáticos en Red.
 
 Hemos seleccionado  Kubernetes para nuestro proyecto final porque creemos que actualmente es la tecnología puntera en virtualización y alta disponibilidad, lo cual nos puede ser de mucha utilidad en nuestra vida laboral.
 
 
-![](images/timon2.jpg)
+
 
 
 ## **¿Qué es Kubernetes?**
 
 Kubernetes (timonel o piloto en griego) es un software de orquestación de código abierto que permite implementar, administrar y escalar aplicaciones en  unidades lógicas para gestionarlas y darles visibilidad. 
 Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramientas y los servicios para Kubernetes están ampliamente disponibles.
+
 Kubernetes ofrece un entorno de administración centrado en contenedores, orquesta la infraestructura de cómputo, redes y almacenamiento para que las cargas de trabajo de los usuarios no tengan que hacerlo.
 Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyecto Borg y donado a la Cloud Native Foundation.
 
