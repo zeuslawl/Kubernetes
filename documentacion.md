@@ -63,17 +63,13 @@
 
 - **[Bibliografía](#biblio)** 
 
-
+---
 
 # INTRODUCCIÓN<a name="introduccion"></a>
 
 Somos Roberto Martínez y Alejandro López, dos alumnos de Administración de Sistemas Informáticos en Red.
 
 Hemos seleccionado  Kubernetes para nuestro proyecto final porque creemos que actualmente es la tecnología puntera en virtualización y alta disponibilidad, lo cual nos puede ser de mucha utilidad en nuestra vida laboral.
-
-
-
-
 
 ## **¿Qué es Kubernetes?**
 
@@ -261,7 +257,7 @@ Si no lo tenemos instalado, lo instalamos.
 
 Para instalar Kubectl vamos a habilitar un YUM repo de Google e instalar el paquete kubectl.
 
-		sudo tee /etc/yum.repos.d/kubernetes.repo<<EOF
+		$ sudo tee /etc/yum.repos.d/kubernetes.repo<<EOF
 		[kubernetes]
 		name=Kubernetes
 		baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
@@ -271,9 +267,9 @@ Para instalar Kubectl vamos a habilitar un YUM repo de Google e instalar el paqu
 		gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 		EOF
 
-		sudo dnf makecache
+		$ sudo dnf makecache
 
-		sudo dnf install kubectl 
+		$ sudo dnf install kubectl 
 
 **Tener instalado un hipervisor**
 
@@ -281,57 +277,57 @@ Se requiere tener instalado un hipervisor, el Minikube soporta varios pero en es
 vamos a instalar KVM. Para revisar si lo tenemos instalado podemos validar si está 
 habilitado el módulo en el Kernel ejecutando el comando:
 
-		 lsmod | grep kvm
+		 $ lsmod | grep kvm
 
 
 En caso de no tenerlo instalado, lo instalamos.
 
 Para instalarlo, vamos a instalar los siguientes paquetes:
 
-		Instala el KVM
-		sudo dnf install bridge-utils libvirt virt-install qemu-kvm
+	Instala el KVM
+		$ sudo dnf install bridge-utils libvirt virt-install qemu-kvm
 
-		# Otras herramientas útiles para el KVM
-		sudo dnf install virt-top libguestfs-tools
+	Otras herramientas útiles para el KVM
+		$ sudo dnf install virt-top libguestfs-tools
 
-		# Habilita el servicio
-		sudo systemctl enable --now libvirtd
+	Habilita el servicio
+		$ sudo systemctl enable --now libvirtd
 
-		# Instala un administrador gráfico
-		sudo dnf install virt-manager
+	Instala un administrador gráfico
+		$ sudo dnf install virt-manager
 
-		# Agrega nuestro usuario al grupo del KVM
-		sudo usermod -a -G libvirt $(whoami)
+	Agrega nuestro usuario al grupo del KVM
+		$ sudo usermod -a -G libvirt $(whoami)
 
 ### Instalación del binario de Minikube
 
-		# Descarga el binario y le asigna permisos de ejecución
-		curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+	Descarga el binario y le asigna permisos de ejecución
+		$ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
   		&& chmod +x minikube
 
-		# Intenta crear esta ruta en caso de que no exista
-		sudo mkdir -p /usr/local/bin/
+	Intenta crear esta ruta en caso de que no exista
+		$ sudo mkdir -p /usr/local/bin/
 
-		# Instala el binario del minikube en la ruta
-		sudo install minikube /usr/local/bin/
+	Instala el binario del minikube en la ruta
+		$ sudo install minikube /usr/local/bin/
 
-		# Elimina el binario descargado
-		rm minikube
+	Elimina el binario descargado
+		$ rm minikube
 
 Para probar si todo se instaló bien, podemos crear un cluster de Minikube usando KVM con
 los siguientes comandos:
 
-		# Crear un cluster de minikube (default)
-		minikube start --driver=kvm2
+	Crear un cluster de minikube (default)
+		$ minikube start --driver=kvm2
 
-		# Consulta el estado
-		minikube status
+	Consulta el estado
+		$ minikube status
 
-		# Para el clúster
-		minikube stop
+	Para el clúster
+		$ minikube stop
 
-		# Elimina el minikube que se creó para probar
-		minikube delete
+	Elimina el minikube que se creó para probar
+		$ minikube delete
 
 Por defecto va a crear un cluster de un nodo con la última versión disponible de Kubernetes,
 el nodo se le asignarán los recursos:
@@ -345,11 +341,11 @@ el nodo se le asignarán los recursos:
 Con el siguiente comando podemos crear un cluster personalizado de 4 vCPUs, 4 GB de memoria RAM
 y 20GB de disco duro, usando la versión 1.17.6 de Kubernetes.
 
-		# Muestra información de los parámetros disponibles para el start
-		minikube help start
+	Muestra información de los parámetros disponibles para el start
+		$ minikube help start
 
-		# Crea minikube personalizado
-		minikube start --driver=kvm2 \
+	Crea minikube personalizado
+		$ minikube start --driver=kvm2 \
 		  --cpus=4 \
 		  --memory=4096 \
 		  --disk-size=20000mb \
@@ -378,8 +374,7 @@ Realizamos un ejemplo de la ultilidad de este objeto:
 
 Analizamos el fichero de configuración
 
-	vim frondend.yaml
-
+	$ vim frondend.yaml
 		apiVersion: apps/v1
 		kind: ReplicaSet
 		metadata:
@@ -404,21 +399,19 @@ Analizamos el fichero de configuración
 
 A través del fichero ymal lanzamos la configuración de la réplicas y kubernetes lo crea de manera automatizada.
 
-		kubectl apply -f fronted.yaml
-
+		$ kubectl apply -f fronted.yaml
 			replicaset.apps/frontend created
 
 Comprovamos el estado del replicaset.
 		
-		kubectl get replicasets
-			
+		$ kubectl get replicasets
 			NAME       DESIRED   CURRENT   READY   AGE
 			frontend   5         5         5       16m
 
 
 Y también la información más detallada.
 
-		kubectl describe rs/frontend
+		$ kubectl describe rs/frontend
 
 			Name:         frontend
 			Namespace:    default
@@ -452,7 +445,7 @@ Y también la información más detallada.
 Podemos escalar el número de réplicas del pod que hemos lanzado en caliente.
 Para ellos podemos modificar el fichero .yaml y cambiar el número de replicas, en este caso vamos a reducir a 3.
 
-		vim frondend.yaml
+		$ vim frondend.yaml
 			apiVersion: apps/v1
 			kind: ReplicaSet
 			metadata:
@@ -474,18 +467,18 @@ Para ellos podemos modificar el fichero .yaml y cambiar el número de replicas, 
       				- name: php-redis
         			  image: gcr.io/google_samples/gb-frontend:v3
 
-		kubectl apply -f fronted.yaml
+		$ kubectl apply -f fronted.yaml
 			replicaset.apps/frontend configured
 
 Comprobamos como ha cambiado el número de pods que está corriendo en el orquestador.
 
-		kubectl get pods
+		$ kubectl get pods
 			NAME             READY   STATUS    RESTARTS   AGE
 			frontend-4nwkk   1/1     Running   0          20m
 			frontend-n672g   1/1     Running   0          20m
 			frontend-pn728   1/1     Running   0          20m
 
-		kubectl get rs
+		$ kubectl get rs
 			NAME       DESIRED   CURRENT   READY   AGE
 			frontend   3         3         3       21m
 
@@ -493,10 +486,10 @@ Comprobamos como ha cambiado el número de pods que está corriendo en el orques
 También podemos ejecutar la misma acción a través de los comandos de kubectl sin necesidad de modificar el fichero de configuración.
 En este caso volveremos a tener 3 réplicas de nuevo.
 
-		kubectl scale replicaset frontend --replicas=5
+		$ kubectl scale replicaset frontend --replicas=5
 			replicaset.apps/frontend scaled
 			
-		kubectl get pods
+		$ kubectl get pods
 			NAME             READY   STATUS    RESTARTS   AGE
 			frontend-4nwkk   1/1     Running   0          21m
 			frontend-kbvvs   1/1     Running   0          25s
@@ -504,17 +497,17 @@ En este caso volveremos a tener 3 réplicas de nuevo.
 			frontend-n672g   1/1     Running   0          21m
 			frontend-pn728   1/1     Running   0          21m
 
-		kubectl get rs 
+		$ kubectl get rs 
 			NAME       DESIRED   CURRENT   READY   AGE
 			frontend   5         5         5       22m
 
 			
 Eliminamos el replicaset
 
-		kubectl delete replicaset frontend
+		$ kubectl delete replicaset frontend
 			replicaset.apps "frontend" deleted
 
-		kubectl get rs
+		$ kubectl get rs
 			No resources found in default namespace.
 
 ---
