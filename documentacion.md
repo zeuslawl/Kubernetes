@@ -6,7 +6,7 @@
 	
 	- **[¿Qué es Kubernetes?](#queeskubernetes)**
 	
-	- **[¿Para ofrece?](#queofrece)**
+	- **[¿Qué ofrece?](#queofrece)**
 
 
 - **[Arquitectura](#arquitectura)**
