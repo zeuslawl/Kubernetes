@@ -267,21 +267,21 @@ Si no lo tenemos instalado, lo instalamos.
 
 Para instalar Kubectl vamos a habilitar un YUM repo de Google e instalar el paquete kubectl.
 
-		 sudo tee /etc/yum.repos.d/kubernetes.repo<<EOF
-		 [kubernetes]
-		 name=Kubernetes
-		 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-		 enabled=1
-		 gpgcheck=1
-		 repo_gpgcheck=1
-		 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-		 EOF
+		sudo tee /etc/yum.repos.d/kubernetes.repo<<EOF
+		[kubernetes]
+		name=Kubernetes
+		baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+		enabled=1
+		gpgcheck=1
+		repo_gpgcheck=1
+		gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+		EOF
 
 		sudo dnf makecache
 
 		sudo dnf install kubectl 
 
-**Tener instaldo un hipervisor**
+**Tener instalado un hipervisor**
 
 Se requiere tener instalado un hipervisor, el Minikube soporta varios pero en este caso
 vamos a instalar KVM. Para revisar si lo tenemos instalado podemos validar si está 
