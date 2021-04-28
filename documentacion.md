@@ -55,7 +55,7 @@
 - **[Replicaset](#replicaset)**
 
 
-- **[Deployments/Statefulsets](#deployments)**
+- **[Deployments](#deployments)**
 
 
 - **[Tags & selectors](#tags)**
@@ -204,13 +204,9 @@ Los Pods pueden ser usados para alojar pilas de aplicaciones integradas (por eje
 
 Los Pods individuales no están diseñados para ejecutar varias instancias de la misma aplicación, en general.
 
+---
 
-https://kubernetes.io/es/docs/concepts/architecture/
-
-
-
-
-# Instalación de entorno de pruebas<a name="instalacion"></a>
+# INSTALACIÓN EN ENETORNO DE PRUEBAS<a name="instalacion"></a>
 
 ## Requisitos:<a name="requisitos"></a>
 
@@ -229,7 +225,8 @@ https://kubernetes.io/es/docs/concepts/architecture/
 
 
 Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
-	- poner enlace docker 
+	
+	https://docs.docker.com/engine/install/
 
 
 Debemos instalar los siguientes componentes: 
@@ -311,7 +308,7 @@ Para instalarlo, vamos a instalar los siguientes paquetes:
 		# Agrega nuestro usuario al grupo del KVM
 		sudo usermod -a -G libvirt $(whoami)
 
-### Instalación de Minikube
+### Instalación del binario de Minikube
 
 		# Descarga el binario y le asigna permisos de ejecución
 		curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
@@ -348,7 +345,7 @@ el nodo se le asignarán los recursos:
 * Memoria = 6000MB
 * Disco = 20000MB
 
-### Crear un cluster minikube personalizado. Gestión básica cluster y nodos
+### Crear un cluster minikube personalizado
 
 Con el siguiente comando podemos crear un cluster personalizado de 4 vCPUs, 4 GB de memoria RAM
 y 20GB de disco duro, usando la versión 1.17.6 de Kubernetes.
@@ -368,9 +365,9 @@ Ejemplo de 4GB de memoria RAM
 
 	1024*4= 4096
 
+---
 
-
-# Replicaset
+# REPLICASET<a name="replicaset"></a>
 
 Es el componente que se encarga de mantener el número de réplicas de los pods activa.
 Alcanza su propósito mediante la creación y eliminación de pods que sea necesario para alcanzar el número que deseamos.
@@ -525,9 +522,25 @@ Eliminamos el replicaset
 		kubectl get rs
 			No resources found in default namespace.
 
-		
+---
 
-# Bibliografía<a name="bibliografia"></a>
+# DEPLOYMENTS<a name="deployments"></a>
+
+Una configuración de deployment pide a Kubernetes que cree y actualice las instancias de una aplicación.
+Tras crear el deployment, el control plane organiza las instancias de aplicación en los nodos disponibles del cluster.
+
+![](images/deployment.png)
+
+Una vez creadas las instancias de aplicación, el controlador de Deployment de Kubernetes monitoriza continuamente las instancias.
+Si un nodo en el que está una instancia cae o es eliminado, el controlador sustituye la instancia por otra en otro nodo disponible del cluster.
+
+Esta característica de recuperación de fallos mediante la creación de nuevas instancias que reemplazan a las defectuosas o desaparecidas no existía antes de los orquestadores.
+
+Al crear un deployment se especifica la imagen del contenedor que usará la aplicación y el número de réplicas que se quieren mantener en ejecución.
+El número de réplicas se puede modificar en cualquier momento actualizando el deployment.
+
+
+# BIBLIOGRAFÍA<a name="bibliografia"></a>
 
 [Arquitectura](https://kubernetes.io/es/docs/concepts/architecture/)
 
