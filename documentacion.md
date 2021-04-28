@@ -199,6 +199,8 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 
 # INSTALACIÓN EN ENTORNO DE PRUEBAS<a name="instalacion"></a>
 
+![](images/minikube.png)
+
 ## Requisitos:<a name="requisitos"></a>
 
 - Sistema operativo:
