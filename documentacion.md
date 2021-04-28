@@ -199,8 +199,6 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 
 # INSTALACIÓN EN ENTORNO DE PRUEBAS<a name="instalacion"></a>
 
-![](images/minikube.png)
-
 ## Requisitos:<a name="requisitos"></a>
 
 - Sistema operativo:
@@ -244,6 +242,8 @@ Para trabajar con ambientes de Kubernetes normalmente es más sencillo poder ins
 un cluster local en nuestro equipo que nos permita probar de una forma más expedita sin 
 tener que interactuar con un servidor externo. Una de las herramientas que nos sirve 
 para esta tarea es Minikube.
+
+![](images/minikube.png)
 
 ### Prerequisitos
 
