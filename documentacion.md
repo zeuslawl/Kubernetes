@@ -234,15 +234,17 @@ Necesitamos tener instalado previamente **docker** para poder trabajar en Kubern
 
 Debemos instalar los siguientes componentes: 
 
-- **kubectl** Aplicación que gestiona kubernetes
+- **kubectl**: Aplicación cliente que interactúa con el cluster a través del API a través del API-Server y mediante la líniea de comandos.
 
-- **kubeadm** 
+- **kubeadm**: Instrucción que nos permite crear el cluster.
 
-- **kubelet**
+- **kubelet**: Es el responsable del estado de ejecución de cada nodo. Se encarga del inicio, la detención y el mantenimiento de los contenedores de aplicaciones (organizados como pods) como es indicado por el master.
 
-- **minikube** Entorno de pruebas para aprender kubernetes, crea un cluster de nodos donde se pueden hacer todo tipo de pruebas.
+- **minikube**: Entorno de pruebas para aprender kubernetes. Es un cluster de un solo nodo lanzado a través de una máquina virtual
 
-		 dnf -y install kubeadm kubelet kubectl
+		 
+		dnf -y install kubeadm kubelet kubectl
+
 
 ## Instalar Minikube en Fedora 32<a name="instalacionminikube"></a>
 
@@ -294,7 +296,7 @@ En caso de no tenerlo instalado, lo instalamos.
 
 Para instalarlo, vamos a instalar los siguientes paquetes:
 
-		# Instala el KVM
+		Instala el KVM
 		sudo dnf install bridge-utils libvirt virt-install qemu-kvm
 
 		# Otras herramientas útiles para el KVM
@@ -313,7 +315,7 @@ Para instalarlo, vamos a instalar los siguientes paquetes:
 
 		# Descarga el binario y le asigna permisos de ejecución
 		curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
-  			&& chmod +x minikube
+  		&& chmod +x minikube
 
 		# Intenta crear esta ruta en caso de que no exista
 		sudo mkdir -p /usr/local/bin/
@@ -330,11 +332,14 @@ los siguientes comandos:
 		# Crear un cluster de minikube (default)
 		minikube start --driver=kvm2
 
-		# Pregunta por el estado
+		# Consulta el estado
 		minikube status
 
+		# Para el clúster
+		minikube stop
+
 		# Elimina el minikube que se creó para probar
-		minikube delete		
+		minikube delete
 
 Por defecto va a crear un cluster de un nodo con la última versión disponible de Kubernetes,
 el nodo se le asignarán los recursos:
@@ -343,7 +348,7 @@ el nodo se le asignarán los recursos:
 * Memoria = 6000MB
 * Disco = 20000MB
 
-### Crear un cluster minikube personalizado
+### Crear un cluster minikube personalizado. Gestión básica cluster y nodos
 
 Con el siguiente comando podemos crear un cluster personalizado de 4 vCPUs, 4 GB de memoria RAM
 y 20GB de disco duro, usando la versión 1.17.6 de Kubernetes.
@@ -365,9 +370,162 @@ Ejemplo de 4GB de memoria RAM
 
 
 
-Tutorial interactivo - crear un clúster
+# Replicaset
+
+Es el componente que se encarga de mantener el número de réplicas de los pods activa.
+Alcanza su propósito mediante la creación y eliminación de pods que sea necesario para alcanzar el número que deseamos.
+
+El enlace que un replicaset tiene hacia sus pods es a través del campo del Pod denominado metadata.ownerReferences, el cual indica qué recurso es el propietario del objeto actual.
+
+Un replicaset garantiza que un número específico de réplicas de un pod se está ejecutando en todo momento.
+Sin embargo, un deployment es un concepto de más alto nivel que gestiona replicasets y proporciona actualizaciones de forma declarativa de los pods junto con muchas otras características útiles.
+
+Por lo tanto, se recomienda el uso de deployments en vez del uso directo de replicasets, a no ser que se necesite una orquestración personalizada de actualización o no se necesite las actualizaciones en absoluto.
+
+Realizamos un ejemplo de la ultilidad de este objeto:
+
+Analizamos el fichero de configuración
+
+	vim frondend.yaml
+
+		apiVersion: apps/v1
+		kind: ReplicaSet
+		metadata:
+  		  name: frontend
+  		    labels:
+    		  app: guestbook
+    		  tier: frontend
+		spec:
+  		  # modifica las réplicas según tu caso de uso
+  		  replicas: 5
+  		  selector:
+    	    matchLabels:
+      		  tier: frontend
+  		  template:
+    		metadata:
+      		  labels:
+        	    tier: frontend
+    		spec:
+      			containers:
+      			- name: php-redis
+        		  image: gcr.io/google_samples/gb-frontend:v3
+
+A través del fichero ymal lanzamos la configuración de la réplicas y kubernetes lo crea de manera automatizada.
+
+		kubectl apply -f fronted.yaml
+
+			replicaset.apps/frontend created
+
+Comprovamos el estado del replicaset.
+		
+		kubectl get replicasets
+			
+			NAME       DESIRED   CURRENT   READY   AGE
+			frontend   5         5         5       16m
 
 
+Y también la información más detallada.
+
+		kubectl describe rs/frontend
+
+			Name:         frontend
+			Namespace:    default
+			Selector:     tier=frontend
+			Labels:       app=guestbook
+            			  tier=frontend
+			Annotations:  <none>
+			Replicas:     5 current / 5 desired
+			Pods Status:  5 Running / 0 Waiting / 0 Succeeded / 0 Failed
+			Pod Template:
+			  Labels:  tier=frontend
+			  Containers:
+			   php-redis:
+			    Image:        gcr.io/google_samples/gb-frontend:v3
+			    Port:         <none>
+			    Host Port:    <none>
+			    Environment:  <none>
+			    Mounts:       <none>
+			  Volumes:        <none>
+			Events:
+			  Type    Reason            Age   From                   Message
+			  ----    ------            ----  ----                   -------
+			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-vn8rv
+			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-pn728
+			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-n672g
+			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-rrjtb
+			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-4nwkk
+
+			
+
+Podemos escalar el número de réplicas del pod que hemos lanzado en caliente.
+Para ellos podemos modificar el fichero .yaml y cambiar el número de replicas, en este caso vamos a reducir a 3.
+
+		vim frondend.yaml
+			apiVersion: apps/v1
+			kind: ReplicaSet
+			metadata:
+  			  name: frontend
+  			    labels:
+    			  app: guestbook
+    			  tier: frontend
+			spec:
+  			  replicas: 3
+  			  selector:
+    		    matchLabels:
+      			  tier: frontend
+  			  template:
+    			metadata:
+      			  labels:
+        		    tier: frontend
+    			spec:
+      				containers:
+      				- name: php-redis
+        			  image: gcr.io/google_samples/gb-frontend:v3
+
+		kubectl apply -f fronted.yaml
+			replicaset.apps/frontend configured
+
+Comprobamos como ha cambiado el número de pods que está corriendo en el orquestador.
+
+		kubectl get pods
+			NAME             READY   STATUS    RESTARTS   AGE
+			frontend-4nwkk   1/1     Running   0          20m
+			frontend-n672g   1/1     Running   0          20m
+			frontend-pn728   1/1     Running   0          20m
+
+		kubectl get rs
+			NAME       DESIRED   CURRENT   READY   AGE
+			frontend   3         3         3       21m
+
+
+También podemos ejecutar la misma acción a través de los comandos de kubectl sin necesidad de modificar el fichero de configuración.
+En este caso volveremos a tener 3 réplicas de nuevo.
+
+		kubectl scale replicaset frontend --replicas=5
+			replicaset.apps/frontend scaled
+			
+		kubectl get pods
+			NAME             READY   STATUS    RESTARTS   AGE
+			frontend-4nwkk   1/1     Running   0          21m
+			frontend-kbvvs   1/1     Running   0          25s
+			frontend-kwdkl   1/1     Running   0          25s
+			frontend-n672g   1/1     Running   0          21m
+			frontend-pn728   1/1     Running   0          21m
+
+		kubectl get rs 
+			NAME       DESIRED   CURRENT   READY   AGE
+			frontend   5         5         5       22m
+
+			
+Eliminamos el replicaset
+
+		kubectl delete replicaset frontend
+			replicaset.apps "frontend" deleted
+
+		kubectl get rs
+			No resources found in default namespace.
+
+		
 
 # Bibliografía<a name="bibliografia"></a>
 
