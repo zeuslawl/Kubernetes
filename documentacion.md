@@ -1,6 +1,6 @@
 ![](images/timon2.jpg)
 
-# Índice 
+# ÍNDICE 
 
 - **[Introducción](#introduccion)**
 	
