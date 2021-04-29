@@ -783,6 +783,8 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
 
+![](images/bibliografia.jpg)
+
 [Arquitectura](https://kubernetes.io/es/docs/concepts/architecture/)
 
 [Crear un cluster](https://kubernetes.io/es/docs/tutorials/kubernetes-basics/create-cluster/)
