@@ -46,7 +46,7 @@
 - **[Replicaset](#replicaset)**
 
 
-- **[Deployments](#deployments)**
+- **[Deployment](#deployment)**
 
 
 - **[Tags & selectors](#tags)**
@@ -512,7 +512,7 @@ Eliminamos el replicaset
 
 ---
 
-# DEPLOYMENTS<a name="deployments"></a>
+# DEPLOYMENT<a name="deployment"></a>
 
 Una configuración de deployment pide a Kubernetes que cree y actualice las instancias de una aplicación.
 Tras crear el deployment, el control plane organiza las instancias de aplicación en los nodos disponibles del cluster.
@@ -527,7 +527,152 @@ Esta característica de recuperación de fallos mediante la creación de nuevas 
 Al crear un deployment se especifica la imagen del contenedor que usará la aplicación y el número de réplicas que se quieren mantener en ejecución.
 El número de réplicas se puede modificar en cualquier momento actualizando el deployment.
 
+Vamos a crear un ejemplo de un deployment que crea un replicaset de pods de un servidor wen nginx.
 
+		$ vim deployment-nginx
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: nginx-deployment
+			  labels:
+			    app: nginx
+			spec:
+			  replicas: 3
+			  selector:
+			    matchLabels:
+			      app: nginx
+  		     	template:
+		      metadata:
+ 			    labels:
+     			  app: nginx
+    			spec:
+   			  containers:
+    		  - name: nginx
+ 		        image: nginx:1.7.9
+ 		        ports:
+  		        - containerPort: 80
+
+Creamos un Deployment denominado nginx-deployment, indicado a través del campo **.metadata.name.**
+
+El deployment crea tres pods replicados, indicado a través del campo **replicas.**
+
+El campo selector define cómo el deployment identifica los pods que debe gestionar. En este caso, simplemente seleccionamos una etiqueta que se define en la plantilla Pod (app: nginx).
+
+**matchLabels** es un mapa de entradas {clave,valor}.
+
+El campo template contiene los siguientes sub-campos:
+
+- Los Pods se etiquetan como app: nginx usando el campo **labels.**
+
+- La especificación de la plantilla Pod, o el campo **.template.spec**, indica que los pods ejecutan un contenedor, nginx, que utiliza la versión 1.7.9 de la imagen de nginx.
+    
+- Crea un contenedor y lo llamar nginx usando el campo **name.**
+
+- Ejecuta la imagen nginx en su versión 1.7.9.
+
+- Abre el puerto 80 para que el contenedor pueda enviar y recibir tráfico.
+
+Creamos el deployment ejecutando el cliente kubectl.
+
+		$ kubectl apply -f nginx-deployment.yaml
+			deployment.apps/nginx-deployment created
+
+Inspeccionamos el deployment lanzado en nuestro clúster con los siguientes comandos.
+
+		$ kubectl get deployments
+			NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+			nginx-deployment   3/3     3            3           103s
+
+		$ kubectl rollout status deployment nginx-deployment
+			deployment "nginx-deployment" successfully rolled out
+
+		$ kubectl get pods
+			NAME                                READY   STATUS    RESTARTS   AGE
+			nginx-deployment-5d59d67564-7fs5x   1/1     Running   0          5m44s
+			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          5m44s
+			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          5m44s
+
+También podemos ver las etiquetas (**labels**) creadas automáticamente.
+
+		$ kubectl get pods --show-labels
+			nginx-deployment-5d59d67564-7fs5x   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
+			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
+			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
+
+Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
+	
+		$ kubectl --record deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1
+			deployment.apps/nginx-deployment image updated
+			deployment.apps/nginx-deployment image updated
+
+También podemos editar el fichero .yaml. Ahora vamos a volver a la versión inicial.
+		
+		$ kubectl edit deployment.v1.apps/nginx-deployment
+			# Please edit the object below. Lines beginning with a '#' will be ignored,
+			# and an empty file will abort the edit. If an error occurs while saving this file will be
+			# reopened with the relevant failures.
+			#
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  annotations:
+			    deployment.kubernetes.io/revision: "3"
+			    kubectl.kubernetes.io/last-applied-configuration: |
+			      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"nginx"},"name":"nginx-deployment","namespace":"default"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"nginx"}},"template":{"metadata":{"labels":{"app":"nginx"}},"spec":{"containers":[{"image":"nginx:1.7.9","name":"nginx","ports":[{"containerPort":80}]}]}}}}
+			    kubernetes.io/change-cause: kubectl deployment.apps/nginx-deployment set image
+			      deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			  creationTimestamp: "2021-04-29T07:46:09Z"
+			  generation: 3
+			  labels:
+			    app: nginx
+			  name: nginx-deployment
+			  namespace: default
+			  resourceVersion: "6681"
+			  uid: 6d59839a-fcbc-4b98-ae8f-971299e7a40e
+			spec:
+			  progressDeadlineSeconds: 600
+			  replicas: 3
+			  revisionHistoryLimit: 10
+			  selector:
+			    matchLabels:
+			      app: nginx
+			  strategy:
+			    rollingUpdate:
+			      maxSurge: 25%
+			      maxUnavailable: 25%
+			    type: RollingUpdate
+			  template:
+			    metadata:
+			      creationTimestamp: null
+			      labels:
+			        app: nginx
+			    spec:
+ 			    containers:
+ 			     - image: nginx:1.7.9
+ 			       imagePullPolicy: IfNotPresent
+ 			       name: nginx
+ 			       ports:
+			        - containerPort: 80
+			          protocol: TCP
+			        resources: {}
+			        terminationMessagePath: /dev/termination-log
+ 			       terminationMessagePolicy: File
+ 			     dnsPolicy: ClusterFirst
+ 			     restartPolicy: Always
+ 			     schedulerName: default-scheduler
+  			    securityContext: {}
+  			    terminationGracePeriodSeconds: 30
+			status:
+ 			 availableReplicas: 3
+ 			 conditions:
+ 			 - lastTransitionTime: "2021-04-29T07:46:21Z"
+  			  lastUpdateTime: "2021-04-29T07:46:21Z"
+  			  message: Deployment has minimum availability.
+  			  reason: MinimumReplicasAvailable
+ 			   status: "True"
+
+
+		
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
 
 [Arquitectura](https://kubernetes.io/es/docs/concepts/architecture/)
