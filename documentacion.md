@@ -32,6 +32,8 @@
 			-[Kubetet](#kubelet)
 
 			-[Kube Proxy](#kubeproxy)
+	
+	- **[Pods](#pods)**
 
 
 - **[Instalación](#instalacion)**
@@ -46,13 +48,10 @@
 - **[Replicaset](#replicaset)**
 
 
-- **[Deployments](#deployments)**
+- **[Deployment](#deployment)**
 
 
-- **[Tags & selectors](#tags)**
-
-
-- **[Services](#services)**
+- **[Service/Endpoint](#service)**
 
 
 - **[Namespaces](#namespaces)**
@@ -71,7 +70,7 @@ Somos Roberto Martínez y Alejandro López, dos alumnos de Administración de Si
 
 Hemos seleccionado  Kubernetes para nuestro proyecto final porque creemos que actualmente es la tecnología puntera en virtualización y alta disponibilidad, lo cual nos puede ser de mucha utilidad en nuestra vida laboral.
 
-## **¿Qué es Kubernetes?**
+## **¿Qué es Kubernetes?**<a name="queeskubernetes"></a>
 
 Kubernetes (timonel o piloto en griego) es un software de orquestación de código abierto que permite implementar, administrar y escalar aplicaciones en  unidades lógicas para gestionarlas y darles visibilidad. 
 Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramientas y los servicios para Kubernetes están ampliamente disponibles.
@@ -79,7 +78,7 @@ Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramienta
 Kubernetes ofrece un entorno de administración centrado en contenedores, orquesta la infraestructura de cómputo, redes y almacenamiento para que las cargas de trabajo de los usuarios no tengan que hacerlo.
 Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyecto Borg y donado a la Cloud Native Foundation.
 
-## **¿Qué ofrece?** 
+## **¿Qué ofrece?**<a name="queofrece"></a>
 
 Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las siguientes:
 
@@ -103,11 +102,11 @@ Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las sig
 
 ---
 
-# ARQUITECTURA
+# ARQUITECTURA<a name="arquitectura"></a>
 
 ![](images/archi3.png)
 
-## **Clúster**
+## **Clústers**<a name="clusters"></a>
 
 Un clúster de Kubernetes es un conjunto de máquinas de nodos que ejecutan aplicaciones en contenedores. Si ejecuta Kubernetes, está ejecutando un clúster.
 
@@ -119,25 +118,25 @@ Podemos crear clusters en local, en el cloud, híbridos y también minikube, vir
 
 
 
-## **Nodos**
+## **Nodes**<a name="nodes"></a>
 
 ![](images/archi_cluster.png)
 
 Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como minion. Un nodo puede ser una máquina virtual o física, dependiendo del tipo de clúster. Hay dos tipos de nodos: master o control plane y workers. Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
-- ### **Node master:**
+- ### **Node master:**<a name="master"></a>
 
 	Aquí se encuentran los elementos de Kubernetes que controlan el clúster, junto con los datos sobre su estado y configuración. Los elementos principales de Kubernetes tienen la importante tarea de garantizar que los contenedores se ejecuten en cantidades suficientes y con los recursos necesarios. 
 	El plano de control está en contacto permanente con las máquinas informáticas. Garantiza que el clúster se ejecute según la configuración que hayamos elegido.
 	Consta de diferentes procesos:
 
-	· **API-Server:**
+	· **API-Server:**<a name="api"></a>
 	Es el componenete que interactúa con el cliente. Se trata del frontend de Kubernetes, recibe las peticiones y actualiza acordemente el estado en etcd.
 
-	· **Scheduler:**
+	· **Scheduler:**<a name="scheduler"></a>
 	Este proceso se encarga de decidir en qúe nodo se ejecutaran los pods. Para ello tiene en cuenta los siguientes factores: requisitos de recursos, restricciones de hardware/software/políticas, afinidad y anti-afinidad, localización de datos dependientes, entre otros.
 
-	· **Controller-manager:**
+	· **Controller-manager:**<a name="controller"></a>
 	Es el componente que ejecuta los controles de k8s. Cada controlador es un proceso independiente, pero para reducir la complejidad, todos se compilan en un único binario y se ejecuta en un mismo proceso. Estos controladores incluyen:
 
     - **Controlador de nodo:** es el responsable de detectar y responder cuándo un nodo deja de funcionar.
@@ -149,23 +148,27 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
     - **Controladores de tokens y cuentas de servicio:** crean cuentas y tokens de acceso a la API por defecto para los nuevos Namespaces
 
 
-	· **Etcd:** Es la base de datos donde se guarda toda la información que utiliza el cluster.
+	· **Etcd:**<a name="etcd"></a>
+	 Es la base de datos donde se guarda toda la información que utiliza el cluster.
 
 
 
-- ### **Node worker:**
+- ### **Node worker:**<a name="workers"></a>
 
 	El worker node, nos proporcionara un entrono de ejecución para las aplicaciones. Estas aplicaciones que se encuentran contenerizadas en pods y son controladas por los anteriores processos que hemos descrito del Control Plane que se ejecutan en el Master Node.
 
-	· **Container runtime:** es el software responsable de la ejecución y gestión de los contenedores.
+	· **Container runtime:**<a name="containerruntime"></a>
+		es el software responsable de la ejecución y gestión de los contenedores.
 
-	· **Kubelet:** es el agente que se ejecuta en cada nodo de un clúster y se comunica con los componentes del control plane. Recibe las definiciones del pod del API Server e interacciona con el container runtime para ejecutar contenedores asociados al pod.
+	· **Kubelet:**<a name="kubelet"></a>
+		es el agente que se ejecuta en cada nodo de un clúster y se comunica con los componentes del control plane. Recibe las definiciones del pod del API Server e interacciona con el container runtime para ejecutar contenedores asociados al pod.
 
-	· **Kube-proxy:** es la implementación de un proxy de red y balanceador de carga soportando la abstracción del servicio junto con otras operaciones de red. Es responsable del enrutamiento del tráfico hacia el contenedor correcto basado en la dirección IP y el número de puerto indicados por el control plane
+	· **Kube-proxy:**<a name="kubeproxy"></a>
+		es la implementación de un proxy de red y balanceador de carga soportando la abstracción del servicio junto con otras operaciones de red. Es responsable del enrutamiento del tráfico hacia el contenedor correcto basado en la dirección IP y el número de puerto indicados por el control plane
 
 
 
-## **Pods**
+## **Pods**<a name="pods"></a>
 
 ![](images/archi_pods2.png)
 
@@ -179,15 +182,15 @@ Al igual que los contenedores de aplicaciones individuales, los Pods se consider
 
 Los Pods pueden ser usados para alojar pilas de aplicaciones integradas (por ejemplo, LAMP), pero su objetivo principal es apoyar los programas de ayuda coubicados y coadministrados, como:
 
-   · sistemas de gestión de contenido, loaders de datos y archivos, gestores de caché locales, etc.
+   · Sistemas de gestión de contenido, loaders de datos y archivos, gestores de caché locales, etc.
 
-   · copia de seguridad de registro y punto de control, compresión, rotación, captura de imágenes, etc.
+   · Copia de seguridad de registro y punto de control, compresión, rotación, captura de imágenes, etc.
 
-   · observadores de cambio de datos, adaptadores de registro y monitoreo, publicadores de eventos, etc.
+   · Observadores de cambio de datos, adaptadores de registro y monitoreo, publicadores de eventos, etc.
 
-   · proxies, bridges y adaptadores.
+   · Proxies, bridges y adaptadores.
 
-   · controladores, configuradores y actualizadores.
+   · Controladores, configuradores y actualizadores.
 
 Los Pods individuales no están diseñados para ejecutar varias instancias de la misma aplicación, en general.
 
@@ -360,6 +363,8 @@ Ejemplo de 4GB de memoria RAM
 
 # REPLICASET<a name="replicaset"></a>
 
+![](images/replicaset.png)
+
 Es el componente que se encarga de mantener el número de réplicas de los pods activa.
 Alcanza su propósito mediante la creación y eliminación de pods que sea necesario para alcanzar el número que deseamos.
 
@@ -512,7 +517,7 @@ Eliminamos el replicaset
 
 ---
 
-# DEPLOYMENTS<a name="deployments"></a>
+# DEPLOYMENT<a name="deployment"></a>
 
 Una configuración de deployment pide a Kubernetes que cree y actualice las instancias de una aplicación.
 Tras crear el deployment, el control plane organiza las instancias de aplicación en los nodos disponibles del cluster.
@@ -527,8 +532,273 @@ Esta característica de recuperación de fallos mediante la creación de nuevas 
 Al crear un deployment se especifica la imagen del contenedor que usará la aplicación y el número de réplicas que se quieren mantener en ejecución.
 El número de réplicas se puede modificar en cualquier momento actualizando el deployment.
 
+Vamos a crear un ejemplo de un deployment que crea un replicaset de pods de un servidor wen nginx.
+
+		$ vim deployment-nginx
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: nginx-deployment
+			  labels:
+			    app: nginx
+			spec:
+			  replicas: 3
+			  selector:
+			    matchLabels:
+			      app: nginx
+  		     	template:
+		      metadata:
+ 			    labels:
+     			  app: nginx
+    			spec:
+   			  containers:
+    		  - name: nginx
+ 		        image: nginx:1.7.9
+ 		        ports:
+  		        - containerPort: 80
+
+Creamos un Deployment denominado nginx-deployment, indicado a través del campo **.metadata.name.**
+
+El deployment crea tres pods replicados, indicado a través del campo **replicas.**
+
+El campo selector define cómo el deployment identifica los pods que debe gestionar. En este caso, simplemente seleccionamos una etiqueta que se define en la plantilla Pod (app: nginx).
+
+**matchLabels** es un mapa de entradas {clave,valor}.
+
+El campo template contiene los siguientes sub-campos:
+
+- Los Pods se etiquetan como app: nginx usando el campo **labels.**
+
+- La especificación de la plantilla Pod, o el campo **.template.spec**, indica que los pods ejecutan un contenedor, nginx, que utiliza la versión 1.7.9 de la imagen de nginx.
+    
+- Crea un contenedor y lo llamar nginx usando el campo **name.**
+
+- Ejecuta la imagen nginx en su versión 1.7.9.
+
+- Abre el puerto 80 para que el contenedor pueda enviar y recibir tráfico.
+
+Creamos el deployment ejecutando el cliente kubectl.
+
+		$ kubectl apply -f nginx-deployment.yaml
+			deployment.apps/nginx-deployment created
+
+Inspeccionamos el deployment lanzado en nuestro clúster con los siguientes comandos.
+
+		$ kubectl get deployments
+			NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+			nginx-deployment   3/3     3            3           103s
+
+		$ kubectl rollout status deployment nginx-deployment
+			deployment "nginx-deployment" successfully rolled out
+
+		$ kubectl get pods
+			NAME                                READY   STATUS    RESTARTS   AGE
+			nginx-deployment-5d59d67564-7fs5x   1/1     Running   0          5m44s
+			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          5m44s
+			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          5m44s
+
+También podemos ver las etiquetas (**labels**) creadas automáticamente.
+
+		$ kubectl get pods --show-labels
+			nginx-deployment-5d59d67564-7fs5x   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
+			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
+			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
+
+Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
+	
+		$ kubectl --record deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1
+			deployment.apps/nginx-deployment image updated
+			deployment.apps/nginx-deployment image updated
+
+También podemos editar el fichero .yaml. Ahora vamos a volver a la versión inicial.
+		
+		$ kubectl edit deployment.v1.apps/nginx-deployment
+			# Please edit the object below. Lines beginning with a '#' will be ignored,
+			# and an empty file will abort the edit. If an error occurs while saving this file will be
+			# reopened with the relevant failures.
+			#
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  annotations:
+			    deployment.kubernetes.io/revision: "3"
+			    kubectl.kubernetes.io/last-applied-configuration: |
+			      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"nginx"},"name":"nginx-deployment","namespace":"default"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"nginx"}},"template":{"metadata":{"labels":{"app":"nginx"}},"spec":{"containers":[{"image":"nginx:1.7.9","name":"nginx","ports":[{"containerPort":80}]}]}}}}
+			    kubernetes.io/change-cause: kubectl deployment.apps/nginx-deployment set image
+			      deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			  creationTimestamp: "2021-04-29T07:46:09Z"
+			  generation: 3
+			  labels:
+			    app: nginx
+			  name: nginx-deployment
+			  namespace: default
+			  resourceVersion: "6681"
+			  uid: 6d59839a-fcbc-4b98-ae8f-971299e7a40e
+			spec:
+			  progressDeadlineSeconds: 600
+			  replicas: 3
+			  revisionHistoryLimit: 10
+			  selector:
+			    matchLabels:
+			      app: nginx
+			  strategy:
+			    rollingUpdate:
+			      maxSurge: 25%
+			      maxUnavailable: 25%
+			    type: RollingUpdate
+			  template:
+			    metadata:
+			      creationTimestamp: null
+			      labels:
+			        app: nginx
+			    spec:
+ 			    containers:
+ 			     - image: nginx:1.7.9
+ 			       imagePullPolicy: IfNotPresent
+ 			       name: nginx
+ 			       ports:
+			        - containerPort: 80
+			          protocol: TCP
+			        resources: {}
+			        terminationMessagePath: /dev/termination-log
+ 			       terminationMessagePolicy: File
+ 			     dnsPolicy: ClusterFirst
+ 			     restartPolicy: Always
+ 			     schedulerName: default-scheduler
+  			    securityContext: {}
+  			    terminationGracePeriodSeconds: 30
+			status:
+ 			 availableReplicas: 3
+ 			 conditions:
+ 			 - lastTransitionTime: "2021-04-29T07:46:21Z"
+  			  lastUpdateTime: "2021-04-29T07:46:21Z"
+  			  message: Deployment has minimum availability.
+  			  reason: MinimumReplicasAvailable
+ 			   status: "True"
+
+Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
+
+		$ kubectl rollout status deployment.v1.apps/nginx-deployment
+			deployment "nginx-deployment" successfully rolled out
+
+		$ kubectl get deployments
+			NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+			nginx-deployment   3/3     3            3           113m
+
+		$ kubectl get pods
+			nginx-deployment-5d59d67564-4kqkd   1/1     Running   0          14m
+			nginx-deployment-5d59d67564-fwp5v   1/1     Running   0          14m
+			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          14m
+			
+		$ kubectl describe deployments
+			Name:                   nginx-deployment
+			Namespace:              default
+			CreationTimestamp:      Thu, 29 Apr 2021 09:46:09 +0200
+			Labels:                 app=nginx
+			Annotations:            deployment.kubernetes.io/revision: 3
+			                        kubernetes.io/change-cause:
+			                          kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			Selector:               app=nginx
+			Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+			StrategyType:           RollingUpdate
+			MinReadySeconds:        0
+			RollingUpdateStrategy:  25% max unavailable, 25% max surge
+			Pod Template:
+			  Labels:  app=nginx
+			  Containers:
+			   nginx:
+			    Image:        nginx:1.7.9
+			    Port:         80/TCP
+			    Host Port:    0/TCP
+			    Environment:  <none>
+			    Mounts:       <none>
+			  Volumes:        <none>
+			Conditions:
+			  Type           Status  Reason
+			  ----           ------  ------
+			  Available      True    MinimumReplicasAvailable
+			  Progressing    True    NewReplicaSetAvailable
+			OldReplicaSets:  <none>
+			NewReplicaSet:   nginx-deployment-5d59d67564 (3/3 replicas created)
+			Events:
+			  Type    Reason             Age                 From                   Message
+			  ----    ------             ----                ----                   -------
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 1
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 2
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 2
+			  Normal  ScalingReplicaSet  17m (x2 over 117m)  deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 3
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
+			
+Podemos también revisar el historial de los despliegues realizados y de uno en concreto:
+
+		$ kubectl rollout history deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment 
+			REVISION  CHANGE-CAUSE
+			2         kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			3         kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+		
+		$ kubectl rollout history deployment.v1.apps/nginx-deployment --revision=2
+			deployment.apps/nginx-deployment with revision #2
+			Pod Template:
+  			  Labels:	app=nginx
+				pod-template-hash=69c44dfb78
+			  Annotations:	kubernetes.io/change-cause:
+				  kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			  Containers:
+			   nginx:
+ 			     Image:	nginx:1.9.1
+			     Port:	80/TCP
+ 			     Host Port:	0/TCP
+ 			     Environment:	<none>
+ 			     Mounts:	<none>
+ 			  Volumes:	<none>
+
+Otra de las funciones que nos ofrece deployment es la de poder escalar los pods del clúster de manera horizontal.
+		
+		$ kubectl scale deployment.v1.apps/nginx-deployment --replicas=10
+			deployment.apps/nginx-deployment scaled
+		
+		$ kubectl get deployment
+			NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+			nginx-deployment   10/10   10           10          153m
+
+		$ kubectl get pods
+			NAME                                READY   STATUS    RESTARTS   AGE
+			nginx-deployment-5d59d67564-4h6rh   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-4kqkd   1/1     Running   0          53m
+			nginx-deployment-5d59d67564-4l29n   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-5kf7l   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-d4n2h   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-fwp5v   1/1     Running   0          53m
+			nginx-deployment-5d59d67564-m4tjs   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-m9zd9   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-mnr6b   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          53m
+
+---
+
+# SERVICE/ENDPOINT<a name="service"></a>
+
+![](images/service.png)
+
+El elemento **service** es el encargado de balancear la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
+
+El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones que puede llegar a recibir al mismo tiempo, ya que se distribuirán entre los múltiples pods en vez de uno solo, es decir un cliente hace la petición a una IP y se encarga a redirigir esa petición al pod indicado.
+
+
+El **endpoint** de un servicio es el encargado de guardar la lista de direcciones IP de los pods, en el caso de que un pod muera y se arranque otro, borrara la IP del pod muerto y añadirá la del pod nuevo. Las IP's de los pods son dinámicas.
+
+Vamos a hacer un ejemplo de servicio creando un deployment con pods nginx asociados al servicio.
+Expondremos el puerto 80 de los pods al 8080 de la IP virtual del servicio.
+
+
+
+---
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
+
+![](images/bibliografia.jpg)
 
 [Arquitectura](https://kubernetes.io/es/docs/concepts/architecture/)
 
@@ -547,3 +817,4 @@ El número de réplicas se puede modificar en cualquier momento actualizando el 
 [instalación minikube](https://marvin.monge.me/post/instalar-minikube-en-fedora-32/)
 
 [git uni almeria](https://ualmtorres.github.io/SeminarioKubernetes/#truedeployments)
+ trabe
