@@ -1045,4 +1045,6 @@ También permite volúmenes configmap y secret, útiles para el compartir entre 
 [instalación minikube](https://marvin.monge.me/post/instalar-minikube-en-fedora-32/)
 
 [git uni almeria](https://ualmtorres.github.io/SeminarioKubernetes/#truedeployments)
+
+https://www.josedomingo.org/pledin/2018/12/kubernetes-ingress/
  trabe
