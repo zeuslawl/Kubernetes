@@ -51,9 +51,6 @@
 - **[Deployment](#deployment)**
 
 
-- **[Tags & selectors](#tags)**
-
-
 - **[Services](#services)**
 
 
