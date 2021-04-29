@@ -32,6 +32,8 @@
 			-[Kubetet](#kubelet)
 
 			-[Kube Proxy](#kubeproxy)
+	
+	- **[Pods](#pods)**
 
 
 - **[Instalación](#instalacion)**
@@ -71,7 +73,7 @@ Somos Roberto Martínez y Alejandro López, dos alumnos de Administración de Si
 
 Hemos seleccionado  Kubernetes para nuestro proyecto final porque creemos que actualmente es la tecnología puntera en virtualización y alta disponibilidad, lo cual nos puede ser de mucha utilidad en nuestra vida laboral.
 
-## **¿Qué es Kubernetes?**
+## **¿Qué es Kubernetes?**<a name="queeskubernetes"></a>
 
 Kubernetes (timonel o piloto en griego) es un software de orquestación de código abierto que permite implementar, administrar y escalar aplicaciones en  unidades lógicas para gestionarlas y darles visibilidad. 
 Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramientas y los servicios para Kubernetes están ampliamente disponibles.
@@ -79,7 +81,7 @@ Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramienta
 Kubernetes ofrece un entorno de administración centrado en contenedores, orquesta la infraestructura de cómputo, redes y almacenamiento para que las cargas de trabajo de los usuarios no tengan que hacerlo.
 Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyecto Borg y donado a la Cloud Native Foundation.
 
-## **¿Qué ofrece?** 
+## **¿Qué ofrece?**<a name="queofrece"></a>
 
 Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las siguientes:
 
@@ -103,11 +105,11 @@ Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las sig
 
 ---
 
-# ARQUITECTURA
+# ARQUITECTURA<a name="arquitectura"></a>
 
 ![](images/archi3.png)
 
-## **Clúster**
+## **Clústers**<a name="clusters"></a>
 
 Un clúster de Kubernetes es un conjunto de máquinas de nodos que ejecutan aplicaciones en contenedores. Si ejecuta Kubernetes, está ejecutando un clúster.
 
@@ -119,25 +121,25 @@ Podemos crear clusters en local, en el cloud, híbridos y también minikube, vir
 
 
 
-## **Nodos**
+## **Nodes**<a name="nodes"></a>
 
 ![](images/archi_cluster.png)
 
 Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como minion. Un nodo puede ser una máquina virtual o física, dependiendo del tipo de clúster. Hay dos tipos de nodos: master o control plane y workers. Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
-- ### **Node master:**
+- ### **Node master:**<a name="master"></a>
 
 	Aquí se encuentran los elementos de Kubernetes que controlan el clúster, junto con los datos sobre su estado y configuración. Los elementos principales de Kubernetes tienen la importante tarea de garantizar que los contenedores se ejecuten en cantidades suficientes y con los recursos necesarios. 
 	El plano de control está en contacto permanente con las máquinas informáticas. Garantiza que el clúster se ejecute según la configuración que hayamos elegido.
 	Consta de diferentes procesos:
 
-	· **API-Server:**
+	· **API-Server:**<a name="api"></a>
 	Es el componenete que interactúa con el cliente. Se trata del frontend de Kubernetes, recibe las peticiones y actualiza acordemente el estado en etcd.
 
-	· **Scheduler:**
+	· **Scheduler:**<a name="scheduler"></a>
 	Este proceso se encarga de decidir en qúe nodo se ejecutaran los pods. Para ello tiene en cuenta los siguientes factores: requisitos de recursos, restricciones de hardware/software/políticas, afinidad y anti-afinidad, localización de datos dependientes, entre otros.
 
-	· **Controller-manager:**
+	· **Controller-manager:**<a name="controller"></a>
 	Es el componente que ejecuta los controles de k8s. Cada controlador es un proceso independiente, pero para reducir la complejidad, todos se compilan en un único binario y se ejecuta en un mismo proceso. Estos controladores incluyen:
 
     - **Controlador de nodo:** es el responsable de detectar y responder cuándo un nodo deja de funcionar.
@@ -149,23 +151,27 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
     - **Controladores de tokens y cuentas de servicio:** crean cuentas y tokens de acceso a la API por defecto para los nuevos Namespaces
 
 
-	· **Etcd:** Es la base de datos donde se guarda toda la información que utiliza el cluster.
+	· **Etcd:**<a name="etcd"></a>
+	 Es la base de datos donde se guarda toda la información que utiliza el cluster.
 
 
 
-- ### **Node worker:**
+- ### **Node worker:**<a name="workers"></a>
 
 	El worker node, nos proporcionara un entrono de ejecución para las aplicaciones. Estas aplicaciones que se encuentran contenerizadas en pods y son controladas por los anteriores processos que hemos descrito del Control Plane que se ejecutan en el Master Node.
 
-	· **Container runtime:** es el software responsable de la ejecución y gestión de los contenedores.
+	· **Container runtime:**<a name="containerruntime"></a>
+		es el software responsable de la ejecución y gestión de los contenedores.
 
-	· **Kubelet:** es el agente que se ejecuta en cada nodo de un clúster y se comunica con los componentes del control plane. Recibe las definiciones del pod del API Server e interacciona con el container runtime para ejecutar contenedores asociados al pod.
+	· **Kubelet:**<a name="kubelet"></a>
+		es el agente que se ejecuta en cada nodo de un clúster y se comunica con los componentes del control plane. Recibe las definiciones del pod del API Server e interacciona con el container runtime para ejecutar contenedores asociados al pod.
 
-	· **Kube-proxy:** es la implementación de un proxy de red y balanceador de carga soportando la abstracción del servicio junto con otras operaciones de red. Es responsable del enrutamiento del tráfico hacia el contenedor correcto basado en la dirección IP y el número de puerto indicados por el control plane
+	· **Kube-proxy:**<a name="kubeproxy"></a>
+		es la implementación de un proxy de red y balanceador de carga soportando la abstracción del servicio junto con otras operaciones de red. Es responsable del enrutamiento del tráfico hacia el contenedor correcto basado en la dirección IP y el número de puerto indicados por el control plane
 
 
 
-## **Pods**
+## **Pods**<a name="pods"></a>
 
 ![](images/archi_pods2.png)
 
@@ -359,6 +365,8 @@ Ejemplo de 4GB de memoria RAM
 ---
 
 # REPLICASET<a name="replicaset"></a>
+
+![](images/replicaset.png)
 
 Es el componente que se encarga de mantener el número de réplicas de los pods activa.
 Alcanza su propósito mediante la creación y eliminación de pods que sea necesario para alcanzar el número que deseamos.
