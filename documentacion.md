@@ -733,9 +733,54 @@ Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
 			
+Podemos también revisar el historial de los despliegues realizados y de uno en concreto:
 
-
+		$ kubectl rollout history deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment 
+			REVISION  CHANGE-CAUSE
+			2         kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			3         kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
 		
+		$ kubectl rollout history deployment.v1.apps/nginx-deployment --revision=2
+			deployment.apps/nginx-deployment with revision #2
+			Pod Template:
+  			  Labels:	app=nginx
+				pod-template-hash=69c44dfb78
+			  Annotations:	kubernetes.io/change-cause:
+				  kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			  Containers:
+			   nginx:
+ 			     Image:	nginx:1.9.1
+			     Port:	80/TCP
+ 			     Host Port:	0/TCP
+ 			     Environment:	<none>
+ 			     Mounts:	<none>
+ 			  Volumes:	<none>
+
+Otra de las funciones que nos ofrece deployment es la de poder escalar los pods del clúster de manera horizontal.
+		
+		$ kubectl scale deployment.v1.apps/nginx-deployment --replicas=10
+			deployment.apps/nginx-deployment scaled
+		
+		$ kubectl get deployment
+			NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+			nginx-deployment   10/10   10           10          153m
+
+		$ kubectl get pods
+			NAME                                READY   STATUS    RESTARTS   AGE
+			nginx-deployment-5d59d67564-4h6rh   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-4kqkd   1/1     Running   0          53m
+			nginx-deployment-5d59d67564-4l29n   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-5kf7l   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-d4n2h   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-fwp5v   1/1     Running   0          53m
+			nginx-deployment-5d59d67564-m4tjs   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-m9zd9   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-mnr6b   1/1     Running   0          47s
+			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          53m
+
+---
+
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
 
 [Arquitectura](https://kubernetes.io/es/docs/concepts/architecture/)
