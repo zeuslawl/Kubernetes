@@ -1007,8 +1007,22 @@ Eliminar namespace.
 
 # VOLUMES<a name="volumes"></a>
 
+El almacenamiento en contenedores es efímero. Una vez que el contenedor se elimina son eliminados también sus ficheros.
+Pero además, cuando un contenedor falla, kubelet lo reiniciará con un estado limpio habiéndose perdido todo lo que había en sus ficheros.
 
+Kubernetes cuenta con una gran cantidad de tipos de volúmenes. Los hay de almacenamiento local, almacenamiento en el sistema de archivos de los nodos de Kubernetes, NFS y almacenamiento cloud, como en AWS, Azure, Google y OpenStack, etc.
 
+También permite volúmenes configmap y secret, útiles para el compartir entre pods datos de configuración o información sensible, como contraseñas. En cualquier caso, los volúmenes son montados por los pods y accederían a sus datos.
+
+![](images/volumes.png)
+
+### Tipos de volumes
+
+- **emptyDir**
+
+- **hostPath**
+
+- **Cloud volumes**
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
 
