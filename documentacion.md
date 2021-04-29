@@ -779,6 +779,7 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 			nginx-deployment-5d59d67564-mnr6b   1/1     Running   0          47s
 			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          53m
 
+
 ---
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
