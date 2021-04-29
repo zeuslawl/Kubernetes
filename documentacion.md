@@ -185,15 +185,15 @@ Al igual que los contenedores de aplicaciones individuales, los Pods se consider
 
 Los Pods pueden ser usados para alojar pilas de aplicaciones integradas (por ejemplo, LAMP), pero su objetivo principal es apoyar los programas de ayuda coubicados y coadministrados, como:
 
-   · Sistemas de gestión de contenido, loaders de datos y archivos, gestores de caché locales, etc.
+   · sistemas de gestión de contenido, loaders de datos y archivos, gestores de caché locales, etc.
 
-   · Copia de seguridad de registro y punto de control, compresión, rotación, captura de imágenes, etc.
+   · copia de seguridad de registro y punto de control, compresión, rotación, captura de imágenes, etc.
 
-   · Observadores de cambio de datos, adaptadores de registro y monitoreo, publicadores de eventos, etc.
+   · observadores de cambio de datos, adaptadores de registro y monitoreo, publicadores de eventos, etc.
 
-   · Proxies, bridges y adaptadores.
+   · proxies, bridges y adaptadores.
 
-   · Controladores, configuradores y actualizadores.
+   · controladores, configuradores y actualizadores.
 
 Los Pods individuales no están diseñados para ejecutar varias instancias de la misma aplicación, en general.
 
@@ -678,6 +678,61 @@ También podemos editar el fichero .yaml. Ahora vamos a volver a la versión ini
   			  message: Deployment has minimum availability.
   			  reason: MinimumReplicasAvailable
  			   status: "True"
+
+Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
+
+		$ kubectl rollout status deployment.v1.apps/nginx-deployment
+			deployment "nginx-deployment" successfully rolled out
+
+		$ kubectl get deployments
+			NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+			nginx-deployment   3/3     3            3           113m
+
+		$ kubectl get pods
+			nginx-deployment-5d59d67564-4kqkd   1/1     Running   0          14m
+			nginx-deployment-5d59d67564-fwp5v   1/1     Running   0          14m
+			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          14m
+			
+		$ kubectl describe deployments
+			Name:                   nginx-deployment
+			Namespace:              default
+			CreationTimestamp:      Thu, 29 Apr 2021 09:46:09 +0200
+			Labels:                 app=nginx
+			Annotations:            deployment.kubernetes.io/revision: 3
+			                        kubernetes.io/change-cause:
+			                          kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+			Selector:               app=nginx
+			Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+			StrategyType:           RollingUpdate
+			MinReadySeconds:        0
+			RollingUpdateStrategy:  25% max unavailable, 25% max surge
+			Pod Template:
+			  Labels:  app=nginx
+			  Containers:
+			   nginx:
+			    Image:        nginx:1.7.9
+			    Port:         80/TCP
+			    Host Port:    0/TCP
+			    Environment:  <none>
+			    Mounts:       <none>
+			  Volumes:        <none>
+			Conditions:
+			  Type           Status  Reason
+			  ----           ------  ------
+			  Available      True    MinimumReplicasAvailable
+			  Progressing    True    NewReplicaSetAvailable
+			OldReplicaSets:  <none>
+			NewReplicaSet:   nginx-deployment-5d59d67564 (3/3 replicas created)
+			Events:
+			  Type    Reason             Age                 From                   Message
+			  ----    ------             ----                ----                   -------
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 1
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 2
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 2
+			  Normal  ScalingReplicaSet  17m (x2 over 117m)  deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 3
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
+			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
+			
 
 
 		
