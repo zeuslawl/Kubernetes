@@ -375,6 +375,8 @@ Sin embargo, un deployment es un concepto de más alto nivel que gestiona replic
 
 Por lo tanto, se recomienda el uso de deployments en vez del uso directo de replicasets, a no ser que se necesite una orquestración personalizada de actualización o no se necesite las actualizaciones en absoluto.
 
+### Crear replicaset
+
 Realizamos un ejemplo de la ultilidad de este objeto:
 
 Analizamos el fichero de configuración
@@ -445,7 +447,7 @@ Y también la información más detallada.
 			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-rrjtb
 			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-4nwkk
 
-			
+### Escalar pods con replicaset
 
 Podemos escalar el número de réplicas del pod que hemos lanzado en caliente.
 Para ellos podemos modificar el fichero .yaml y cambiar el número de replicas, en este caso vamos a reducir a 3.
@@ -506,6 +508,7 @@ En este caso volveremos a tener 3 réplicas de nuevo.
 			NAME       DESIRED   CURRENT   READY   AGE
 			frontend   5         5         5       22m
 
+### Eliminar repilcaset
 			
 Eliminamos el replicaset
 
@@ -531,6 +534,8 @@ Esta característica de recuperación de fallos mediante la creación de nuevas 
 
 Al crear un deployment se especifica la imagen del contenedor que usará la aplicación y el número de réplicas que se quieren mantener en ejecución.
 El número de réplicas se puede modificar en cualquier momento actualizando el deployment.
+
+### Crear deployment
 
 Vamos a crear un ejemplo de un deployment que crea un replicaset de pods de un servidor wen nginx.
 
@@ -577,6 +582,7 @@ El campo template contiene los siguientes sub-campos:
 
 - Abre el puerto 80 para que el contenedor pueda enviar y recibir tráfico.
 
+
 Creamos el deployment ejecutando el cliente kubectl.
 
 		$ kubectl apply -f nginx-deployment.yaml
@@ -603,6 +609,8 @@ También podemos ver las etiquetas (**labels**) creadas automáticamente.
 			nginx-deployment-5d59d67564-7fs5x   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
+
+### Actualizar deployment (cambio versión app)
 
 Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
 	
@@ -729,7 +737,9 @@ Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m (x2 over 117m)  deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 3
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
-			
+	
+### Historial deployments
+		
 Podemos también revisar el historial de los despliegues realizados y de uno en concreto:
 
 		$ kubectl rollout history deployment.v1.apps/nginx-deployment
@@ -753,6 +763,8 @@ Podemos también revisar el historial de los despliegues realizados y de uno en 
  			     Environment:	<none>
  			     Mounts:	<none>
  			  Volumes:	<none>
+
+### Escalar pods horizontal
 
 Otra de las funciones que nos ofrece deployment es la de poder escalar los pods del clúster de manera horizontal.
 		
@@ -789,11 +801,136 @@ El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones 
 
 El **endpoint** de un servicio es el encargado de guardar la lista de direcciones IP de los pods, en el caso de que un pod muera y se arranque otro, borrara la IP del pod muerto y añadirá la del pod nuevo. Las IP's de los pods son dinámicas.
 
-Vamos a hacer un ejemplo de servicio creando un deployment con pods nginx asociados al servicio.
-Expondremos el puerto 80 de los pods al 8080 de la IP virtual del servicio.
+
+### Agupación de pods en servicios
+
+Los pods pueden ser etiquetados con metadatos. Estos metadatos posteriormente pueden ser usados por otros objetos Kubernetes (p.e. ReplicaSet, Deployment) para seleccionar los pods y crear una unidad lógica (p.e. todas las réplicas de un contenedor de frontend)
+
+La siguiente imagen muestra como un servicio agrupa mediante el selector app:ngnix a aquellos pods que están etiquetados con app:ngnix.
+
+![](images/service_labels.png)
+
+		$ vim nginx.yaml
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: nginx
+			  labels:
+			    app: nginx
+			spec:
+			  replicas: 2
+			  selector:
+			    matchLabels: 
+			      app: nginx
+			  template:
+			    metadata:
+			      labels: 
+			        app: nginx
+			    spec:
+			      containers:
+			      - name: webcontainer
+			        image: nginx
+			        ports:
+			        - containerPort: 80
+
+Al desplegar este deployment se crearán dos pods (replicas: 2), que quedarán agrupados por la coincidencia entre el selector que pide el deployment (app: nginx) y la etiqueta con los que son creados los pods (app: nginx).
+
+		$ kubectl apply -f ngnix.yaml
+			deployment.apps/nginx created
+
+Observamos ahora como los dos pods de nginx creados están agrupados lógicamente en el deployment ngnix.
+Esta información está realmente en el objeto replicaSet creado por el deployment. 
+
+		$ kubectl get pods
+			NAME                    READY   STATUS    RESTARTS   AGE
+			nginx-59d9d8477-7wjr7   1/1     Running   0          101s
+			nginx-59d9d8477-rbl29   1/1     Running   0          101s
+	
+		$ kubectl get deployments
+			NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+			nginx   2/2     2            2           3m1s
+
+Cada pod tiene una dirección IP única, pero esa IP no se expone fuera del cluster sin lo que se denomina un servicio.
+Los servicios pemiten que las aplicaciones reciban tráfico.
+
+### Tipos de servicios
+
+En función del ámbito de la exposición del servicio tenemos cuatro tipos de servicios:
+
+- **Cluster IP:** El servicio recibe una IP interna a nivel de clúster y hace que el servicio sólo sea accesible a nivel de cluster.
+
+- **NodePort:** Expone el servicio fuera del clúster concatenando la IP del nodo en el que está el pod y un número de puerto entre 30000 y 32767, que es el mismo en todos los nodos
+
+- **LoadBalancer:** Crea en cloud, si es posible, un balanceador externo con una IP externa asignada.
+
+- **ExternalName:** Expone el servicio usando un nombre arbitrario (especificado en externalName)
+
+![](images/service2.svg)
 
 
+### Desplegar servicio
 
+Vamos a crear un archivo de servicio denominado json-reader-service.yaml.
+Este fichero, básicamente, contiene entre otros el nombre de servicio, el tipo del servicio (ClusterIP, NodePort, etc), el puerto de acceso a los pods del despliegue y el selector que identifica al despliegue con el que se corresponde el servicio creado.
+
+		$ vim json-reader-service.yaml
+			apiVersion: v1
+			kind: Service
+			metadata:
+			  name: jsonreader
+			  namespace: default
+			spec:
+			  type: NodePort
+			  ports:
+			  - name: http
+			    port: 80
+			    targetPort: http
+			  selector:
+			    app: jsonreader
+
+Ejecutamos el fichero con kubectl para desplegar nusrto servicio.
+
+		$ kubectl create -f json-reader-service.yaml
+			service/jsonreader created
+
+Mostramos la información del servicio que hemos desplegado.
+
+		$ kubectl get services
+			NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+			jsonreader   NodePort    10.108.222.193   <none>        80:31623/TCP   102s
+			kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP        22h
+
+		$ kubectl get svc jsonreader
+			NAME         TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+			jsonreader   NodePort   10.108.222.193   <none>        80:31623/TCP   3m41s
+
+		$ kubectl describe service jsonreader
+			Name:                     jsonreader
+			Namespace:                default
+			Labels:                   <none>
+			Annotations:              <none>
+			Selector:                 app=jsonreader
+			Type:                     NodePort
+			IP Families:              <none>
+			IP:                       10.108.222.193
+			IPs:                      <none>
+			Port:                     http  80/TCP
+			TargetPort:               http/TCP
+			NodePort:                 http  31623/TCP
+			Endpoints:                <none>
+			Session Affinity:         None
+			External Traffic Policy:  Cluster
+			Events:                   <none>
+
+Comprobamos como el servicio crea IPs asociadas al deployment
+
+		$ kubectl get pods -o wide
+			NAME                    READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
+			nginx-59d9d8477-7wjr7   1/1     Running   0          27m   172.17.0.4   minikube   <none>           <none>
+			nginx-59d9d8477-rbl29   1/1     Running   0          27m   172.17.0.3   minikube   <none>           <none>
+
+
+		$ kubectl get endpoints
 ---
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
