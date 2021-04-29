@@ -51,7 +51,7 @@
 - **[Deployment](#deployment)**
 
 
-- **[Services](#services)**
+- **[Service/Endpoint](#service)**
 
 
 - **[Namespaces](#namespaces)**
@@ -776,6 +776,21 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 			nginx-deployment-5d59d67564-mnr6b   1/1     Running   0          47s
 			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          53m
 
+# SERVICE/ENDPOINT<a name="service"></a>
+
+![](images/service.png)
+
+El elemento **service** es el encargado de balancear la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
+
+El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones que puede llegar a recibir al mismo tiempo, ya que se distribuirán entre los múltiples pods en vez de uno solo, es decir un cliente hace la petición a una IP y se encarga a redirigir esa petición al pod indicado.
+
+
+El **endpoint** de un servicio es el encargado de guardar la lista de direcciones IP de los pods, en el caso de que un pod muera y se arranque otro, borrara la IP del pod muerto y añadirá la del pod nuevo. Las IP's de los pods son dinámicas.
+
+Vamos a hacer un ejemplo de servicio creando un deployment con pods nginx asociados al servicio.
+Expondremos el puerto 80 de los pods al 8080 de la IP virtual del servicio.
+
+
 
 ---
 
@@ -800,3 +815,4 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 [instalación minikube](https://marvin.monge.me/post/instalar-minikube-en-fedora-32/)
 
 [git uni almeria](https://ualmtorres.github.io/SeminarioKubernetes/#truedeployments)
+ trabe
