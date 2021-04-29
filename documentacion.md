@@ -185,15 +185,15 @@ Al igual que los contenedores de aplicaciones individuales, los Pods se consider
 
 Los Pods pueden ser usados para alojar pilas de aplicaciones integradas (por ejemplo, LAMP), pero su objetivo principal es apoyar los programas de ayuda coubicados y coadministrados, como:
 
-   · sistemas de gestión de contenido, loaders de datos y archivos, gestores de caché locales, etc.
+   · Sistemas de gestión de contenido, loaders de datos y archivos, gestores de caché locales, etc.
 
-   · copia de seguridad de registro y punto de control, compresión, rotación, captura de imágenes, etc.
+   · Copia de seguridad de registro y punto de control, compresión, rotación, captura de imágenes, etc.
 
-   · observadores de cambio de datos, adaptadores de registro y monitoreo, publicadores de eventos, etc.
+   · Observadores de cambio de datos, adaptadores de registro y monitoreo, publicadores de eventos, etc.
 
-   · proxies, bridges y adaptadores.
+   · Proxies, bridges y adaptadores.
 
-   · controladores, configuradores y actualizadores.
+   · Controladores, configuradores y actualizadores.
 
 Los Pods individuales no están diseñados para ejecutar varias instancias de la misma aplicación, en general.
 
