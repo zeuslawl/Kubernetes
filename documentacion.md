@@ -1035,11 +1035,22 @@ También permite volúmenes configmap y secret, útiles para el compartir entre 
 
 ### Tipos de volumes
 
-- **emptyDir**
+- **emptyDir:** es un directorio vacio que se crea como volumen y va ligado a la vida del pod.
+Mientras el pod siga corriendo, el volumen seguirá existiendo y manteniendo sus datos.
+Si el pod muere, el volumen desaparece
 
-- **hostPath**
+- **hostPath:** es un directorio que va ligado a la vida del nodo.
+Si un pod muere y se despliega en otro nodo no podrá acceder a la información del volumen donde murió.
+Este volumen existirá hasta que se elimine o el nodo muera.
 
-- **Cloud volumes**
+- **Cloud Volumes:** 
+
+- **Persistent Volumes (PV):**
+
+- **Persistent Volume Claims (PVC):**
+
+
+---
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
 
