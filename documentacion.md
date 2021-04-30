@@ -994,13 +994,18 @@ Mostrar los pods de un namespace.
 	
 Cambiar de namespace (dev).
 
+Nota: Antes de cambiarlo, necesitamos crear el namespace.
+
+		$ kubectl create namespace dev
+			namespace/dev created
+
 		$ kubectl config set-context --current --namespace=dev
 			Context "minikube" modified.
 
 Volver al namespace anterior (prod).
 
 		$ kubectl config set-context --current --namespace=prod
-		Context "minikube" modified.
+			Context "minikube" modified.
 
 Eliminar namespace.
 
