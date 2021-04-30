@@ -1043,12 +1043,43 @@ Si el pod muere, el volumen desaparece
 Si un pod muere y se despliega en otro nodo no podrá acceder a la información del volumen donde murió.
 Este volumen existirá hasta que se elimine o el nodo muera.
 
-- **Cloud Volumes:** 
+- **Cloud Volumes:** son directorios de almacenamiento que proporcionan puntos de montanje en diferentes plataformas cloud (Azure, AWS, Google, OpenStack, ...).
 
-- **Persistent Volumes (PV):**
+- **Persistent Volumes (PV):** los recursos PersistentVolume se usan para administrar el almacenamiento duradero en un clúster.
+A diferencia de lo que sucede con los volúmenes, el ciclo de vida de PersistentVolume es administrado por Kubernetes.
+No necesitamos crear y borrar manualmente el almacenamiento de copia de seguridad.
+Los recursos PersistentVolume son recursos de clúster que existen de forma independiente de los pods.
+Esto significa que el disco y los datos representados por un PersistentVolume continúan existiendo a medida que el clúster cambia y los pods se borran y se vuelven a crear.
+Los recursos PersistentVolume se pueden aprovisionar de manera dinámica a través de PersistentVolumeClaims, o el administrador del clúster puede crearlos de manera explícita.
 
-- **Persistent Volume Claims (PVC):**
+- **Persistent Volumes Claims (PVC):** es una solicitud y una reclamación de un recurso PersistentVolume.
+Los objetos PVC solicitan un tamaño específico, un modo de acceso y una StorageClass para PersistentVolume.
+Si existe un PV que satisface la solicitud o se puede aprovisionar, PersistentVolumeClaim se vincula a ese PersistentVolume.
+Los pods usan reclamaciones como volúmenes. El clúster inspecciona la reclamación a fin de encontrar el volumen vinculado y lo activa para el pod.
 
+### Acceso y políticas de reciclaje
+
+Tenemos tres modos de acceso, que depende del backend que vamos a utilizar:
+
+- ReadWriteOnce: read-write solo para un nodo (RWO)
+
+- ReadOnlyMany: read-only para muchos nodos (ROX)
+
+- ReadWriteMany: read-write para muchos nodos (RWX)
+
+
+Las políticas de reciclaje de volúmenes también depende del backend y son:
+
+- Retain: Reclamación manual
+
+- Recycle: Reutilizar contenido
+
+- Delete: Borrar contenido
+
+### Creación Persistent Volume
+
+
+### StorageClass
 
 ---
 
