@@ -931,6 +931,10 @@ Comprobamos como el servicio crea IPs asociadas al deployment
 
 
 		$ kubectl get endpoints
+			NAME         ENDPOINTS           AGE
+			jsonreader   <none>              3m
+			kubernetes   192.168.49.2:8443   22h
+
 ---
 
 # NAMESPACES<a name="namespaces"></a>
