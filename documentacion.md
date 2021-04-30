@@ -17,21 +17,21 @@
 		
 		- **[Master](#master)**
 
-			-[API-server](#api)
+			- [API-server](#api)
 				
-			-[Scheduler](#scheduler)
+			- [Scheduler](#scheduler)
 
-			-[Controller-manager](#controller)
+			- [Controller-manager](#controller)
 
-			-[etcd](#etcd)				
+			- [etcd](#etcd)				
 
 		- **[Workers](#workers)**
 
-			-[Container-runtime](#containerruntime)
+			- [Container-runtime](#containerruntime)
 
-			-[Kubetet](#kubelet)
+			- [Kubetet](#kubelet)
 
-			-[Kube Proxy](#kubeproxy)
+			- [Kube Proxy](#kubeproxy)
 	
 	- **[Pods](#pods)**
 
@@ -49,6 +49,14 @@
 
 
 - **[Deployment](#deployment)**
+	
+	- **[Crear](#crear)**
+
+	- **[Actualizar](#actualizar)**
+
+	- **[Historial](#historial)**
+
+	- **[Escalar](#escalar)**
 
 
 - **[Service/Endpoint](#service)**
@@ -535,7 +543,7 @@ Esta característica de recuperación de fallos mediante la creación de nuevas 
 Al crear un deployment se especifica la imagen del contenedor que usará la aplicación y el número de réplicas que se quieren mantener en ejecución.
 El número de réplicas se puede modificar en cualquier momento actualizando el deployment.
 
-### Crear deployment
+### Crear deployment<a name="crear"></a>
 
 Vamos a crear un ejemplo de un deployment que crea un replicaset de pods de un servidor wen nginx.
 
@@ -610,7 +618,7 @@ También podemos ver las etiquetas (**labels**) creadas automáticamente.
 			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 
-### Actualizar deployment (cambio versión app)
+### Actualizar deployment (cambio versión app)<a name="actualizar"></a>
 
 Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
 	
@@ -738,7 +746,7 @@ Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
 	
-### Historial deployments
+### Historial deployments<a name="historial"></a>
 		
 Podemos también revisar el historial de los despliegues realizados y de uno en concreto:
 
@@ -764,7 +772,7 @@ Podemos también revisar el historial de los despliegues realizados y de uno en 
  			     Mounts:	<none>
  			  Volumes:	<none>
 
-### Escalar pods horizontal
+### Escalar pods horizontal<a name="escalar"></a>
 
 Otra de las funciones que nos ofrece deployment es la de poder escalar los pods del clúster de manera horizontal.
 		
