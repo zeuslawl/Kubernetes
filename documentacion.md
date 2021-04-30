@@ -939,9 +939,9 @@ Comprobamos como el servicio crea IPs asociadas al deployment
 
 # NAMESPACES<a name="namespaces"></a>
 
-Namespaces son espacios de trabajo dentro de un cluster, donde cada namespace es independiente del otro.
+Namespaces son espacios de trabajo dentro de un clúster, donde cada namespace es independiente del otro.
 
-En clusters con varios usuarios los namespaces proporcionan una forma de agrupar los recursos de cada usuario. Además, los administradores pueden establecer cuotas a nivel de namespace limitando a los usuarios la cantidad de objetos que pueden crear y la cantidad de recursos del cluster que pueden consumir (p.e. CPU, memoria).
+En clústers con varios usuarios los namespaces proporcionan una forma de agrupar los recursos de cada usuario. Además, los administradores pueden establecer cuotas a nivel de namespace limitando a los usuarios la cantidad de objetos que pueden crear y la cantidad de recursos del cluster que pueden consumir (p.e. CPU, memoria).
 
 No es necesario usar múltiples espacios de nombres sólo para separar recursos ligeramente diferentes, como versiones diferentes de la misma aplicación: para ello utiliza etiquetas para distinguir tus recursos dentro del mismo espacio de nombres.
 
