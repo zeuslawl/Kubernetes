@@ -178,4 +178,14 @@ Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
 			
+es un directorio vacio que se crea como volumen y va ligado a la vida del pod.
+Mientras el pod siga corriendo, el volumen seguirá existiendo y manteniendo sus datos.
+Si el pod muere, el volumen desaparece
+
+es un directorio que va ligado a la vida del nodo.
+Si un pod muere y se despliega en otro nodo no podrá acceder a la información del volumen donde murió.
+Este volumen existirá hasta que se elimine o el nodo muera.
+
+son diferentes tipos 
+
 
