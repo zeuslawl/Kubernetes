@@ -857,7 +857,7 @@ Los servicios pemiten que las aplicaciones reciban tráfico.
 
 En función del ámbito de la exposición del servicio tenemos cuatro tipos de servicios:
 
-- **Cluster IP:** El servicio recibe una IP interna a nivel de clúster y hace que el servicio sólo sea accesible a nivel de cluster.
+- **Cluster IP:** El servicio recibe una IP interna a nivel de clúster y hace que el servicio sólo sea accesible al mismo nivel.
 
 - **NodePort:** Expone el servicio fuera del clúster concatenando la IP del nodo en el que está el pod y un número de puerto entre 30000 y 32767, que es el mismo en todos los nodos
 
@@ -888,7 +888,7 @@ Este fichero, básicamente, contiene entre otros el nombre de servicio, el tipo 
 			  selector:
 			    app: jsonreader
 
-Ejecutamos el fichero con kubectl para desplegar nusrto servicio.
+Ejecutamos el fichero con kubectl para desplegar nuestro servicio.
 
 		$ kubectl create -f json-reader-service.yaml
 			service/jsonreader created
