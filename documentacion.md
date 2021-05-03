@@ -1577,6 +1577,11 @@ Creamos el despliegue y probamos el acceso:
 
 			MariaDB [(none)]> 
 
+Eliminamos el secret.
+
+		$ kubectl delete secret mariadb
+			secret "mariadb" deleted
+
 ---
 
 
