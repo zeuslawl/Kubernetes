@@ -1292,6 +1292,23 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 					
 ### StorageClass
 
+Es un objeto que proporciona a los administradores una forma de describir las clases de almacenamiento que ofrecen.
+Cada StorageClass contiene los campos provisioner, parameters y reclaimPolicy, que se usan cuando un PV que pertenece a la clase necesita almacenamiento dinámico.
+Mostramos un fichero yaml para ver sus opciones.
+
+		apiVersion: storage.k8s.io/v1
+		kind: StorageClass
+		metadata:
+		  name: standard
+		provisioner: kubernetes.io/aws-ebs
+		parameters:
+		  type: gp2
+		reclaimPolicy: Retain
+		allowVolumeExpansion: true
+		mountOptions:
+		  - debug
+		volumeBindingMode: Immediate
+
 ---
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
