@@ -1050,7 +1050,7 @@ A diferencia de lo que sucede con los volúmenes, el ciclo de vida de Persistent
 No necesitamos crear y borrar manualmente el almacenamiento de copia de seguridad.
 Los recursos PersistentVolume son recursos de clúster que existen de forma independiente de los pods.
 Esto significa que el disco y los datos representados por un PersistentVolume continúan existiendo a medida que el clúster cambia y los pods se borran y se vuelven a crear.
-Los recursos PersistentVolume se pueden aprovisionar de manera dinámica a través de PersistentVolumeClaims, o el administrador del clúster puede crearlos de manera explícita.
+Los recursos PersistentVolume se pueden aprovisionar de manera dinámica a través de PersistentVolumeClaims, o el administrador del clúster puede crearlos de manera estática.
 
 - **Persistent Volumes Claims (PVC):** es una solicitud y una reclamación de un recurso PersistentVolume.
 Los objetos PVC solicitan un tamaño específico, un modo de acceso y una StorageClass para PersistentVolume.
@@ -1076,9 +1076,220 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 
 - Delete: Borrar contenido
 
-### Creación Persistent Volume
+### Creación volumes
+
+- **emptyDir**
+
+	Vamos a crear un primer ejemplo con emptyDir. Como hemos indicado antes, este tipo de volúmenes dejan de existir una vez el pod muere.
+	Con lo cual estos volúmenes se utilizan para guardar información que si perdermos nos es indeferente. Un ejemplo sería utlizarlo para chaché o memória volátil.
+	Lo creamos, ejecutamos el pod y observamos su contenido.
+		
+		$ vim emptydir.yaml
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: test-pd
+			spec:
+			  containers:
+			  - image: k8s.gcr.io/test-webserver
+				 name: test-container
+				 volumeMounts:
+				 - mountPath: /cache
+		           name: cache-volume
+			  volumes:
+			  - name: cache-volume
+			    emptyDir: {}
 
 
+		$ kubectl apply -f emptydir.yaml
+			pod/test-pd created
+
+		$ kubectl describe pod test-pd
+			Name:         test-pd
+			Namespace:    default
+			Priority:     0
+			Node:         minikube/192.168.39.88
+			Start Time:   Mon, 03 May 2021 12:20:38 +0200
+			Labels:       <none>
+			Annotations:  <none>
+			Status:       Running
+			IP:           172.17.0.5
+			IPs:
+			  IP:  172.17.0.5
+			Containers:
+			  test-container:
+			    Container ID:   docker://31dfdcbc4f8174b760f25760d37e7a76e6eb90b3bddd7edcc4835c582547d4bb
+			    Image:          k8s.gcr.io/test-webserver
+			    Image ID:       docker-pullable://k8s.gcr.io/test-webserver@sha256:f63e365c13646f231ec4a16791c6133ddd7b80fcd1947f41ab193968e02b0745
+			    Port:           <none>
+			    Host Port:      <none>
+			    State:          Running
+			    Started:      Mon, 03 May 2021 12:20:40 +0200
+			    Ready:          True
+ 			   Restart Count:  0
+ 			   Environment:    <none>
+   			 Mounts:
+ 			     /cache from cache-volume (rw)
+  			    /var/run/secrets/kubernetes.io/serviceaccount from default-token-jclqr (ro)
+			Conditions:
+			  Type              Status
+			  Initialized       True 
+			  Ready             True 
+			  ContainersReady   True 
+			  PodScheduled      True 
+			Volumes:
+			  cache-volume:
+			    Type:       EmptyDir (a temporary directory that shares a pods lifetime)
+			    Medium:
+			    SizeLimit:  <unset>
+			  default-token-jclqr:
+			    Type:        Secret (a volume populated by a Secret)
+			    SecretName:  default-token-jclqr
+			    Optional:    false
+			QoS Class:       BestEffort
+			Node-Selectors:  <none>
+			Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+ 			                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+			Events:
+ 			 Type    Reason     Age    From               Message
+ 			 ----    ------     ----   ----               -------
+			 Normal  Scheduled  4m42s  default-scheduler  Successfully assigned default/test-pd to minikube
+			 Normal  Pulling    4m42s  kubelet            Pulling image "k8s.gcr.io/test-webserver"
+			 Normal  Pulled     4m41s  kubelet            Successfully pulled image "k8s.gcr.io/test-webserver"
+ 			 Normal  Created    4m41s  kubelet            Created container test-container
+  			 Normal  Started    4m41s  kubelet            Started container test-container
+
+- **hostPath**
+
+	Este tipo de volúmenes montan un sistema de ficheros en el pod a nivel de nodo.
+	Realizamos las mismas acciones que en la prueba anterior pero con la configuración de hostPath.
+			
+		$ vim hostpath.yaml
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: test-pd-hp
+			spec:
+			  containers:
+			  - image: k8s.gcr.io/test-webserver
+			    name: test-container
+			    volumeMounts:
+			    - mountPath: /test-pd-hp
+			      name: test-volume
+			  volumes:
+			  - name: test-volume
+			    hostPath:
+			      # ruta directorio en el host
+			      path: /data
+			      # campo opcional
+			      type: Directory
+
+		$ kubectl apply -f hostpath.yaml
+			pod/test-pd-hp created
+
+		$ kubectl get pods
+			test-pd                 1/1     Running   0          29m
+			test-pd-hp              1/1     Running   0          9m7s
+
+		$ kubectl describe pod 	
+			Name:         test-pd-hp
+			Namespace:    default
+			Priority:     0
+			Node:         minikube/192.168.39.88
+			Start Time:   Mon, 03 May 2021 12:40:41 +0200
+			Labels:       <none>
+			Annotations:  <none>
+			Status:       Running
+			IP:           172.17.0.6
+			IPs:
+			  IP:  172.17.0.6
+			Containers:
+			  test-container:
+			    Container ID:   docker://afa1904d0536e219ee9db365af54d037f642d5e8c54b1b7f60fd6ad12ab50775
+			    Image:          k8s.gcr.io/test-webserver
+			    Image ID:       docker-pullable://k8s.gcr.io/test-webserver@sha256:f63e365c13646f231ec4a16791c6133ddd7b80fcd1947f41ab193968e02b0745
+			    Port:           <none>
+			    Host Port:      <none>
+			    State:          Running
+			      Started:      Mon, 03 May 2021 12:40:43 +0200
+			    Ready:          True
+			    Restart Count:  0
+			    Environment:    <none>
+			    Mounts:	
+			      /test-pd-hp from test-volume (rw)
+			      /var/run/secrets/kubernetes.io/serviceaccount from default-token-jclqr (ro)
+			Conditions:
+			  Type              Status
+			  Initialized       True 
+			  Ready             True 
+			  ContainersReady   True 
+			  PodScheduled      True 
+			Volumes:
+			  test-volume:
+			    Type:          HostPath (bare host directory volume)
+			    Path:          /data
+			    HostPathType:  Directory
+			  default-token-jclqr:
+			    Type:        Secret (a volume populated by a Secret)
+			    SecretName:  default-token-jclqr
+			    Optional:    false
+			QoS Class:       BestEffort
+			Node-Selectors:  <none>
+			Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+			Events:
+			  Type    Reason     Age   From               Message
+			  ----    ------     ----  ----               -------
+			  Normal  Scheduled  10m   default-scheduler  Successfully assigned default/test-pd-hp to minikube
+			  Normal  Pulling    10m   kubelet            Pulling image "k8s.gcr.io/test-webserver"
+			  Normal  Pulled     10m   kubelet            Successfully pulled image "k8s.gcr.io/test-webserver"
+			  Normal  Created    10m   kubelet            Created container test-container
+			  Normal  Started    10m   kubelet            Started container test-container
+			
+- **PersistentVolume y PersistentVolumeClaims (PV/PVC)**
+	
+	En el siguiente ejemplo observamos que cada uno de los dos elementos desempeñan funciones distintas.
+	PVC solicita espacio de almacenamiento y PV lo asigna si es posible. Comprobamos que es así.
+		
+		$ vim pvpvc.yaml
+			# PV
+			apiVersion: v1
+			kind: PersistentVolume
+			metadata:
+			  name: pv-volume
+			  labels:
+			    type: local
+			spec:
+			  storageClassName: manual
+			  capacity:
+			    storage: 10Gi
+			  accessModes:
+			    - ReadWriteOnce
+			  hostPath:
+			    path: "/mnt/data"
+			# PVC
+			apiVersion: v1
+			kind: PersistentVolumeClaim
+			metadata:
+			  name: pv-claim
+			spec:
+			  storageClassName: manual
+			  accessModes:
+			    - ReadWriteOnce
+			  resources:
+			    requests:
+			      storage: 10Gi
+		
+		$ kubectl apply -f pvpvc.yaml 
+			persistentvolume/pv-volume created
+			persistentvolumeclaim/pv-claim created
+
+		$ kubectl get pv; kubectl get pvc
+			NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM              STORAGECLASS   REASON   AGE
+			pv-volume   10Gi       RWO            Retain           Bound    default/pv-claim   manual                  4m21s
+			NAME       STATUS   VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+			pv-claim   Bound    pv-volume   10Gi       RWO            manual         4m21s
+
+					
 ### StorageClass
 
 ---
