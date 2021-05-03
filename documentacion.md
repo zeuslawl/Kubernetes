@@ -1526,7 +1526,7 @@ Observamos ahora porque los secrets no son del todo seguros.
 			  uid: fb40d107-9780-4301-92fc-0d8310d0ee67
 			type: Opaque
 
-		echo 'cm9vdA==' | base64 --decode
+		$ echo 'cm9vdA==' | base64 --decode
 			root
 Creamos el despliegue y probamos el acceso:
 		
