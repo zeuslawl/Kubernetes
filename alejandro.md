@@ -180,6 +180,154 @@ Ejemplo de 4GB de memoria RAM
 	1024*4= 4096
 
 
+# CLUSTER REAL
+
+PASOS 
+
+DESDE MASTER
+cat /etc/hosts
+
+172.16.125.146 kubemaster01.tunetolinux.com kubemaster01
+172.16.125.145 minions01.tunetolinux.com minions01
+
+sestatus
+		disabled
+
+systemctl status firewalld 
+
+DISABLED
+
+vi /etc/yum.repos.d/kubernetes.repo
+
+poner la baseurl.. etc
+
+yum install -y kubeadm docker
+
+systemctl start kubelet
+		  enable
+systemctl start docker
+		  enable
+
+DESACTIVAR SWAP
+vi /etc/fstab
+comentamos la linea de swap
+
+swapoff -a 
+
+free -h 
+vemos que no tenemos swap
+
+vim /etc/sysctl.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+
+sysctl -p
+
+kubeadm init --pod-network-cidr=172.30.0.0/16
+
+TE CREA EL MASTER
+
+hacer comandos de sudo cp 
+sudo chown
+
+kubectl get nodes
+
+kubectl get nodes -o wide
+
+kubectl get pods
+no deberia salir ni uno
+
+kubectl get pods --all-namespaces
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+
+
+
+RESUMEN PASOS
+
+1. Install packages on master and minions
+yum install kubeadm docker -y
+
+2. Stop firewall/selinux
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+
+3. Start docker and kubelet service
+for i in kubelet docker; do systemctl start $i; systemctl enable $i;systemctl status $i; done
+
+4. Ensure swap is off and comment in fstab
+swapoff -a
+
+5. Enable IP forwarding or iptables. Update below lines in /etc/sysctl.conf
+
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+
+6. To take effect the new kernel paramater settings:
+sysctl -p
+
+7. Set IP range for pods or docker container:
+kubeadm init --pod-network-cidr=172.30.0.0/16
+
+8. mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+9. Configure flannel networking for your docker containner.
+kubectl apply -f https://raw.githubusercontent.com/cor...
+
+
+https://youtu.be/w5K_fUcg8qQ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
