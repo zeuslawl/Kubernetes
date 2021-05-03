@@ -74,6 +74,15 @@
 - **[Secrets](#secrets)**
 
 
+- **[RBAC](#rbac)**
+
+
+- **[Ingress](#ingress)**
+
+
+- **[Creación clúster k8s local](#clusterlocal)**
+
+
 - **[Bibliografía](#biblio)** 
 
 ---
@@ -1584,6 +1593,17 @@ Eliminamos el secret.
 
 ---
 
+# RBAC<a name="rbac"></a>
+
+---
+
+# INGRESS<a name="ingress"></a>
+
+---
+
+# CREACIÓN CLUSTER K8S LOCAL<a name="clusterlocal"></a>
+
+---
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
 
