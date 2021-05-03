@@ -68,6 +68,9 @@
 - **[Volumes](#volumes)**
 
 
+- **[ConfigMaps y variables de entorno](#configmaps)**
+
+
 - **[Bibliografía](#biblio)** 
 
 ---
@@ -1310,6 +1313,269 @@ Mostramos un fichero yaml para ver sus opciones.
 		volumeBindingMode: Immediate
 
 ---
+
+# CONFIGMAPS / VARIABLES DE ENTORNO<a name="configmaps"></a>
+
+![](images/configmap.png)
+
+### Configuración app con variables de entorno
+
+Para configurar las aplicaciones que vamos a desplegar usamos variables de entorno.
+Por ejemplo podemos ver las variables de entorno que podemos definir para configurar la imagen docker de MariaDB.
+
+Definimos un deployment que despliegue un contenedor configurado por medio de variables de entorno y lo aplicamos.
+		
+		$ vim mariadb-deployment.yaml
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: mariadb-deployment
+			  labels:
+			    app: mariadb
+			    type: database
+			spec:
+			  replicas: 1
+			  selector:
+			    matchLabels:
+			      app: mariadb
+			  template:
+			    metadata:
+			      labels:
+			        app: mariadb
+			        type: database
+    			spec:
+     			 containers:
+			        - name: mariadb
+			          image: mariadb
+			          ports:
+			            - containerPort: 3306
+			              name: db-port
+			          env:
+			            - name: MYSQL_ROOT_PASSWORD
+			              value: secret
+
+		$ kubectl apply -f mariadb-deployment.yaml 
+			deployment.apps/mariadb-deployment created
+
+
+También podemos configurarlo directamente pasando parámetros al cliente kubectl.
+
+		$ kubectl run mariadb --image=mariadb --env MYSQL_ROOT_PASSWORD=secret
+
+Comprobamos como se ha deplegado el pod y accedemos a la app con la contraseña que hemos configurado.
+
+		$ kubectl get pods -l app=mariadb
+			NAME                                  READY   STATUS    RESTARTS   AGE
+			mariadb-deployment-68768cb968-flljq   1/1     Running   0          5m54s
+
+		$ kubectl exec -it mariadb-deployment-68768cb968-flljq -- mysql -u root -p
+			Enter password: 
+			Welcome to the MariaDB monitor.  Commands end with ; or \g.
+			Your MariaDB connection id is 3
+			Server version: 10.5.9-MariaDB-1:10.5.9+maria~focal mariadb.org binary distribution
+
+			Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+			Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+			MariaDB [(none)]>
+
+### Configuración app ConfigMaps
+
+Los objetos ConfigMap permiten almacenar datos en forma de pares clave-valor (tuplas) para que puedan usarse posteriormente en despliegues.
+Son muy útiles para terner diferentes configuraciones de un mismo contenedor y utilizar la más adecuada según nuestras necesidades.
+
+Hay que tener en cuenta que nuestros datos sensibles como las contraseñas estarán en texto plano.
+Para estos casos utilizaremos el objeto secrets que después explicaremos.
+
+Vamos a crear y desplegar un configMap, a examinar su contenido y a comprobar su acceso.
+
+		$ kubectl create configmap mariadb --from-literal=root_password=my-password \
+                          --from-literal=mysql_usuario=usuario     \
+                          --from-literal=mysql_password=password-user \
+                          --from-literal=basededatos=test
+			configmap "mariadb" created
+
+		$ kubectl get configmaps
+			NAME      DATA   AGE
+			mariadb   4      2m14s
+	
+		$ kubectl describe cm mariadb
+			Name:         mariadb
+			Namespace:    default
+			Labels:       <none>
+			Annotations:  <none>
+
+			Data
+			====
+			basededatos:
+			----
+			test
+			mysql_password:
+			----
+			password-user
+			mysql_usuario:
+			----
+			usuario
+			root_password:
+			----
+			my-password
+			Events:  <none>
+
+		$ vim mariadb-deployment-cm.yaml
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: mariadb-deploymentcm
+			  labels:
+			    app: mariadb
+			    type: database
+			spec:
+			  replicas: 1
+			  selector:
+			    matchLabels:
+			      app: mariadb
+			  template:
+			    metadata:
+			      labels:
+			        app: mariadb
+			        type: database
+			    spec:
+			      containers:
+			        - name: mariadb
+			          image: mariadb
+			          ports:
+			            - containerPort: 3306
+			              name: db-port
+			          env:
+			            - name: MYSQL_ROOT_PASSWORD
+			              value: secret
+
+		$ kubectl apply -f mariadb-deployment-cm.yaml
+			deployment.apps/mariadb-deployment configured
+
+		$ kubectl get pods -l app=mariadb
+			NAME                                  READY   STATUS                       RESTARTS   AGE
+			mariadb-deployment-68768cb968-flljq   1/1     Running                      0          36m
+
+		$ kubectl exec -it mariadb-deploy-cm-57f7b9c7d7-ll6pv -- mysql -u usuario -p
+			Enter password: 
+			Welcome to the MariaDB monitor.  Commands end with ; or \g.
+			Your MariaDB connection id is 3
+			Server version: 10.5.9-MariaDB-1:10.5.9+maria~focal mariadb.org binary distribution
+
+			Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+			Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+			MariaDB [(none)]>
+
+Eliminamos el configMap
+
+		$ kubectl delete cm mariadb
+			configmap "mariadb" deleted
+
+---
+
+# SECRETS<a name="secrets"></a>
+
+![](images/secrets.jpg)
+
+Los objetos Secret se usan para almacenar información sensible, como contraseñas, tokens, autenticación y claves ssh, etc. Almacenar esta información en objetos Secret es más seguro que colocarla en texto plano y legible como hace ConfigMap.
+
+No obstante, los datos de los objetos Secret no están cifrados. Están codificados en base64, con lo cual hay que tener en cuenta que pueden hacerse visibles fácilmente.
+
+Creamos el secret y lo examinamos.
+
+		$ kubectl create secret generic mariadb --from-literal=password=root
+			secret/mariadb created
+
+		$ kubectl get secret
+			NAME                  TYPE                                  DATA   AGE
+			default-token-jclqr   kubernetes.io/service-account-token   3      5d1h
+			mariadb               Opaque
+
+		$ kubectl describe secret mariadb
+			Name:         mariadb
+			Namespace:    default
+			Labels:       <none>
+			Annotations:  <none>
+
+			Type:  Opaque
+
+			Data
+			====
+			password:  4 bytes
+
+Observamos ahora porque los secrets no son del todo seguros.
+
+		$ kubectl get secret mariadb -o yaml
+			apiVersion: v1
+			data:
+ 			 password: cm9vdA==
+			kind: Secret
+			metadata:
+			  creationTimestamp: "2021-05-03T17:56:35Z"
+			  name: mariadb
+			  namespace: default
+			  resourceVersion: "29390"
+			  selfLink: /api/v1/namespaces/default/secrets/mariadb
+			  uid: fb40d107-9780-4301-92fc-0d8310d0ee67
+			type: Opaque
+
+		echo 'cm9vdA==' | base64 --decode
+			root
+Creamos el despliegue y probamos el acceso:
+		
+		$vim mariadb-deployment-secret.yaml
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: mariadb-deploymentcm
+			  labels:
+			    app: mariadb
+			    type: database
+			spec:
+			  replicas: 1
+			  selector:
+			    matchLabels:
+			      app: mariadb
+			  template:
+			    metadata:
+			      labels:
+			        app: mariadb
+			        type: database
+			    spec:
+			      containers:
+			        - name: mariadb
+			          image: mariadb
+			          ports:
+			            - containerPort: 3306
+			              name: db-port
+			          env:
+			            - name: MYSQL_ROOT_PASSWORD
+			              valueFrom:
+			                secretKeyRef:
+			                  name: mariadb
+            			      key: password
+
+		$ kubectl create -f mariadb-deployment-secret.yaml
+			deployment.apps/mariadb-deployment-secret created
+		
+		$ kubectl exec -it mariadb-deploy-secret-f946dddfd-kkmlb -- mysql -u root -p
+			Enter password: 
+			Welcome to the MariaDB monitor.  Commands end with ; or \g.
+			Your MariaDB connection id is 8
+			Server version: 10.2.15-MariaDB-10.2.15+maria~jessie mariadb.org binary distribution
+
+			Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+			Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+			MariaDB [(none)]> 
+
+---
+
 
 # BIBLIOGRAFÍA<a name="bibliografia"></a>
 
