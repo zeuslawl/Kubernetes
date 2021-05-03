@@ -71,6 +71,9 @@
 - **[ConfigMaps y variables de entorno](#configmaps)**
 
 
+- **[Secrets](#secrets)**
+
+
 - **[Bibliografía](#biblio)** 
 
 ---
