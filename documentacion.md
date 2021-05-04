@@ -80,7 +80,7 @@
 - **[Ingress](#ingress)**
 
 
-- **[Creación clúster k8s local](#clusterlocal)**
+- **[Creación clúster local](#clusterlocal)**
 
 
 - **[Bibliografía](#biblio)** 
