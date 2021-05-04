@@ -1,36 +1,4 @@
-Skip to content
-Search or jump to…
 
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@zeuslawl 
-zeuslawl
-/
-Kubernetes
-1
-00
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-actu
-
- main
-isx43567395 committed 5 minutes ago 
-1 parent c5c6fab commit 38e8683abe15ae506b6df15000284490ce1d8d1f
-Showing  with 0 additions and 337 deletions.
- 0  .cluster_real.md.swp 
-Empty file.
-  337  alejandro.md 
-@@ -1,337 +0,0 @@
 Instalar minikube 
 
 https://v1-17.docs.kubernetes.io/docs/tasks/tools/install-minikube/
@@ -313,6 +281,157 @@ kubectl apply -f https://raw.githubusercontent.com/cor...
 https://youtu.be/w5K_fUcg8qQ
 
 
+---------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+# Instalación
+En este ejemplo de instalación se muestra como instalar un cluster de tres máquinas,
+ un master ( control-plane ) y dos workers, 
+esta instalación se realiza en máquinas virtuales fedora32 
+y la tipología del master es stacked.
+
+### Preparación de nodos
+Asignar hostname a cada nodo
+
+hostnamectl set-hostname master
+hostnamectl set-hostname node1
+hostnamectl set-hostname node2
+
+
+### Deshabilitar swap
+
+swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+### Resolución de nombres
+
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.2 master
+192.168.122.3 node1
+192.168.122.4 node2
+
+### Ip fijas (para cada nodo)
+[root@master ~]# cat /etc/sysconfig/network-scripts/ifcfg-enp1s0 
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp1s0
+UUID=933cd398-b601-4406-ba4c-6a5bf8106bdc
+ONBOOT=yes
+AUTOCONNECT_PRIORITY=-999
+
+BOOTPROTO=none
+DEVICE=enp1s0
+IPADDR=192.168.122.2
+NETMASK=255.255.255.0
+GATEWAY=192.168.122.1
+DNS1=192.168.
+
+
+### Deshabilitar firewalld y habilitar forwarding
+systemctl stop firewalld
+systemctl disable firewalld
+
+	# Enable IP Forwarding
+	echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+	cat <<EOF >  /etc/sysctl.d/k8s.conf
+	net.bridge.bridge-nf-call-ip6tables = 1
+	net.bridge.bridge-nf-call-iptables = 1
+	EOF
+
+### Instalar servicios
+En todos los nodos es necesario instalar docker, kubelet, kubectl, kubeadm.
+
+### Instalación de docker
+https://docs.docker.com/engine/install/fedora/
+
+Instalación de kubeam, kubectl, kubelet
+
+# añadir repositorio de kubernetes
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+EOF
+
+# Set SELinux in permissive mode (effectively disabling it)
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+# instalar servicios y habilitar kubelet (Fedora 32)
+dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+systemctl enable --now kubelet
+
+
+[root@master ~]# kubeadm version
+kubeadm version: &version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCommit:"cb303e613a121a29364f75cc67d3d580833a7479", GitTreeState:"clean", BuildDate:"2021-04-08T16:30:03Z", GoVersion:"go1.16.1", Compiler:"gc", Platform:"linux/amd64"}
+
+
+
+Creación de master
+En la creación del master hay que tener en que red se crearan los Pods, esta opción kubernetes lo deja en addons externos, puedes elegir entre diferentes opciones que encontrarás en este documento. En esta instalación se asignara el addon calico.
+
+Nota: El dns del cluster CoreDNS no se iniciará si no hay antes una red de Pods instalada.
+
+Iniciar configuración del master con red de pod
+
+kubeadm init --pod-network-cidr=192.168.0.0/16
+
+Este comando descarga imágenes que necesita el cluster para funcionar y tarda un rato en completarse.
+
+
+El comando anterior acaba mostrando las siguientes instrucciones a realizar, 
+para la finalización de la instalación del master.
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.122.2:6443 --token c2bn4c.qzpskak8ryp1uotd \
+	--discovery-token-ca-cert-hash sha256:485a9c649a4d2a4ad9ec03932f6353fc559a1a60dbf1fe00bf71d8e57c6b6b83 
+
+
+NOTA: Es muy importante guardarse bien la línea de kubeadm join ya que con esta juntaremos los nodos al master.
+
+
+En caso de no querer gestionar el cluster como root, y quererlo gestionar como usuario.
+[master@master ~]$ mkdir -p $HOME/.kube
+[master@master ~]$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+[master@master ~]$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Aplico el addon para gestionar las redes de Pods
+kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml
+
+
+kubeadm join 192.168.122.2:6443 --token c2bn4c.qzpskak8ryp1uotd \
+	--discovery-token-ca-cert-hash sha256:485a9c649a4d2a4ad9ec03932f6353fc559a1a60dbf1fe00bf71d8e57c6b6b83 
 
 
 
@@ -368,26 +487,7 @@ https://youtu.be/w5K_fUcg8qQ
 
 
 
- 0  cluster_real.md 
-Empty file.
-0 comments on commit 38e8683
-@zeuslawl
- 
- 
-Leave a comment
-No file chosen
-Attach files by dragging & dropping, selecting or pasting them.
- You’re receiving notifications because you’re watching this repository.
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete
+
+
+
+
