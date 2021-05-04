@@ -283,6 +283,10 @@ https://youtu.be/w5K_fUcg8qQ
 
 ---------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
+https://onthedock.github.io/post/170414-error_the-connection-to-the-server-was-refused/
+
+https://www.ochobitshacenunbyte.com/2020/01/27/como-generar-uuid-para-interfaz-de-red-en-rhel-y-centos/
+
 
 # Instalación
 En este ejemplo de instalación se muestra como instalar un cluster de tres máquinas,
@@ -346,6 +350,17 @@ systemctl disable firewalld
 	net.bridge.bridge-nf-call-ip6tables = 1
 	net.bridge.bridge-nf-call-iptables = 1
 	EOF
+
+Si nos da este problema
+	cannot stat /proc/sys/net/bridge/bridge-nf-call-iptables: No existe el fichero o el directorio
+
+
+# SOLUCIÓN
+[root@node1 ~]#	modprobe br_netfilter
+[root@node1 ~]# sysctl -p
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+
 
 ### Instalar servicios
 En todos los nodos es necesario instalar docker, kubelet, kubectl, kubeadm.
@@ -430,9 +445,57 @@ Aplico el addon para gestionar las redes de Pods
 kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml
 
 
+Juntar nodos worker
+Para juntar un worker al nodo master simplemente hay que ejecutar kubeadm join con el token del master.
+
 kubeadm join 192.168.122.2:6443 --token c2bn4c.qzpskak8ryp1uotd \
 	--discovery-token-ca-cert-hash sha256:485a9c649a4d2a4ad9ec03932f6353fc559a1a60dbf1fe00bf71d8e57c6b6b83 
 
+Si esta opción muestra algún error, es posible que el firewall del master este rechazando la conexión, comprobar los puertos accesibles por el firewall.
+En caso de no disponer del token, siempre se puede crear uno nuevo desde el master con kubeadm token create --print-join-command
+
+
+Ahora desde el master se puede ver que el nodo se a añadido al master, es una buena practica asignarle algún label al nodo, para identificar que modo de nodo es y por si se quieren asignar pods específicos al nodo.
+
+#nodo recien añadido
+[root@master ~]# kubectl get nodes
+NAME     STATUS   ROLES                  AGE   VERSION
+master   Ready    control-plane,master   68m   v1.21.0
+node1    Ready    <none>                 66s   v1.21.0
+
+Añadir nodo como worker
+[root@master ~]# kubectl label node node1 node-role.kubernetes.io/worker=worker node/node1 labeled
+
+[root@master ~]# kubectl get nodes
+NAME     STATUS   ROLES                  AGE     VERSION
+master   Ready    control-plane,master   71m     v1.21.0
+node1    Ready    worker                 3m59s   v1.21.0
+
+
+[root@master ~]# kubectl label nodes node1 node=worker1
+node/node1 labeled
+
+[root@master ~]# kubectl get nodes --show-labels
+NAME     STATUS   ROLES                  AGE     VERSION   LABELS
+master   Ready    control-plane,master   74m     v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=master,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
+node1    Ready    worker                 6m26s   v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=node1,kubernetes.io/os=linux,node-role.kubernetes.io/worker=worker,node=worker1
+
+Eliminar un nodo
+Desde el nodo master drenar el nodo que queremos eliminar, una vez drenado de todas sus tareas eliminarlo.
+
+		kubectl drain <node name> --delete-local-data --force --ignore-daemonsets
+		kubectl delete node <node name>
+
+En el nodo que se a eliminado del cluster restablecer la configuración inicial
+		kubeadm reset
+
+El proceso de reinicio no reinicia ni limpia las reglas de iptables o las tablas de IPVS. Si desea restablecer iptables, debe hacerlo manualmente:
+
+		iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+
+Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
+
+		ipvsadm -C
 
 
 
