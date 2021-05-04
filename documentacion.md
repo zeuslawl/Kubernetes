@@ -255,7 +255,7 @@ Debemos instalar los siguientes componentes:
 - **minikube**: Entorno de pruebas para aprender kubernetes. Es un cluster de un solo nodo lanzado a través de una máquina virtual
 
 		 
-		dnf -y install kubeadm kubelet kubectl
+		$ dnf -y install kubeadm kubelet kubectl
 
 
 ## Instalar Minikube en Fedora 32<a name="minikube"></a>
@@ -273,11 +273,11 @@ Para instalar Minikube, se debe validar los siguientes requisitos:
 
 **Validar que la virtualización está soportada en el linux**
 
-		 grep -E --color 'vmx|svm' /proc/cpuinfo
+		 $ grep -E --color 'vmx|svm' /proc/cpuinfo
 
 **Tener instalado Kubectl**
 
-		 kubectl version --client 
+		 $ kubectl version --client 
 
 Si no lo tenemos instalado, lo instalamos.
 
@@ -295,7 +295,7 @@ Para instalar Kubectl vamos a habilitar un YUM repo de Google e instalar el paqu
 
 		$ sudo dnf makecache
 
-		$ sudo dnf install kubectl 
+		$ sudo dnf install kubectl kubelet kubeadm
 
 **Tener instalado un hipervisor**
 
@@ -531,7 +531,7 @@ En este caso volveremos a tener 3 réplicas de nuevo.
 			NAME       DESIRED   CURRENT   READY   AGE
 			frontend   5         5         5       22m
 
-### Eliminar repilcaset
+### Eliminar replicaset
 			
 Eliminamos el replicaset
 
@@ -1600,6 +1600,7 @@ Por defecto el acceso está restringido por completo, con lo cual construimos la
 
 ![](images/rbac1.png)
 
+
 ### Usuarios
 En Kubernetes no tiene una API para crear usuarios, sin embargo puede autenticar y autorizar usuarios externos.
 Hay varios métodos para la autenticación (clients certs x509 , token files, passwords, ...).
@@ -1712,6 +1713,10 @@ Comprobamos visualizando lo que hemos ejecutado.
 				    client-certificate: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_crt.pem
 				    client-key: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_key.pem
 	
+### Permisos
+Diferenciamos dos tipos de permisos según el ámbito en el que se aplican: Role y ClusterRole.
+El primero hace referencia a los permisos según namespace y el segundo al clúster.
+Por defecto, no se permite hacer nada a los usuarios.
 	
 ### Role
 
@@ -1725,28 +1730,124 @@ Hay que tener en cuenta el namespace en el que se asignan los permisos, los reso
 
 - **Verbs:** get, list, watch, create, delete, update, edit, exec.
 
+Vamos a crear un objeto Role en el archivo role.yaml.
+El rol definirá a qué recursos se podría acceder y qué operaciones se podrían usar.
 
+		$ vim role.yaml
+			kind: Role
+			apiVersion: rbac.authorization.k8s.io/v1
+			metadata:
+			 namespace: default
+			 name: pod-reader
+			rules:
+			- apiGroups: [“”] # “” indicates the core API group
+			 resources: [“pods”]
+			 verbs: [“get”, “watch”, “list”]
 
+		$ kubectl get roles
 
-
+		$ kubectl describe role pod-reader
 
 ### RoleBinding
 
+![](images/rbac3.png)
+
+El control de acceso basado en roles se usa para otorgar permiso a un sujeto en un clúster. Los sujetos no son más que un grupo de usuarios, servicios o equipos que intentan acceder a la API de Kubernetes.
+Define qué operaciones puede realizar un usuario, servicio o grupo.
+
+Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
+
+		$ vim rolebinding.yaml
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: Role
+			metadata:
+			  namespace: default
+			  name: pod-reader
+			rules:
+			- apiGroups: [""] 
+			  resources: ["pods"]
+			  verbs: ["get", "watch", "list"]
+			# --------------------------------------
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: RoleBinding
+			metadata:
+			  name: users-read-pods
+			  namespace: default
+			subjects:
+			- kind: User
+			  name: roberto
+			  apiGroup: rbac.authorization.k8s.io
+			roleRef:
+			  kind: Role 
+			  name: pod-reader 
+			  apiGroup: rbac.authorization.k8s.io
+
+		$ kubectl apply -f rolebinding.yaml
+			
+		$ kubectl get rolebinding
+
+		$ kubectl describe rolebinding users-read-pod
+
 
 ### ClusterRole
+Tiene el mismo funcionamiento que Role con la diferencia que con este objeto aplicamos las reglas de permisos sobre el clúster, no sobre el namespace.
 
+Veamos un ejemplo.
 
+		$ vim clusterrole.yaml
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: ClusterRole
+			metadata:
+ 			 name: cluster-pod-deploy-reader
+			rules:
+			- apiGroups: ["apps"] 
+			  resources: ["deployments"]
+			  verbs: ["get", "watch", "list"]
+			- apiGroups: [""] 
+			  resources: ["pods"]
+			 verbs: ["get", "watch", "list"]
+			#-------------------------------
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: ClusterRoleBinding
+			metadata:
+			  name: users-read-pods-deploy
+			subjects:
+			- kind: User
+			  name: jorge
+			  apiGroup: rbac.authorization.k8s.io
+			roleRef:
+			  kind: ClusterRole 
+			  name: cluster-pod-deploy-reader 
+			  apiGroup: rbac.authorization.k8s.io
+		
 ### ClusterRoleBinding
 
+Se usa para otorgar permisos a un sujeto a nivel de clúster en todos los namespace
 
-### Service Account
+Ejemplo:
 
-	
-
-### Permisos
-Diferenciamos dos tipos de permisos según el ámbito en el que se aplican: Role y ClusterRole.
-El primero hace referencia a los permisos según namespace y el segundo al clúster.
-Por defecto, no se permite hacer nada a los usuarios.
+		$ vim clusterrolebinding.yaml
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: ClusterRole
+			metadata:
+ 			 name: svc-clusterrole
+			rules:
+			- apiGroups: ["apps"] 
+			  resources: ["services","Pods","replicasets","deployments"]
+			  verbs: ["*"]
+			#----------------------------------------------------------
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: ClusterRoleBinding
+			metadata:
+			  name: cluster-svc
+			subjects:
+			- kind: Group
+			  name: dev
+			  apiGroup: rbac.authorization.k8s.io
+			roleRef:
+			  kind: ClusterRole 
+			  name: svc-clusterrole
+			  apiGroup: rbac.authorization.k8s.io
 
 
 ---
@@ -1757,7 +1858,7 @@ Por defecto, no se permite hacer nada a los usuarios.
 
 ---
 
-# CREACIÓN CLUSTER K8S LOCAL<a name="clusterlocal"></a>
+# CREACIÓN CLUSTER LOCAL<a name="clusterlocal"></a>
 
 ---
 
@@ -1784,4 +1885,3 @@ Por defecto, no se permite hacer nada a los usuarios.
 [git uni almeria](https://ualmtorres.github.io/SeminarioKubernetes/#truedeployments)
 
 https://www.josedomingo.org/pledin/2018/12/kubernetes-ingress/
- trabe
