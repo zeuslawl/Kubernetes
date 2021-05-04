@@ -1539,7 +1539,7 @@ Observamos ahora porque los secrets no son del todo seguros.
 			root
 Creamos el despliegue y probamos el acceso:
 		
-		$vim mariadb-deployment-secret.yaml
+		$ vim mariadb-deployment-secret.yaml
 			apiVersion: apps/v1
 			kind: Deployment
 			metadata:
@@ -1595,9 +1595,165 @@ Eliminamos el secret.
 
 # RBAC<a name="rbac"></a>
 
+Role Based Access Control se utiliza para configurar las tareas que puede realizar cada usuario especificando diferentes roles en los que los clasificaremos.
+Por defecto el acceso está restringido por completo, con lo cual construimos las reglas a partir de permisos.
+
+![](images/rbac1.png)
+
+### Usuarios
+En Kubernetes no tiene una API para crear usuarios, sin embargo puede autenticar y autorizar usuarios externos.
+Hay varios métodos para la autenticación (clients certs x509 , token files, passwords, ...).
+El método más utilizados son los certificados.
+Debemos tener instalado el cliente kubectl ya que es el modo de interactuar con el API-Server.
+
+Vamos a crear un usuario siguiendo los pasos que describimos a continuación:
+
+- Generamos el certificado de cliente.
+	
+			$ openssl genrsa  -out roberto_key.pem 2048
+
+			$ openssl req -new -key roberto_key.pem -out roberto_csr.pem -subj "/CN=roberto/O=adm"
+
+- Como administradores consultamos la petición y firmamos el certificado
+		
+			$ kubectl config view
+				apiVersion: v1
+				clusters:
+				- cluster:
+				    certificate-authority: /home/users/inf/hisx2/isx43457566/.minikube/ca.crt
+				    extensions:
+				    - extension:
+				        last-update: Tue, 04 May 2021 09:39:54 CEST
+				        provider: minikube.sigs.k8s.io
+				        version: v1.19.0
+				      name: cluster_info
+				    server: https://192.168.39.210:8443
+				  name: minikube	
+				contexts:
+				- context:
+				    cluster: minikube
+				    extensions:
+				    - extension:
+				        last-update: Tue, 04 May 2021 09:39:54 CEST		
+				        provider: minikube.sigs.k8s.io
+				        version: v1.19.0	
+				      name: context_info
+				    namespace: default
+				    user: minikube
+				  name: minikube
+				current-context: minikube
+				kind: Config
+				preferences: {}
+				users:
+				- name: minikube
+				  user:
+				    client-certificate: /home/users/inf/hisx2/isx43457566/.minikube/profiles/minikube/client.crt
+				    client-key: /home/users/inf/hisx2/isx43457566/.minikube/profiles/minikube/client.key
+				
+			$ openssl x509 -req -in roberto_csr.pem -CAkey ~/.minikube/ca.key -CA ~/.minikube/ca.crt -days 365 -CAcreateserial -out roberto_crt.pem 
+				Signature ok
+				subject=CN = roberto, O = adm
+				Getting CA Private Key
+	
+- Como cliente, configuramos kubectl para acceder a al clúster de minikube, añadimos credenciales y creamos y accedemos a nuestro espacio de trabajo.
+Comprobamos visualizando lo que hemos ejecutado.
+		
+			$ kubectl config set-cluster minikube --certificate-authority=ca.crt
+				Cluster "minikube" set.
+	
+			$ kubectl config set-credentials roberto --client-certificate=roberto_crt.pem --client-key=roebrto_key.pem
+				User "roberto" set.
+	
+			$ kubectl config set-context roberto --cluster=minikube --user=roberto
+				Context "roberto" created.
+	
+			$ kubectl config use-context roberto
+				Switched to context "roberto".
+	
+			$ kubectl config view
+				apiVersion: v1
+				clusters:
+				- cluster:
+ 				   certificate-authority: /home/users/inf/hisx2/isx43457566/Kubernetes/ca.crt
+				    extensions:
+				    - extension:
+				        last-update: Tue, 04 May 2021 09:39:54 CEST
+				        provider: minikube.sigs.k8s.io
+				        version: v1.19.0
+				      name: cluster_info
+				    server: https://192.168.39.210:8443
+				  name: minikube
+				contexts:
+				- context:
+				    cluster: minikube
+				    extensions:
+				    - extension:
+				        last-update: Tue, 04 May 2021 09:39:54 CEST
+				        provider: minikube.sigs.k8s.io
+				        version: v1.19.0
+				      name: context_info
+				    namespace: default
+				    user: minikube
+				  name: minikube
+				- context:
+				    cluster: minikube
+				    user: roberto
+				  name: roberto
+				current-context: roberto
+				kind: Config
+				preferences: {}
+				users:
+				- name: minikube
+				  user:
+				    client-certificate: /home/users/inf/hisx2/isx43457566/.minikube/profiles/minikube/client.crt
+				    client-key: /home/users/inf/hisx2/isx43457566/.minikube/profiles/minikube/client.key
+				- name: roberto
+				  user:
+				    client-certificate: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_crt.pem
+				    client-key: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_key.pem
+	
+	
+### Role
+
+Un rol en Kubernetes RBAC define lo que hará con un grupo de recursos.
+Contiene un grupo de reglas que definen un conjunto de permisos.
+Hay que tener en cuenta el namespace en el que se asignan los permisos, los resources a los que se podrá acceder y los verbs que se aplican sobre los objetos.
+
+- **Resources:** pod, deployment, namespace, secret, configmap, service, persistentvolume…
+
+		$ kubectl api-resources	
+
+- **Verbs:** get, list, watch, create, delete, update, edit, exec.
+
+
+
+
+
+
+### RoleBinding
+
+
+### ClusterRole
+
+
+### ClusterRoleBinding
+
+
+### Service Account
+
+	
+
+### Permisos
+Diferenciamos dos tipos de permisos según el ámbito en el que se aplican: Role y ClusterRole.
+El primero hace referencia a los permisos según namespace y el segundo al clúster.
+Por defecto, no se permite hacer nada a los usuarios.
+
+
 ---
 
 # INGRESS<a name="ingress"></a>
+
+
 
 ---
 
