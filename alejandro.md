@@ -337,7 +337,8 @@ DEVICE=enp1s0
 IPADDR=192.168.122.2
 NETMASK=255.255.255.0
 GATEWAY=192.168.122.1
-DNS1=192.168.
+DNS1=192.168.122.1
+DN2=8.8.8.8
 
 
 ### Deshabilitar firewalld y habilitar forwarding
@@ -464,7 +465,8 @@ master   Ready    control-plane,master   68m   v1.21.0
 node1    Ready    <none>                 66s   v1.21.0
 
 Añadir nodo como worker
-[root@master ~]# kubectl label node node1 node-role.kubernetes.io/worker=worker node/node1 labeled
+[root@master ~]# kubectl label node node1 node-role.kubernetes.io/worker=worker 
+node/node1 labeled
 
 [root@master ~]# kubectl get nodes
 NAME     STATUS   ROLES                  AGE     VERSION
