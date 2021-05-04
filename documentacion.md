@@ -1851,6 +1851,12 @@ Ejemplo:
 
 # INGRESS<a name="ingress"></a>
 
+Otra de las formas de acceder a los pods desde el exterior del clúster emediante lo que se conoce como Ingress.
+Este elemento nos permite acceder a servicios a través del protocolo web htttp/https.
+El tráfico se controla utilizando un conjunto de reglas que tú defines.
+Además de dar a tus aplicaciones una URL externa que permita el acceso, también se puede configurar para el balanceo de carga, es decir que realiza la función de proxy.
+
+![](images/ingress.png)
 
 ---
 
@@ -1879,5 +1885,7 @@ Ejemplo:
 [instalación minikube](https://marvin.monge.me/post/instalar-minikube-en-fedora-32/)
 
 [git uni almeria](https://ualmtorres.github.io/SeminarioKubernetes/#truedeployments)
+
+https://www.devopsschool.com/tutorial/kubernetes/index.html
 
 https://www.josedomingo.org/pledin/2018/12/kubernetes-ingress/
