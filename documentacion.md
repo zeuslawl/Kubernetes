@@ -1662,7 +1662,7 @@ Comprobamos visualizando lo que hemos ejecutado.
 			$ kubectl config set-cluster minikube --certificate-authority=ca.crt
 				Cluster "minikube" set.
 	
-			$ kubectl config set-credentials roberto --client-certificate=roberto_crt.pem --client-key=roebrto_key.pem
+			$ kubectl config set-credentials roberto --client-certificate=roberto_crt.pem --client-key=roberto_key.pem
 				User "roberto" set.
 	
 			$ kubectl config set-context roberto --cluster=minikube --user=roberto
@@ -1744,9 +1744,6 @@ El rol definirá a qué recursos se podría acceder y qué operaciones se podrí
 			 resources: [“pods”]
 			 verbs: [“get”, “watch”, “list”]
 
-		$ kubectl get roles
-
-		$ kubectl describe role pod-reader
 
 ### RoleBinding
 
@@ -1853,7 +1850,6 @@ Ejemplo:
 ---
 
 # INGRESS<a name="ingress"></a>
-
 
 
 ---
