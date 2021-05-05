@@ -1955,7 +1955,50 @@ Nuestro usuario está asignado a ese grupo.
 			clusterrole.rbac.authorization.k8s.io/svc-clusterrole created
 			clusterrolebinding.rbac.authorization.k8s.io/cluster-svc created
 
----
+### ServiceAccount
+
+El serviceAccount es usado en Kubernetes para proporcionar una identidad a los pods.
+Todo Pod que quiera interaccionar con el API Server deberá de autenticarse con un ServiceAccount.
+Por defecto, se usa el default.
+
+Cada Pod hará uso de un ServiceAccount con un token y con unos roles establecidos para poder acceder al API Server.
+
+Listamos y consultamos la información que contiene.
+
+		$ kubectl get serviceaccount 
+			NAME      SECRETS   AGE
+			default   1         147m
+		
+		$ kubectl describe sa default
+			Name:                default
+			Namespace:           default
+			Labels:              <none>
+			Annotations:         <none>
+			Image pull secrets:  <none>
+			Mountable secrets:   default-token-2w6w2
+			Tokens:              default-token-2w6w2
+			Events:              <none>
+
+Observamos que contiene un secret. Vamos a examinarlo.
+
+		$ kubectl describe secret default-token-2w6w2
+			Name:         default-token-2w6w2
+			Namespace:    default
+			Labels:       <none>
+			Annotations:  kubernetes.io/service-account.name: default
+			              kubernetes.io/service-account.uid: 20775cf0-fabf-49bb-8ff2-585aab644ce9
+
+			Type:  kubernetes.io/service-account-token
+
+			Data	
+			====
+			token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IkdGNHNHM0lrOThDbHdJY0d6Ymx1MHpxTXItMXEwYzNOVlBYNENDaEF4NEUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tMnc2dzIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjIwNzc1Y2YwLWZhYmYtNDliYi04ZmYyLTU4NWFhYjY0NGNlOSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.ONhtGWEFEKDeRMhkm6TntdC1dCMtQDgYlnHcdwjtXygtPfhd7ugpgR5MC88osr-C3AqSvI3Zp-pWuFUhL4duZ0yy-bBWDSXGx_4UdRl5bFhMxSVBPb5i7B02NsNuw3ijBNETdfOr7Jq577DHbxc8wJR8Dw0-63diPVXNeZAsNMc7Z8HCixo7y5HXbQzwg7-bxPFxMI6Ib00Ct6ZC1ciKY8qV2DEbP2SlfIXhrqv9cRKKID_5AcGxhEif4nwMHlBHaTvhlqMM1TRtQdE893DsaNdbhhq7Anv_MNVq65kwjCQD4T4eH2SdEynkQcxTgUC0Hl3p5z23shxqfQVfJ-eQBA
+			ca.crt:     1111 bytes
+			namespace:  7 bytes
+
+Vamos a hacer ejemplo para explicar su funcionamiento.
+
+Primeramente creamos un service
 
 # INGRESS<a name="ingress"></a>
 
@@ -2201,15 +2244,15 @@ Desde el nodo master quitamos todas las tareas del nodo y después lo eliminamos
 
 
 En el nodo que se a eliminado del cluster restablecer la configuración inicial
-		kubeadm reset
+		$ kubeadm reset
 
 El proceso de reinicio no reinicia ni limpia las reglas de iptables o las tablas de IPVS. Si desea restablecer iptables, debe hacerlo manualmente:
 
-		iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+		$ iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 
 Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 
-		ipvsadm -C
+		$ ipvsadm -C
 
 
 ---
