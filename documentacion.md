@@ -2164,14 +2164,153 @@ Asignamos el rol al serviceAccount y lo verificamos.
 
 # INGRESS<a name="ingress"></a>
 
-Otra de las formas de acceder a los pods desde el exterior del clúster emediante lo que se conoce como Ingress.
-Este elemento nos permite acceder a servicios a través del protocolo web htttp/https.
+Otra de las formas de acceder a los pods desde el exterior del clúster es mediante lo que se conoce como Ingress.
+Este recurso nos permite acceder a servicios a través del protocolo web htttp/https.
 El tráfico se controla utilizando un conjunto de reglas que tú defines.
 Además de dar a tus aplicaciones una URL externa que permita el acceso, también se puede configurar para el balanceo de carga, es decir que realiza la función de proxy.
 
 ![](images/ingress.png)
 
 
+### Ingress Controller
+
+Es un contenedor que enruta las peticiones hacia los servicios correspondientes en base a la definición del recurso ingress.
+Hay una gran cantidad de controladores (Traefik, HAproxy, Envoy,...) pero nosotros vamos a utilizar el NGINX controller para exponer las apps.
+
+
+### Instalación y configuración Ingress
+
+Vamos a realizar un ejemplo desplegando la aplicación hello, world a cual le aplicaremos un ingress para exponerla y comprobaremos el resultado.
+
+Primeramente habilitamos el controlador NGINX Ingress y lo verificamos.
+
+		$ minikube addons enable ingress
+   			▪ Using image k8s.gcr.io/ingress-nginx/controller:v0.44.0
+			▪ Using image docker.io/jettech/kube-webhook-certgen:v1.5.1
+		    ▪ Using image docker.io/jettech/kube-webhook-certgen:v1.5.1
+			🔎  Verifying ingress addon...
+			🌟  The 'ingress' addon is enabled
+
+		$ kubectl get pods -n kube-system
+			NAME                               READY   STATUS    RESTARTS   AGE
+			coredns-74ff55c5b-m6ffm            1/1     Running   0          23h
+			etcd-minikube                      1/1     Running   0          23h
+			kube-apiserver-minikube            1/1     Running   0          23h
+			kube-controller-manager-minikube   1/1     Running   0          23h
+			kube-proxy-9s4px                   1/1     Running   0          23h
+			kube-scheduler-minikube            1/1     Running   0          23h
+			storage-provisioner                1/1     Running   0          23h
+
+Una vez comprobado que el contralador está habilitado desplegamos y exponemos la app por el puerto 8080 mediante node-port.
+
+		$ kubectl create deployment web --image=gcr.io/google-samples/hello-app:1.0
+			deployment.apps/web created
+
+		$ kubectl expose deployment web --type=NodePort --port=8080
+			service/web exposed
+
+Verificamos que el servicio se haya creado en node-port y lo visitamos.
+
+		$ kubectl get service web
+			NAME   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+			web    NodePort   10.110.106.21   <none>        8080:31148/TCP   102s
+
+		$ minikube service web --url
+			http://192.168.49.2:31148
+
+		$ curl http://192.168.49.2:31148
+			Hello, world!
+			Version: 1.0.0
+			Hostname: web-79d88c97d6-l26fh
+
+Hay dos modos de establecer las reglas de ingress: por **ruta** o **dominio**.
+
+Vamos a implementar ahora un ejemplo de dos despliegues de una app (hello, world).
+
+Desplegamos y verificamos el primer ejemplo.
+
+		$ vim exemple-ingress.yaml
+			apiVersion: networking.k8s.io/v1
+			kind: Ingress
+			metadata:
+  			  name: example-ingress
+			  annotations:
+			    nginx.ingress.kubernetes.io/rewrite-target: /$1
+			spec:
+			  rules:
+			    - host: hello-world.info
+			       http:
+ 			         paths:
+			           - path: /
+   			           	  pathType: Prefix
+ 			              backend:
+  			           	    service:
+  			                 name: web
+ 			                   port:
+  			                   number: 8080
+
+		$ kubectl apply -f example-ingress.yaml
+			ingress.networking.k8s.io/example-ingress created
+
+		$ kubectl get ingress
+			NAME              CLASS    HOSTS              ADDRESS        PORTS   AGE
+			example-ingress   <none>   hello-world.info   192.168.49.2   80      523s
+		
+Editamos el nombre de dominio en el fichero de configuración de DNS **/etc/hosts** y verificamos que podemos acceder a la app.
+
+		$ vim /etc/hosts
+			192.168.49.2	hello-world.info
+
+		$ curl hello-world.info
+			Hello, world!
+			Version: 1.0.0
+			Hostname: web-79d88c97d6-l26fh
+
+Creamos y exponemos el segundo deployment y aplicamos cambio en las reglas.
+	
+		$ kubectl create deployment web2 --image=gcr.io/google-samples/hello-app:2.0
+			deployment.apps/web2 created
+
+		$ kubectl expose deployment web2 --port=8080 --type=NodePort
+			service/web2 exposed
+
+		$ vim example-ingress.yaml
+			apiVersion: networking.k8s.io/v1
+			kind: Ingress
+			metadata:
+			  name: example-ingress
+			  annotations:
+			    nginx.ingress.kubernetes.io/rewrite-target: /$1
+			spec:
+ 			 rules:
+			    - host: hello-world.info
+ 			     http:
+			        paths:
+			         - path: /v2
+			            pathType: Prefix
+			            backend:
+			              service:
+ 			               name: web2
+			                port:
+  			                number: 8080
+
+		$ kubectl apply -f
+			ingress.networking.k8s.io/example-ingress configured
+
+Ahora comprobamos como podemos acceder tanto ala primera como a la segunda versión de la app.
+AL primero accedemos por dominio y al segundo por ruta y dominio a la vez.
+
+		$ curl hello-world.info
+			Hello, world!
+			Version: 1.0.0
+			Hostname: web-79d88c97d6-l26fh
+
+		$ curl hello-world.info/v2
+			Hello, world!
+			Version: 2.0.0
+			Hostname: web2-89cd47949f-t8rst
+
+		
 
 ---
 
@@ -2415,8 +2554,6 @@ Desde el nodo master quitamos todas las tareas del nodo y después lo eliminamos
 	node "node2" deleted
 
 
-
-
 En el nodo que se a eliminado del cluster restablecer la configuración inicial
 		$ kubeadm reset
 
@@ -2427,7 +2564,6 @@ El proceso de reinicio no reinicia ni limpia las reglas de iptables o las tablas
 Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 
 		$ ipvsadm -C
-
 
 ---
 
