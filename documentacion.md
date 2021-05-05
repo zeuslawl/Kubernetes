@@ -1972,6 +1972,9 @@ Además de dar a tus aplicaciones una URL externa que permita el acceso, tambié
 
 # CREACIÓN CLUSTER LOCAL<a name="clusterlocal"></a>
 
+![](images/cluster.png)
+
+
 # Instalación
 En este ejemplo de instalación se muestra como instalar un cluster de tres máquinas,
 un master ( control-plane ) y dos workers, 
