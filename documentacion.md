@@ -1726,12 +1726,80 @@ Hay que tener en cuenta el namespace en el que se asignan los permisos, los reso
 
 - **Resources:** pod, deployment, namespace, secret, configmap, service, persistentvolume…
 
-		$ kubectl api-resources	
+		$ kubectl api-resources
+			bindings                                       v1                                     true         Binding
+			componentstatuses                 cs           v1                                     false        ComponentStatus
+			configmaps                        cm           v1                                     true         ConfigMap
+			endpoints                         ep           v1                                     true         Endpoints
+			events                            ev           v1                                     true         Event
+			limitranges                       limits       v1                                     true         LimitRange
+			namespaces                        ns           v1                                     false        Namespace
+			nodes                             no           v1                                     false        Node
+			persistentvolumeclaims            pvc          v1                                     true         PersistentVolumeClaim
+			persistentvolumes                 pv           v1                                     false        PersistentVolume
+			pods                              po           v1                                     true         Pod
+			podtemplates                                   v1                                     true         PodTemplate
+			replicationcontrollers            rc           v1                                     true         ReplicationController
+			resourcequotas                    quota        v1                                     true         ResourceQuota
+			secrets                                        v1                                     true         Secret
+			serviceaccounts                   sa           v1                                     true         ServiceAccount
+			services                          svc          v1                                     true         Service
+			mutatingwebhookconfigurations                  admissionregistration.k8s.io/v1        false        MutatingWebhookConfiguration
+			validatingwebhookconfigurations                admissionregistration.k8s.io/v1        false        ValidatingWebhookConfiguration
+			customresourcedefinitions         crd,crds     apiextensions.k8s.io/v1                false        CustomResourceDefinition
+			apiservices                                    apiregistration.k8s.io/v1              false        APIService
+			controllerrevisions                            apps/v1                                true         ControllerRevision
+			daemonsets                        ds           apps/v1                                true         DaemonSet
+			deployments                       deploy       apps/v1                                true         Deployment
+			replicasets                       rs           apps/v1                                true         ReplicaSet
+			statefulsets                      sts          apps/v1                                true         StatefulSet
+			tokenreviews                                   authentication.k8s.io/v1               false        TokenReview
+			localsubjectaccessreviews                      authorization.k8s.io/v1                true         LocalSubjectAccessReview
+			selfsubjectaccessreviews                       authorization.k8s.io/v1                false        SelfSubjectAccessReview
+			selfsubjectrulesreviews                        authorization.k8s.io/v1                false        SelfSubjectRulesReview
+			subjectaccessreviews                           authorization.k8s.io/v1                false        SubjectAccessReview
+			horizontalpodautoscalers          hpa          autoscaling/v1                         true         HorizontalPodAutoscaler
+			cronjobs                          cj           batch/v1beta1                          true         CronJob
+			jobs                                           batch/v1                               true         Job
+			certificatesigningrequests        csr          certificates.k8s.io/v1                 false        CertificateSigningRequest
+			leases                                         coordination.k8s.io/v1                 true         Lease
+			endpointslices                                 discovery.k8s.io/v1beta1               true         EndpointSlice
+			events                            ev           events.k8s.io/v1                       true         Event
+			ingresses                         ing          extensions/v1beta1                     true         Ingress
+			flowschemas                                    flowcontrol.apiserver.k8s.io/v1beta1   false        FlowSchema
+			prioritylevelconfigurations                    flowcontrol.apiserver.k8s.io/v1beta1   false        PriorityLevelConfiguration
+			ingressclasses                                 networking.k8s.io/v1                   false        IngressClass
+			ingresses                         ing          networking.k8s.io/v1                   true         Ingress
+			networkpolicies                   netpol       networking.k8s.io/v1                   true         NetworkPolicy
+			runtimeclasses                                 node.k8s.io/v1                         false        RuntimeClass
+			poddisruptionbudgets              pdb          policy/v1beta1                         true         PodDisruptionBudget
+			podsecuritypolicies               psp          policy/v1beta1                         false        PodSecurityPolicy
+			clusterrolebindings                            rbac.authorization.k8s.io/v1           false        ClusterRoleBinding
+			clusterroles                                   rbac.authorization.k8s.io/v1           false        ClusterRole
+			rolebindings                                   rbac.authorization.k8s.io/v1           true         RoleBinding
+			roles                                          rbac.authorization.k8s.io/v1           true         Role
+			priorityclasses                   pc           scheduling.k8s.io/v1                   false        PriorityClass
+			csidrivers                                     storage.k8s.io/v1                      false        CSIDriver
+			csinodes                                       storage.k8s.io/v1                      false        CSINode
+			storageclasses                    sc           storage.k8s.io/v1                      false        StorageClass
+			volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment
 
 - **Verbs:** get, list, watch, create, delete, update, edit, exec.
+		
+		$ kubectl api-resources --no-headers --sort-by name -o wide | sed 's/.*\[//g' | tr -d "]" | tr " " "\n" | sort | uniq
+			create
+			delete
+			deletecollection
+			get
+			list
+			patch
+			update
+			watch
+
 
 Vamos a crear un objeto Role en el archivo role.yaml.
 El rol definirá a qué recursos se podría acceder y qué operaciones se podrían usar.
+Para asignar este rol a un usuario o grupo se tiene que utilizar Rolebinding.
 
 		$ vim role.yaml
 			kind: Role
@@ -1744,6 +1812,21 @@ El rol definirá a qué recursos se podría acceder y qué operaciones se podrí
 			 resources: [“pods”]
 			 verbs: [“get”, “watch”, “list”]
 
+		$ kubectl apply -f role.yaml 
+			role.rbac.authorization.k8s.io/pod-reader created
+
+		$ kubectl get roles
+			NAME         CREATED AT
+			pod-reader   2021-05-05T07:27:32Z
+
+		$ kubectl describe role pod-reader
+			Name:         pod-reader
+			Labels:       <none>
+			Annotations:  <none>
+			PolicyRule:
+			  Resources  Non-Resource URLs  Resource Names  Verbs
+			  ---------  -----------------  --------------  -----
+			  “pods”.“”  []                 []              [“get” “watch” “list”]				
 
 ### RoleBinding
 
@@ -1780,16 +1863,28 @@ Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
 			  apiGroup: rbac.authorization.k8s.io
 
 		$ kubectl apply -f rolebinding.yaml
-			
+			role.rbac.authorization.k8s.io/pod-reader configured
+			rolebinding.rbac.authorization.k8s.io/users-read-pods created
+
 		$ kubectl get rolebinding
+			NAME              ROLE              AGE
+			users-read-pods   Role/pod-reader   39s
 
 		$ kubectl describe rolebinding users-read-pod
-
+			Name:         users-read-pods
+			Labels:       <none>
+			Annotations:  <none>
+			Role:
+  			Kind:  Role
+ 			 Name:  pod-reader
+			Subjects:
+			  Kind  Name     Namespace
+			  ----  ----     ---------
+			  User  roberto 
 
 ### ClusterRole
 Tiene el mismo funcionamiento que Role con la diferencia que con este objeto aplicamos las reglas de permisos sobre el clúster, no sobre el namespace.
-
-Veamos un ejemplo.
+En este caso vamos a asignar permisos de lectura de pods y deployments del clústeral usuario roberto.
 
 		$ vim clusterrole.yaml
 			apiVersion: rbac.authorization.k8s.io/v1
@@ -1810,18 +1905,28 @@ Veamos un ejemplo.
 			  name: users-read-pods-deploy
 			subjects:
 			- kind: User
-			  name: jorge
+			  name: roberto
 			  apiGroup: rbac.authorization.k8s.io
 			roleRef:
 			  kind: ClusterRole 
 			  name: cluster-pod-deploy-reader 
 			  apiGroup: rbac.authorization.k8s.io
+
+		$ kubectl apply -f clusterrole.yaml 
+			clusterrole.rbac.authorization.k8s.io/cluster-pod-deploy-reader created
+			clusterrolebinding.rbac.authorization.k8s.io/users-read-pods-deploy created
 		
+		$ kubectl get clusterrole | grep cluster
+			cluster-admin                                                          2021-05-05T07:07:01Z
+			cluster-pod-deploy-reader                                              2021-05-05T07:42:45Z
+			system:controller:clusterrole-aggregation-controller                   2021-05-05T07:07:01Z
+
+
 ### ClusterRoleBinding
 
 Se usa para otorgar permisos a un sujeto a nivel de clúster en todos los namespace
-
-Ejemplo:
+En el siguiente ejemplo se crea un clusterRoleBinding de el grupo de usuarios dev asignando los permisos del clusterRole con nombre svc-clusterrole.
+Nuestro usuario está asignado a ese grupo.
 
 		$ vim clusterrolebinding.yaml
 			apiVersion: rbac.authorization.k8s.io/v1
@@ -1846,6 +1951,9 @@ Ejemplo:
 			  name: svc-clusterrole
 			  apiGroup: rbac.authorization.k8s.io
 
+		$ kubectl apply -f clusterrolebinding.yaml						
+			clusterrole.rbac.authorization.k8s.io/svc-clusterrole created
+			clusterrolebinding.rbac.authorization.k8s.io/cluster-svc created
 
 ---
 
@@ -1857,6 +1965,8 @@ El tráfico se controla utilizando un conjunto de reglas que tú defines.
 Además de dar a tus aplicaciones una URL externa que permita el acceso, también se puede configurar para el balanceo de carga, es decir que realiza la función de proxy.
 
 ![](images/ingress.png)
+
+
 
 ---
 
