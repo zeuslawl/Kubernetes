@@ -2045,7 +2045,7 @@ Primeramente creamos un serviceAccount, lo asignamos a un pod y creamos un rol a
 			NAME         CREATED AT
 			pod-reader   2021-05-05T07:27:32Z
 
-Asignamos el rol al serviceAccount, lo verificamos.
+Asignamos el rol al serviceAccount y lo verificamos.
 
 		$ vim assign-role-sa.yaml
 			apiVersion: rbac.authorization.k8s.io/v1
