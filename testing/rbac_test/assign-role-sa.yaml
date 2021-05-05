@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sa-read-pods
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: my-sa
+  apiGroup: ""
+roleRef:
+  kind: Role 
+  name: sa-reader 
+  apiGroup: rbac.authorization.k8s.io
+

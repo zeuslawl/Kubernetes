@@ -1998,7 +1998,169 @@ Observamos que contiene un secret. Vamos a examinarlo.
 
 Vamos a hacer ejemplo para explicar su funcionamiento.
 
-Primeramente creamos un service
+Primeramente creamos un serviceAccount, lo asignamos a un pod y creamos un rol al que le aplicaremos una serie de reglas.
+
+		$ vim sa-test.yaml
+			apiVersion: v1
+			kind: ServiceAccount
+			metadata:
+			  name: my-sa
+			#------------------
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  annotations:
+			  name: deployment-test
+			  labels:
+			    app: front-nginx
+			spec:
+			  replicas: 1
+			  selector:
+			    matchLabels:
+			      app: front-nginx
+			  template:
+			    metadata:
+			      labels:
+			        app: front-nginx
+			    spec:
+			     # asignamos sa a pod
+			      serviceAccountName: my-sa
+			      containers:
+			      - name: nginx
+			        image: nginx:alpine
+		
+		$ kubectl apply -f sa-test.yaml
+			serviceaccount/my-sa created
+			deployment.apps/deployment-test created
+
+		$ kubectl get sa
+			NAME                  SECRETS   AGE
+			default               1         3h1m
+			my-sa                 1         2m33s kubectl get sa
+			NAME                  SECRETS   AGE
+			default               1         3h1m
+			my-sa                 1         2m33s
+
+		$ kubectl get roles
+			NAME         CREATED AT
+			pod-reader   2021-05-05T07:27:32Z
+
+Asignamos el rol al serviceAccount, lo verificamos.
+
+		$ vim assign-role-sa.yaml
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: RoleBinding
+			metadata:
+			  name: sa-read-pods
+			  namespace: default
+			subjects:
+			- kind: ServiceAccount
+			  name: my-sa
+			  apiGroup: ""
+			roleRef:
+			  kind: Role 
+			  name: sa-reader 
+			  apiGroup: rbac.authorization.k8s.io
+
+		$ kubectl apply -f assign-role-sa.yaml 
+			rolebinding.rbac.authorization.k8s.io/sa-read-pods created
+
+		$ kubectl get pod deployment-test-57bfcc4f79-jwtdb -o yaml
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  creationTimestamp: "2021-05-05T10:06:33Z"
+			  generateName: deployment-test-57bfcc4f79-
+			  labels:
+			    app: front-nginx
+			    pod-template-hash: 57bfcc4f79
+			  name: deployment-test-57bfcc4f79-jwtdb
+			  namespace: default
+			  ownerReferences:
+			  - apiVersion: apps/v1
+			    blockOwnerDeletion: true
+			    controller: true
+			    kind: ReplicaSet
+			    name: deployment-test-57bfcc4f79
+			    uid: d75a3c4b-f761-46ee-bcd4-fdfb6cf9fcf7
+			  resourceVersion: "8125"
+			  uid: 0b203066-dd65-443f-ae1d-bce2f8fb45f8
+			spec:
+			  containers:
+			  - image: nginx:alpine
+			    imagePullPolicy: IfNotPresent
+			    name: nginx
+			    resources: {}
+			    terminationMessagePath: /dev/termination-log
+			    terminationMessagePolicy: File
+			    volumeMounts:
+			    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+			      name: my-sa-token-hncz5
+			      readOnly: true
+			  dnsPolicy: ClusterFirst
+			  enableServiceLinks: true
+			  nodeName: minikube
+			  preemptionPolicy: PreemptLowerPriority
+			  priority: 0
+			  restartPolicy: Always
+			  schedulerName: default-scheduler
+			  securityContext: {}
+			  serviceAccount: my-sa
+			  serviceAccountName: my-sa
+			  terminationGracePeriodSeconds: 30
+			  tolerations:
+			  - effect: NoExecute
+			    key: node.kubernetes.io/not-ready
+			    operator: Exists
+			    tolerationSeconds: 300
+			  - effect: NoExecute
+			    key: node.kubernetes.io/unreachable
+			    operator: Exists
+			    tolerationSeconds: 300
+			  volumes:
+			  - name: my-sa-token-hncz5
+			    secret:
+			      defaultMode: 420
+			      secretName: my-sa-token-hncz5
+			status:
+			  conditions:
+			  - lastProbeTime: null
+			    lastTransitionTime: "2021-05-05T10:06:33Z"
+			    status: "True"
+			    type: Initialized
+			  - lastProbeTime: null
+			    lastTransitionTime: "2021-05-05T10:06:40Z"
+			    status: "True"
+			    type: Ready
+			  - lastProbeTime: null
+			    lastTransitionTime: "2021-05-05T10:06:40Z"
+			    status: "True"
+			    type: ContainersReady
+			  - lastProbeTime: null
+			    lastTransitionTime: "2021-05-05T10:06:33Z"
+			    status: "True"
+			    type: PodScheduled
+			  containerStatuses:
+			  - containerID: docker://b6da0235b8c8c19b748b8610aacb81e05713adb933d561a70ff92152a591ef46
+			    image: nginx:alpine
+			    imageID: docker-pullable://nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+			    lastState: {}
+			    name: nginx
+			    ready: true
+			    restartCount: 0
+			    started: true
+			    state:
+			      running:
+			        startedAt: "2021-05-05T10:06:39Z"
+			  hostIP: 192.168.39.173
+			  phase: Running
+			  podIP: 172.17.0.7
+			  podIPs:
+			  - ip: 172.17.0.7
+			  qosClass: BestEffort
+			  startTime: "2021-05-05T10:06:33Z"
+			
+			
 
 # INGRESS<a name="ingress"></a>
 
@@ -2017,7 +2179,6 @@ Además de dar a tus aplicaciones una URL externa que permita el acceso, tambié
 
 ![](images/cluster.png)
 
-
 # Instalación
 En este ejemplo de instalación se muestra como instalar un cluster de tres máquinas,
 un master ( control-plane ) y dos workers, 
@@ -2028,13 +2189,16 @@ y la tipología del master es stacked.
 Asignar hostname a cada nodo
 
 	$ hostnamectl set-hostname master
+
 	$ hostnamectl set-hostname node1
+
 	$ hostnamectl set-hostname node2
 
 
 ### Deshabilitar swap
 
 	$ swapoff -a
+
 	$ sed -i '/ swap / s/^/#/' /etc/fstab
 
 ### Resolución de nombres
@@ -2074,6 +2238,7 @@ Asignar hostname a cada nodo
 
 ### Deshabilitar firewalld y habilitar forwarding
 	$ systemctl stop firewalld
+
 	$ systemctl disable firewalld
 
 	# Enable IP Forwarding
@@ -2089,6 +2254,7 @@ Asignar hostname a cada nodo
 
 	# SOLUCIÓN
 	[root@node1 ~]#	modprobe br_netfilter
+
 	[root@node1 ~]# sysctl -p
 	net.bridge.bridge-nf-call-ip6tables = 1
 	net.bridge.bridge-nf-call-iptables = 1
@@ -2104,24 +2270,27 @@ https://docs.docker.com/engine/install/fedora/
 
 	# Añadir repositorio de kubernetes
 
-	cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-	[kubernetes]
-	name=Kubernetes
-	baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
-	enabled=1
-	gpgcheck=1
-	repo_gpgcheck=1
-	gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-	exclude=kubelet kubeadm kubectl
-	EOF
+		cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+		[kubernetes]
+		name=Kubernetes
+		baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+		enabled=1
+		gpgcheck=1
+		repo_gpgcheck=1
+		gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+		exclude=kubelet kubeadm kubectl
+		EOF
 
 	# Set SELinux in permissive mode (effectively disabling it)
-	$ setenforce 0
-	$ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
-	# instalar servicios y habilitar kubelet (Fedora 32)
-	$ dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
-	$ systemctl enable --now kubelet
+		$ setenforce 0
+
+		$ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+	# instalar servicios y habilitar kubelet (Fedora 32
+		$ dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+		$ systemctl enable --now kubelet
 
 
 	[root@master ~]# $ kubeadm version
@@ -2149,9 +2318,11 @@ Una vez finalizado el comando kubeadm init --pod-network-cidr=192.168.0.0/16 nos
 
 	To start using your cluster, you need to run the following as a regular user:
 
-	  mkdir -p $HOME/.kube
-	  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-	  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	  $ mkdir -p $HOME/.kube
+
+	  $ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+	  $ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 	Alternatively, if you are the root user, you can run:
 
@@ -2163,7 +2334,7 @@ Una vez finalizado el comando kubeadm init --pod-network-cidr=192.168.0.0/16 nos
 
 	Then you can join any number of worker nodes by running the following on each as root:
 
-	kubeadm join 192.168.122.2:6443 --token cp5ayc.pbsbruka2leselbe \
+	$ kubeadm join 192.168.122.2:6443 --token cp5ayc.pbsbruka2leselbe \
        --discovery-token-ca-cert-hash sha256:d41acb35ced40eae84f731f2892a8c131e55a63fa7c663f7b0555e23c713480d 
 
 NOTA: Es muy importante guardarse bien la línea de kubeadm join ya que con esta juntaremos los nodos al master.
@@ -2172,7 +2343,9 @@ NOTA: Es muy importante guardarse bien la línea de kubeadm join ya que con esta
 En caso de no querer gestionar el cluster como root y quererlo gestionar como usuario.
 
 	[master@master ~]$ mkdir -p $HOME/.kube
+
 	[master@master ~]$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
 	[master@master ~]$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ### Aplico el addon para gestionar las redes de Pods
@@ -2221,8 +2394,9 @@ Comprobamos desde el master que hemos añadido el nodo y asignaremos el nodo com
 
 Desde el nodo master quitamos todas las tareas del nodo y después lo eliminamos.
 
-		$ kubectl drain node2 --delete-local-data --force --ignore-daemonsets
-		$ kubectl delete node node2
+	$ kubectl drain node2 --delete-local-data --force --ignore-daemonsets
+
+	$ kubectl delete node node2
 
 	[root@master ~]# kubectl drain node2 --delete-local-data --force --ignore-daemonsets 
 	
