@@ -45,30 +45,50 @@
 	- **[Minikube](#minikube)**
 
 
-- **[Replicaset](#replicaset)**
+- **[Replicasets](#replicaset)**
 
 
-- **[Deployment](#deployment)**
+- **[Deployments](#deployment)**
 	
-	- **[Crear](#crear)**
+	- **[Creación](#creardp)**
 
-	- **[Actualizar](#actualizar)**
+	- **[Actualizar](#actualizardp)**
 
-	- **[Historial](#historial)**
+	- **[Historial](#historialdp)**
 
-	- **[Escalar](#escalar)**
+	- **[Escalar app](#escalar)**
 
 
-- **[Service/Endpoint](#service)**
+- **[Services/Endpoints](#service)**
+	
+	- **[Agrupación pods en services](#agrupacion)
+
+	- **[Tipos services]
+
+	- **[Desplegar services]
 
 
 - **[Namespaces](#namespaces)**
 
+	- **[Administración](#admin)
+
+	- **[Creación volumes]()**
+
 
 - **[Volumes](#volumes)**
 
+	- **[Tipos volumes](#tiposvol)**
+
+	- **[Creación volumes](#creacionvol)**
+
+	- **[StorageClass](#storageclass)
+
 
 - **[ConfigMaps y variables de entorno](#configmaps)**
+
+	- **[Variables entorno](#var)**
+
+	- **[ConfigMaps](#configmaps)**
 
 
 - **[Secrets](#secrets)**
@@ -76,8 +96,26 @@
 
 - **[RBAC](#rbac)**
 
+	- **[Usuarios](#usuarios)**
+
+	- **[Permisos](#permisos)**
+
+	- **[Role](#role)**
+
+	- **[RoleBinding](#rolebinding)**
+
+	- **[ClusterRole](#clusterrole)**
+
+	- **[ClusterRoleBinding](clusterrolebinding)**
+
+	- **[ServiceAccount](serviceaccount)**
+
 
 - **[Ingress](#ingress)**
+
+	- **[Ingress Controller](ingresscontroller)**
+
+	- **[Instalación y configuración](#insconf)**
 
 
 - **[Creación clúster local](#clusterlocal)**
