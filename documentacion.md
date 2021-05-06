@@ -70,7 +70,7 @@
 
 - **[Namespaces](#namespaces)**
 
-	- **[Administración](#admin)
+	- **[Administración](#admin)**
 
 	- **[Creación volumes]()**
 
@@ -81,7 +81,7 @@
 
 	- **[Creación volumes](#creacionvol)**
 
-	- **[StorageClass](#storageclass)
+	- **[StorageClass](#storageclass)**
 
 
 - **[ConfigMaps y variables de entorno](#configmaps)**
