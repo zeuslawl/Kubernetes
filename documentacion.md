@@ -2620,6 +2620,8 @@ Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 
 ## Comandos básicos kubectl<a name="comandos"></a>
 
+![](images/kubectl.png)
+
 ### Visualizar información
 
 - **Nodos:**
