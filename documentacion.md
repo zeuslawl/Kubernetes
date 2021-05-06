@@ -56,7 +56,7 @@
 
 	- **[Actualizar](#actualizardp)**
 
-	- **[Historial/rollout(#historialdp)**
+	- **[Historial/rollout](#historialdp)**
 
 	- **[Escalar app](#escalar)**
 
