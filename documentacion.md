@@ -61,11 +61,11 @@
 
 - **[Services/Endpoints](#service)**
 	
-	- **[Agrupación pods en services](#agrupacion)
+	- **[Agrupación pods en services](#agrupacion)**
 
-	- **[Tipos services]
+	- **[Tipos services](#tipossv)**
 
-	- **[Desplegar services]
+	- **[Desplegar services](#desplegar)**
 
 
 - **[Namespaces](#namespaces)**
