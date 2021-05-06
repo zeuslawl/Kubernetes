@@ -468,7 +468,7 @@ Ejemplo de 4GB de memoria RAM
 
 ---
 
-# REPLICASET<a name="replicaset"></a>
+# REPLICASETS<a name="replicaset"></a>
 
 ![](images/replicaset.png)
 
@@ -627,7 +627,7 @@ Eliminamos el replicaset
 
 ---
 
-# DEPLOYMENT<a name="deployment"></a>
+# DEPLOYMENTS<a name="deployment"></a>
 
 Una configuración de deployment pide a Kubernetes que cree y actualice las instancias de una aplicación.
 Tras crear el deployment, el control plane organiza las instancias de aplicación en los nodos disponibles del cluster.
@@ -917,7 +917,7 @@ Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes
 
 ---
 
-# SERVICE/ENDPOINT<a name="service"></a>
+# SERVICES/ENDPOINTS<a name="service"></a>
 
 ![](images/service2.svg)
 
