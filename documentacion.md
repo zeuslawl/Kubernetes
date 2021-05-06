@@ -44,7 +44,7 @@
 
 	- **[Minikube](#minikube)**
 
-		- **[Comandos básicos minikube]**(#comandosminikube)
+		- **[Comandos básicos minikube](#comandosminikube)**
 
 
 - **[Replicasets](#replicaset)**
