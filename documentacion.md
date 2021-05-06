@@ -52,11 +52,11 @@
 
 - **[Deployments](#deployment)**
 	
-	- **[Creación](#creardp)**
+	- **[Crear](#creardp)**
 
 	- **[Actualizar](#actualizardp)**
 
-	- **[Historial](#historialdp)**
+	- **[Historial/rollout(#historialdp)**
 
 	- **[Escalar app](#escalar)**
 
@@ -73,8 +73,6 @@
 - **[Namespaces](#namespaces)**
 
 	- **[Administración](#admin)**
-
-	- **[Creación volumes]()**
 
 
 - **[Volumes](#volumes)**
@@ -2430,12 +2428,14 @@ AL primero accedemos por dominio y al segundo por ruta y dominio a la vez.
 ![](images/cluster.png)
 
 # Instalación
+
 En este ejemplo de instalación se muestra como instalar un cluster de tres máquinas,
-un master ( control-plane ) y dos workers, 
-esta instalación se realiza en máquinas virtuales fedora32 
+un master (control-plane) y dos workers, 
+esta instalación se realiza en máquinas virtuales Fedora 32 
 y la tipología del master es stacked.
 
 ### Preparación de nodos
+
 Asignar hostname a cada nodo
 
 	$ hostnamectl set-hostname master
@@ -2452,6 +2452,7 @@ Asignar hostname a cada nodo
 	$ sed -i '/ swap / s/^/#/' /etc/fstab
 
 ### Resolución de nombres
+
 	/etc/hosts
 
 	127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -2461,6 +2462,7 @@ Asignar hostname a cada nodo
 	192.168.122.4 node2
 
 ### Ip fijas (para cada nodo)
+
 	[root@master ~]# cat /etc/sysconfig/network-scripts/ifcfg-enp1s0 
 	TYPE=Ethernet
 	PROXY_METHOD=none
@@ -2487,6 +2489,7 @@ Asignar hostname a cada nodo
 
 
 ### Deshabilitar firewalld y habilitar forwarding
+
 	$ systemctl stop firewalld
 
 	$ systemctl disable firewalld
@@ -2506,19 +2509,25 @@ Asignar hostname a cada nodo
 	[root@node1 ~]#	modprobe br_netfilter
 
 	[root@node1 ~]# sysctl -p
-	net.bridge.bridge-nf-call-ip6tables = 1
-	net.bridge.bridge-nf-call-iptables = 1
+		net.bridge.bridge-nf-call-ip6tables = 1
+		net.bridge.bridge-nf-call-iptables = 1
 
 
 ### Instalar servicios
+
 En todos los nodos es necesario instalar docker, kubelet, kubectl, kubeadm.
 
+	$ sudo dnf install -y kubelet kubectl kubeadm
+
+
 ### Instalación de docker
+
 https://docs.docker.com/engine/install/fedora/
+
 
 ### Instalación de kubeam, kubectl, kubelet
 
-	# Añadir repositorio de kubernetes
+	# Añadimos repositorio de kubernetes
 
 		cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 		[kubernetes]
@@ -2537,14 +2546,14 @@ https://docs.docker.com/engine/install/fedora/
 
 		$ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
-	# instalar servicios y habilitar kubelet (Fedora 32
+	# instalamos servicios y habilitamos kubelet (Fedora 32
 		$ dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 		$ systemctl enable --now kubelet
 
 
 	[root@master ~]# $ kubeadm version
-	kubeadm version: &version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCommit:"cb303e613a121a29364f75cc67d3d580833a7479", GitTreeState:"clean", BuildDate:"2021-04-08T16:30:03Z", GoVersion:"go1.16.1", Compiler:"gc", Platform:"linux/amd64"}
+		kubeadm version: &version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCommit:"cb303e613a121a29364f75cc67d3d580833a7479", GitTreeState:"clean", BuildDate:"2021-04-08T16:30:03Z", GoVersion:"go1.16.1", Compiler:"gc", Platform:"linux/amd64"}
 
 
 
@@ -2559,8 +2568,8 @@ en nuestro caso utilizaremos el addon calico.
 
 	$ kubeadm init --pod-network-cidr=192.168.0.0/16
 
-Descargará imagenes y tardará un poco.(dependiendo la conexión)
 
+Descargará imagenes y tardará un poco.(dependiendo la conexión)
 
 Una vez finalizado el comando kubeadm init --pod-network-cidr=192.168.0.0/16 nos saldrá lo siguiente:
 
@@ -2587,8 +2596,7 @@ Una vez finalizado el comando kubeadm init --pod-network-cidr=192.168.0.0/16 nos
 	$ kubeadm join 192.168.122.2:6443 --token cp5ayc.pbsbruka2leselbe \
        --discovery-token-ca-cert-hash sha256:d41acb35ced40eae84f731f2892a8c131e55a63fa7c663f7b0555e23c713480d 
 
-NOTA: Es muy importante guardarse bien la línea de kubeadm join ya que con esta juntaremos los nodos al master.
-
+Es muy importante guardarse bien la línea de kubeadm join ya que con esta juntaremos los nodos al master.
 
 En caso de no querer gestionar el cluster como root y quererlo gestionar como usuario.
 
@@ -2598,24 +2606,26 @@ En caso de no querer gestionar el cluster como root y quererlo gestionar como us
 
 	[master@master ~]$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-### Aplico el addon para gestionar las redes de Pods
+
+### Addon para gestionar las redes de Pods
+
 	$ kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml
 
 
-### Juntar nodos worker
+### Enlazar nodos worker
+
 Para juntar un worker al nodo master simplemente hay que ejecutar kubeadm join con el token del master.
 
 	$ kubeadm join 192.168.122.2:6443 --token c2bn4c.qzpskak8ryp1uotd \
 		--discovery-token-ca-cert-hash sha256:485a9c649a4d2a4ad9ec03932f6353fc559a1a60dbf1fe00bf71d8e57c6b6b83 
 
-En caso de no tener el token, siempre se puede crear uno nuevo desde el master con
+En caso de no tener el token, siempre se puede crear uno nuevo desde el master con el siguiente comando:
 
  	$ kubeadm token create --print-join-command
 
 
 Comprobamos desde el master que hemos añadido el nodo y asignaremos el nodo como worker para identificarlo correctamente.
-
-### Nodo añadido	
+	
 	[root@master ~]# kubectl get nodes
 	NAME     STATUS   ROLES                  AGE   VERSION
 	master   Ready    control-plane,master   68m   v1.21.0
@@ -2624,20 +2634,20 @@ Comprobamos desde el master que hemos añadido el nodo y asignaremos el nodo com
 ### Añadir nodo como worker
 
 	[root@master ~]# kubectl label node node1 node-role.kubernetes.io/worker=worker 
-	node/node1 labeled
+		node/node1 labeled
 
 	[root@master ~]# kubectl get nodes
-	NAME     STATUS   ROLES                  AGE     VERSION
-	master   Ready    control-plane,master   71m     v1.21.0
-	node1    Ready    worker                 3m59s   v1.21.0
+		NAME     STATUS   ROLES                  AGE     VERSION
+		master   Ready    control-plane,master   71m     v1.21.0
+		node1    Ready    worker                 3m59s   v1.21.0
 
 	[root@master ~]# kubectl label nodes node1 node=worker1
-	node/node1 labeled
+		node/node1 labeled
 
 	[root@master ~]# kubectl get nodes --show-labels
-	NAME     STATUS   ROLES                  AGE     VERSION   LABELS
-	master   Ready    control-plane,master   74m     v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=master,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
-	node1    Ready    worker                 6m26s   v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=node1,kubernetes.io/os=linux,node-role.kubernetes.io/worker=worker,node=worker1
+		NAME     STATUS   ROLES                  AGE     VERSION   LABELS
+		master   Ready    control-plane,master   74m     v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=master,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
+		node1    Ready    worker                 6m26s   v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=node1,kubernetes.io/os=linux,node-role.kubernetes.io/worker=worker,node=worker1
 
 
 ### Eliminar un nodo
