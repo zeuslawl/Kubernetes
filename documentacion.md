@@ -44,6 +44,8 @@
 
 	- **[Minikube](#minikube)**
 
+		- **[Comandos básicos minikube]**(#comandosminikube)
+
 
 - **[Replicaset](#replicaset)**
 
@@ -227,9 +229,9 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 
 ---
 
-# INSTALACIÓN EN ENTORNO DE PRUEBAS<a name="instalacion"></a>
+# INSTALACIÓN<a name="instalacion"></a>
 
-## Requisitos:<a name="requisitos"></a>
+## Requisitos hardware<a name="requisitos"></a>
 
 - Sistema operativo:
 	- Ubuntu 16.+
@@ -244,7 +246,7 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 - 1GB mínimo de RAM para workers nodes
 - 2 CPUs mínimo
 
-## Elementos:<a name="elementos"></a>
+## Elementos<a name="elementos"></a>
 
 
 Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
@@ -266,7 +268,7 @@ Debemos instalar los siguientes componentes:
 		$ dnf -y install kubeadm kubelet kubectl
 
 
-## Instalar Minikube en Fedora 32<a name="minikube"></a>
+## Minikube. Instalación en Fedora 32<a name="minikube"></a>
 
 Para trabajar con ambientes de Kubernetes normalmente es más sencillo poder instalar 
 un cluster local en nuestro equipo que nos permita probar de una forma más expedita sin 
@@ -389,6 +391,42 @@ Para calcular la memoria RAM, 1024 * los GB que queramos
 Ejemplo de 4GB de memoria RAM
 
 	1024*4= 4096
+
+
+## Comandos básicos minikube
+
+	Encender
+		$ minikube start
+	
+	Detener
+		$ minikube stop
+
+	Pausar 
+		$ minikube pause
+		
+	Reanudar
+		$ minikube unpause
+
+	Status 
+		$ minikube status
+
+	Obtener url service
+		$ minikube service [service_name]
+
+	Obtener IP clúster
+		$ minikube ip
+
+	Copiar fichero al clúster
+		$ minikube cp [path/file]
+
+	Versión	
+		$ minikube version
+
+	Logs
+		$ minikube logs
+
+	Eliminar
+		$minikube delete
 
 ---
 
@@ -641,7 +679,7 @@ También podemos ver las etiquetas (**labels**) creadas automáticamente.
 			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 
-### Actualizar deployment (cambio versión app)<a name="actualizar"></a>
+### Actualizar deployment<a name="actualizar"></a>
 
 Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
 	
@@ -769,9 +807,9 @@ Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
 	
-### Historial deployments<a name="historial"></a>
+### Historial/rollout<a name="historial"></a>
 		
-Podemos también revisar el historial de los despliegues realizados y de uno en concreto:
+Podemos también revisar el historial de los despliegues realizados y de uno en concreto.
 
 		$ kubectl rollout history deployment.v1.apps/nginx-deployment
 			deployment.apps/nginx-deployment 
@@ -794,6 +832,16 @@ Podemos también revisar el historial de los despliegues realizados y de uno en 
  			     Environment:	<none>
  			     Mounts:	<none>
  			  Volumes:	<none>
+
+También podemos cambiar de versión. Vamos a volver a la anterior.
+
+		$ kubectl rollout undo deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment
+
+O especificarlo con un parámetro.
+
+		$ kubectl rollout undo deployment.v1.apps/nginx-deployment --to-revision=2
+			deployment.apps/nginx-deployment
 
 ### Escalar pods horizontal<a name="escalar"></a>
 
@@ -819,11 +867,21 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 			nginx-deployment-5d59d67564-mnr6b   1/1     Running   0          47s
 			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          53m
 
+### Pausar y reanudar deployment
+
+Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes comandos.
+
+		$ kubectl rollout pause deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment paused
+
+		$ kubectl rollout resume deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment resumed
+
 ---
 
 # SERVICE/ENDPOINT<a name="service"></a>
 
-![](images/service.png)
+![](images/service2.svg)
 
 El elemento **service** es el encargado de balancear la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
 
@@ -833,7 +891,7 @@ El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones 
 El **endpoint** de un servicio es el encargado de guardar la lista de direcciones IP de los pods, en el caso de que un pod muera y se arranque otro, borrará la IP del pod muerto y añadirá la del pod nuevo. Las IP's de los pods son dinámicas.
 
 
-### Agupación de pods en servicios
+### Agupación de pods en servicios (labels)
 
 Los pods pueden ser etiquetados con metadatos. Estos metadatos posteriormente pueden ser usados por otros objetos Kubernetes (p.e. ReplicaSet, Deployment) para seleccionar los pods y crear una unidad lógica (p.e. todas las réplicas de un contenedor de frontend)
 
@@ -890,13 +948,18 @@ En función del ámbito de la exposición del servicio tenemos cuatro tipos de s
 
 - **Cluster IP:** El servicio recibe una IP interna a nivel de clúster y hace que el servicio sólo sea accesible al mismo nivel.
 
+![](images/clusterip.png)
+
 - **NodePort:** Expone el servicio fuera del clúster concatenando la IP del nodo en el que está el pod y un número de puerto entre 30000 y 32767, que es el mismo en todos los nodos
+
+![](images/nodeport.png)
 
 - **LoadBalancer:** Crea en cloud, si es posible, un balanceador externo con una IP externa asignada.
 
+![](images/loadbalancer.png)
+
 - **ExternalName:** Expone el servicio usando un nombre arbitrario (especificado en externalName)
 
-![](images/service2.svg)
 
 
 ### Desplegar servicio
