@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ldap.edt.org
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: ldap.edt.org
+    spec:
+      containers:
+      - name: ldap
+        image: isx43457566/ldap20:latest
+        ports:
+        - containerPort: 389
