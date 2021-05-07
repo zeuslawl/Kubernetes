@@ -44,17 +44,19 @@
 
 	- **[Minikube](#minikube)**
 
+		- **[Comandos básicos minikube](#comandosminikube)**
+
 
 - **[Replicasets](#replicaset)**
 
 
 - **[Deployments](#deployment)**
 	
-	- **[Creación](#creardp)**
+	- **[Crear](#creardp)**
 
 	- **[Actualizar](#actualizardp)**
 
-	- **[Historial](#historialdp)**
+	- **[Historial/rollout](#historialdp)**
 
 	- **[Escalar app](#escalar)**
 
@@ -71,8 +73,6 @@
 - **[Namespaces](#namespaces)**
 
 	- **[Administración](#admin)**
-
-	- **[Creación volumes]()**
 
 
 - **[Volumes](#volumes)**
@@ -267,9 +267,9 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 
 ---
 
-# INSTALACIÓN EN ENTORNO DE PRUEBAS<a name="instalacion"></a>
+# INSTALACIÓN<a name="instalacion"></a>
 
-## Requisitos:<a name="requisitos"></a>
+## Requisitos hardware<a name="requisitos"></a>
 
 - Sistema operativo:
 	- Ubuntu 16.+
@@ -284,7 +284,7 @@ Los Pods individuales no están diseñados para ejecutar varias instancias de la
 - 1GB mínimo de RAM para workers nodes
 - 2 CPUs mínimo
 
-## Elementos:<a name="elementos"></a>
+## Elementos<a name="elementos"></a>
 
 
 Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
@@ -306,7 +306,7 @@ Debemos instalar los siguientes componentes:
 		$ dnf -y install kubeadm kubelet kubectl
 
 
-## Instalar Minikube en Fedora 32<a name="minikube"></a>
+## Minikube. Instalación en Fedora 32<a name="minikube"></a>
 
 Para trabajar con ambientes de Kubernetes normalmente es más sencillo poder instalar 
 un cluster local en nuestro equipo que nos permita probar de una forma más expedita sin 
@@ -430,9 +430,45 @@ Ejemplo de 4GB de memoria RAM
 
 	1024*4= 4096
 
+
+## Comandos básicos minikube
+
+	Encender
+		$ minikube start
+	
+	Detener
+		$ minikube stop
+
+	Pausar 
+		$ minikube pause
+		
+	Reanudar
+		$ minikube unpause
+
+	Status 
+		$ minikube status
+
+	Obtener url service
+		$ minikube service [service_name]
+
+	Obtener IP clúster
+		$ minikube ip
+
+	Copiar fichero al clúster
+		$ minikube cp [path/file]
+
+	Versión	
+		$ minikube version
+
+	Logs
+		$ minikube logs
+
+	Eliminar
+		$minikube delete
+
 ---
 
-# REPLICASET<a name="replicaset"></a>
+# REPLICASETS<a name="replicaset"></a>
 
 ![](images/replicaset.png)
 
@@ -591,7 +627,7 @@ Eliminamos el replicaset
 
 ---
 
-# DEPLOYMENT<a name="deployment"></a>
+# DEPLOYMENTS<a name="deployment"></a>
 
 Una configuración de deployment pide a Kubernetes que cree y actualice las instancias de una aplicación.
 Tras crear el deployment, el control plane organiza las instancias de aplicación en los nodos disponibles del cluster.
@@ -681,7 +717,7 @@ También podemos ver las etiquetas (**labels**) creadas automáticamente.
 			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 
-### Actualizar deployment (cambio versión app)<a name="actualizar"></a>
+### Actualizar deployment<a name="actualizar"></a>
 
 Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
 	
@@ -809,9 +845,9 @@ Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
 	
-### Historial deployments<a name="historial"></a>
+### Historial/rollout<a name="historial"></a>
 		
-Podemos también revisar el historial de los despliegues realizados y de uno en concreto:
+Podemos también revisar el historial de los despliegues realizados y de uno en concreto.
 
 		$ kubectl rollout history deployment.v1.apps/nginx-deployment
 			deployment.apps/nginx-deployment 
@@ -834,6 +870,16 @@ Podemos también revisar el historial de los despliegues realizados y de uno en 
  			     Environment:	<none>
  			     Mounts:	<none>
  			  Volumes:	<none>
+
+También podemos cambiar de versión. Vamos a volver a la anterior.
+
+		$ kubectl rollout undo deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment
+
+O especificarlo con un parámetro.
+
+		$ kubectl rollout undo deployment.v1.apps/nginx-deployment --to-revision=2
+			deployment.apps/nginx-deployment
 
 ### Escalar pods horizontal<a name="escalar"></a>
 
@@ -859,11 +905,21 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 			nginx-deployment-5d59d67564-mnr6b   1/1     Running   0          47s
 			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          53m
 
+### Pausar y reanudar deployment
+
+Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes comandos.
+
+		$ kubectl rollout pause deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment paused
+
+		$ kubectl rollout resume deployment.v1.apps/nginx-deployment
+			deployment.apps/nginx-deployment resumed
+
 ---
 
-# SERVICE/ENDPOINT<a name="service"></a>
+# SERVICES/ENDPOINTS<a name="service"></a>
 
-![](images/service.png)
+![](images/service2.svg)
 
 El elemento **service** es el encargado de balancear la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
 
@@ -873,7 +929,7 @@ El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones 
 El **endpoint** de un servicio es el encargado de guardar la lista de direcciones IP de los pods, en el caso de que un pod muera y se arranque otro, borrará la IP del pod muerto y añadirá la del pod nuevo. Las IP's de los pods son dinámicas.
 
 
-### Agupación de pods en servicios
+### Agupación de pods en servicios (labels)
 
 Los pods pueden ser etiquetados con metadatos. Estos metadatos posteriormente pueden ser usados por otros objetos Kubernetes (p.e. ReplicaSet, Deployment) para seleccionar los pods y crear una unidad lógica (p.e. todas las réplicas de un contenedor de frontend)
 
@@ -930,13 +986,18 @@ En función del ámbito de la exposición del servicio tenemos cuatro tipos de s
 
 - **Cluster IP:** El servicio recibe una IP interna a nivel de clúster y hace que el servicio sólo sea accesible al mismo nivel.
 
+![](images/clusterip.png)
+
 - **NodePort:** Expone el servicio fuera del clúster concatenando la IP del nodo en el que está el pod y un número de puerto entre 30000 y 32767, que es el mismo en todos los nodos
+
+![](images/nodeport.png)
 
 - **LoadBalancer:** Crea en cloud, si es posible, un balanceador externo con una IP externa asignada.
 
+![](images/loadbalancer.png)
+
 - **ExternalName:** Expone el servicio usando un nombre arbitrario (especificado en externalName)
 
-![](images/service2.svg)
 
 
 ### Desplegar servicio
@@ -2367,12 +2428,14 @@ AL primero accedemos por dominio y al segundo por ruta y dominio a la vez.
 ![](images/cluster.png)
 
 # Instalación
+
 En este ejemplo de instalación se muestra como instalar un cluster de tres máquinas,
-un master ( control-plane ) y dos workers, 
-esta instalación se realiza en máquinas virtuales fedora32 
+un master (control-plane) y dos workers, 
+esta instalación se realiza en máquinas virtuales Fedora 32 
 y la tipología del master es stacked.
 
 ### Preparación de nodos
+
 Asignar hostname a cada nodo
 
 	$ hostnamectl set-hostname master
@@ -2389,6 +2452,7 @@ Asignar hostname a cada nodo
 	$ sed -i '/ swap / s/^/#/' /etc/fstab
 
 ### Resolución de nombres
+
 	/etc/hosts
 
 	127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -2398,6 +2462,7 @@ Asignar hostname a cada nodo
 	192.168.122.4 node2
 
 ### Ip fijas (para cada nodo)
+
 	[root@master ~]# cat /etc/sysconfig/network-scripts/ifcfg-enp1s0 
 	TYPE=Ethernet
 	PROXY_METHOD=none
@@ -2424,6 +2489,7 @@ Asignar hostname a cada nodo
 
 
 ### Deshabilitar firewalld y habilitar forwarding
+
 	$ systemctl stop firewalld
 
 	$ systemctl disable firewalld
@@ -2443,19 +2509,25 @@ Asignar hostname a cada nodo
 	[root@node1 ~]#	modprobe br_netfilter
 
 	[root@node1 ~]# sysctl -p
-	net.bridge.bridge-nf-call-ip6tables = 1
-	net.bridge.bridge-nf-call-iptables = 1
+		net.bridge.bridge-nf-call-ip6tables = 1
+		net.bridge.bridge-nf-call-iptables = 1
 
 
 ### Instalar servicios
+
 En todos los nodos es necesario instalar docker, kubelet, kubectl, kubeadm.
 
+	$ sudo dnf install -y kubelet kubectl kubeadm
+
+
 ### Instalación de docker
+
 https://docs.docker.com/engine/install/fedora/
+
 
 ### Instalación de kubeam, kubectl, kubelet
 
-	# Añadir repositorio de kubernetes
+	# Añadimos repositorio de kubernetes
 
 		cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 		[kubernetes]
@@ -2474,14 +2546,14 @@ https://docs.docker.com/engine/install/fedora/
 
 		$ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
-	# instalar servicios y habilitar kubelet (Fedora 32
+	# instalamos servicios y habilitamos kubelet (Fedora 32
 		$ dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 		$ systemctl enable --now kubelet
 
 
 	[root@master ~]# $ kubeadm version
-	kubeadm version: &version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCommit:"cb303e613a121a29364f75cc67d3d580833a7479", GitTreeState:"clean", BuildDate:"2021-04-08T16:30:03Z", GoVersion:"go1.16.1", Compiler:"gc", Platform:"linux/amd64"}
+		kubeadm version: &version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCommit:"cb303e613a121a29364f75cc67d3d580833a7479", GitTreeState:"clean", BuildDate:"2021-04-08T16:30:03Z", GoVersion:"go1.16.1", Compiler:"gc", Platform:"linux/amd64"}
 
 
 
@@ -2496,8 +2568,8 @@ en nuestro caso utilizaremos el addon calico.
 
 	$ kubeadm init --pod-network-cidr=192.168.0.0/16
 
-Descargará imagenes y tardará un poco.(dependiendo la conexión)
 
+Descargará imagenes y tardará un poco.(dependiendo la conexión)
 
 Una vez finalizado el comando kubeadm init --pod-network-cidr=192.168.0.0/16 nos saldrá lo siguiente:
 
@@ -2524,8 +2596,7 @@ Una vez finalizado el comando kubeadm init --pod-network-cidr=192.168.0.0/16 nos
 	$ kubeadm join 192.168.122.2:6443 --token cp5ayc.pbsbruka2leselbe \
        --discovery-token-ca-cert-hash sha256:d41acb35ced40eae84f731f2892a8c131e55a63fa7c663f7b0555e23c713480d 
 
-NOTA: Es muy importante guardarse bien la línea de kubeadm join ya que con esta juntaremos los nodos al master.
-
+Es muy importante guardarse bien la línea de kubeadm join ya que con esta juntaremos los nodos al master.
 
 En caso de no querer gestionar el cluster como root y quererlo gestionar como usuario.
 
@@ -2535,24 +2606,26 @@ En caso de no querer gestionar el cluster como root y quererlo gestionar como us
 
 	[master@master ~]$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-### Aplico el addon para gestionar las redes de Pods
+
+### Addon para gestionar las redes de Pods
+
 	$ kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml
 
 
-### Juntar nodos worker
+### Enlazar nodos worker
+
 Para juntar un worker al nodo master simplemente hay que ejecutar kubeadm join con el token del master.
 
 	$ kubeadm join 192.168.122.2:6443 --token c2bn4c.qzpskak8ryp1uotd \
 		--discovery-token-ca-cert-hash sha256:485a9c649a4d2a4ad9ec03932f6353fc559a1a60dbf1fe00bf71d8e57c6b6b83 
 
-En caso de no tener el token, siempre se puede crear uno nuevo desde el master con
+En caso de no tener el token, siempre se puede crear uno nuevo desde el master con el siguiente comando:
 
  	$ kubeadm token create --print-join-command
 
 
 Comprobamos desde el master que hemos añadido el nodo y asignaremos el nodo como worker para identificarlo correctamente.
-
-### Nodo añadido	
+	
 	[root@master ~]# kubectl get nodes
 	NAME     STATUS   ROLES                  AGE   VERSION
 	master   Ready    control-plane,master   68m   v1.21.0
@@ -2561,20 +2634,20 @@ Comprobamos desde el master que hemos añadido el nodo y asignaremos el nodo com
 ### Añadir nodo como worker
 
 	[root@master ~]# kubectl label node node1 node-role.kubernetes.io/worker=worker 
-	node/node1 labeled
+		node/node1 labeled
 
 	[root@master ~]# kubectl get nodes
-	NAME     STATUS   ROLES                  AGE     VERSION
-	master   Ready    control-plane,master   71m     v1.21.0
-	node1    Ready    worker                 3m59s   v1.21.0
+		NAME     STATUS   ROLES                  AGE     VERSION
+		master   Ready    control-plane,master   71m     v1.21.0
+		node1    Ready    worker                 3m59s   v1.21.0
 
 	[root@master ~]# kubectl label nodes node1 node=worker1
-	node/node1 labeled
+		node/node1 labeled
 
 	[root@master ~]# kubectl get nodes --show-labels
-	NAME     STATUS   ROLES                  AGE     VERSION   LABELS
-	master   Ready    control-plane,master   74m     v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=master,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
-	node1    Ready    worker                 6m26s   v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=node1,kubernetes.io/os=linux,node-role.kubernetes.io/worker=worker,node=worker1
+		NAME     STATUS   ROLES                  AGE     VERSION   LABELS
+		master   Ready    control-plane,master   74m     v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=master,kubernetes.io/os=linux,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,node.kubernetes.io/exclude-from-external-load-balancers=
+		node1    Ready    worker                 6m26s   v1.21.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=node1,kubernetes.io/os=linux,node-role.kubernetes.io/worker=worker,node=worker1
 
 
 ### Eliminar un nodo
