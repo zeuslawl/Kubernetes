@@ -935,7 +935,7 @@ Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes
 ![](images/service2.svg)
 
 
-El elemento **service** es el encargado de balancear la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
+El elemento **service** es el conjunto abstracto de pods que queremos exponer. Balancea la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
 
 El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones que puede llegar a recibir al mismo tiempo, ya que se distribuirán entre los múltiples pods en vez de uno solo, es decir un cliente hace la petición a una IP y se encarga a redirigir esa petición al pod indicado.
 
