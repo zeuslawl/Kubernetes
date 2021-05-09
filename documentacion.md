@@ -153,17 +153,15 @@ Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyect
 
 Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las siguientes:
 
-- **Escalado vertical.** En función del uso de CPU que hagamos Kubernetes nos permite el escalado vertical de nuestras aplicaciones de manera automática (autoescalado) o manual (comando).
+- **Escalado.** Kubernetes permite escalar nuestra aplicaciones en función del número de réplicas que necesitemos de manera automática (autoescalado) o manual (comando).
 
-- **Reparación automática.** En caso de ocurrir un fallo en un contenedor podemos reiniciar automáticamente, así como reemplazarlo o replanificarlo cuando un nodo muere. También nos ofrece la posibilidad de reparar aquellos health checks definidos por el usuario que no respondan.
+- **Reparación automática.** En caso de ocurrir un fallo en un contenedor podemos reiniciar automáticamente, así como reemplazarlo o replanificarlo cuando un nodo muere.
 
 - **Planificación de nodos y contenedores.** Kubernetes nos ayuda a decidir en qué nodo se ejecutará cada contenedor, en función de los recursos necesarios y otras restricciones. Además, podemos mezclar cargas de trabajo críticas y best-effort con el objetivo de potenciar el ahorro de recursos.
 
 - **Despliegues y rollbacks automáticos.** Podemos desplegar los cambios de manera progresiva cuando actualizamos una aplicación o cambiamos su configuración, y así poder realizar un rollback automático en caso de fallo en alguna de las instancias.
 
-- **Orquestador de contenedores.** Kubernetes permite montar de forma automática el sistema de almacenamiento necesario para los contenedores: en modo local, en un proveedor de cloud pública, o en un sistema de red como NFS, Flocker o Gluster.
-
-- **Almacenamiento persistente.** K8s goza de soporte en plataformas como Amazon Web Services o Google Cloud Platform, y los proveedores (Red Hat, Dell EMC, NetApp, etc) le proporcionan almacenamiento persistente.
+- **Almacenamiento persistente.** Kubernetes permite montar de forma automática el sistema de almacenamiento necesario para los contenedores: en modo local, en un proveedor de cloud pública, o en un sistema de red como NFS, Flocker o Gluster. Tien soporte en plataformas como Amazon Web Services o Google Cloud Platform, y los proveedores (Red Hat, Dell EMC, NetApp, etc) le proporcionan almacenamiento persistente.
 
 - **Descubrimiento de servicios.** Con Kubernetes asignamos a los contenedores sus propias direcciones IP y un nombre DNS específico para cada conjunto de contenedores. Así, no resulta necesario utilizar recursos externos para el descubrimiento de servicios.
 
@@ -175,7 +173,9 @@ Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las sig
 
 # ARQUITECTURA<a name="arquitectura"></a>
 
+
 ![](images/archi3.png)
+
 
 ## **Clústers**<a name="clusters"></a>
 
@@ -191,7 +191,9 @@ Podemos crear clusters en local, en el cloud, híbridos y también minikube, vir
 
 ## **Nodes**<a name="nodes"></a>
 
+
 ![](images/archi_cluster.png)
+
 
 Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como minion. Un nodo puede ser una máquina virtual o física, dependiendo del tipo de clúster. Hay dos tipos de nodos: master o control plane y workers. Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
@@ -241,7 +243,9 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 
 ## **Pods**<a name="pods"></a>
 
+
 ![](images/archi_pods2.png)
+
 
 Un Pod es un grupo de uno o más contenedores, con almacenamiento/red compartidos, y unas especificaciones de cómo ejecutar los contenedores. Los contenidos de un Pod son siempre coubicados, coprogramados y ejecutados en un contexto compartido. Un Pod modela un "host lógico" específico de la aplicación: contiene uno o más contenedores de aplicaciones relativamente entrelazados.
 
@@ -313,7 +317,9 @@ un cluster local en nuestro equipo que nos permita probar de una forma más expe
 tener que interactuar con un servidor externo. Una de las herramientas que nos sirve 
 para esta tarea es Minikube.
 
+
 ![](images/minikube.png)
+
 
 ### Prerequisitos
 
@@ -632,7 +638,9 @@ Eliminamos el replicaset
 Una configuración de deployment pide a Kubernetes que cree y actualice las instancias de una aplicación.
 Tras crear el deployment, el control plane organiza las instancias de aplicación en los nodos disponibles del cluster.
 
+
 ![](images/deployment.png)
+
 
 Una vez creadas las instancias de aplicación, el controlador de Deployment de Kubernetes monitoriza continuamente las instancias.
 Si un nodo en el que está una instancia cae o es eliminado, el controlador sustituye la instancia por otra en otro nodo disponible del cluster.
@@ -717,7 +725,10 @@ También podemos ver las etiquetas (**labels**) creadas automáticamente.
 			nginx-deployment-5d59d67564-csbz7   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 			nginx-deployment-5d59d67564-mvlml   1/1     Running   0          10m   app=nginx,pod-template-hash=5d59d67564
 
+
+
 ### Actualizar deployment<a name="actualizar"></a>
+
 
 Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
 	
@@ -881,6 +892,7 @@ O especificarlo con un parámetro.
 		$ kubectl rollout undo deployment.v1.apps/nginx-deployment --to-revision=2
 			deployment.apps/nginx-deployment
 
+
 ### Escalar pods horizontal<a name="escalar"></a>
 
 Otra de las funciones que nos ofrece deployment es la de poder escalar los pods del clúster de manera horizontal.
@@ -905,6 +917,7 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 			nginx-deployment-5d59d67564-mnr6b   1/1     Running   0          47s
 			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          53m
 
+
 ### Pausar y reanudar deployment
 
 Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes comandos.
@@ -921,6 +934,7 @@ Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes
 
 ![](images/service2.svg)
 
+
 El elemento **service** es el encargado de balancear la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
 
 El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones que puede llegar a recibir al mismo tiempo, ya que se distribuirán entre los múltiples pods en vez de uno solo, es decir un cliente hace la petición a una IP y se encarga a redirigir esa petición al pod indicado.
@@ -935,7 +949,9 @@ Los pods pueden ser etiquetados con metadatos. Estos metadatos posteriormente pu
 
 La siguiente imagen muestra como un servicio agrupa mediante el selector app:ngnix a aquellos pods que están etiquetados con app:ngnix.
 
+
 ![](images/service_labels.png)
+
 
 		$ vim nginx.yaml
 			apiVersion: apps/v1
@@ -1744,7 +1760,7 @@ Vamos a crear un usuario siguiendo los pasos que describimos a continuación:
 				    cluster: minikube
 				    extensions:
 				    - extension:
-				        last-update: Tue, 04 May 2021 09:39:54 CEST		
+				        last-update: Tue, 04 May 2021 09:39:54 CEST	
 				        provider: minikube.sigs.k8s.io
 				        version: v1.19.0	
 				      name: context_info
@@ -1935,7 +1951,7 @@ Para asignar este rol a un usuario o grupo se tiene que utilizar Rolebinding.
 			PolicyRule:
 			  Resources  Non-Resource URLs  Resource Names  Verbs
 			  ---------  -----------------  --------------  -----
-			  “pods”.“”  []                 []              [“get” “watch” “list”]				
+			  “pods”.“”  []                 []              [“get” “watch” “list”]
 
 ### RoleBinding
 
