@@ -147,7 +147,7 @@ Kubernetes (timonel o piloto en griego) es un software de orquestación de códi
 Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramientas y los servicios para Kubernetes están ampliamente disponibles.
 
 Kubernetes ofrece un entorno de administración centrado en contenedores, orquesta la infraestructura de cómputo, redes y almacenamiento para que las cargas de trabajo de los usuarios no tengan que hacerlo.
-Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyecto Borg y donado a la Cloud Native Foundation.
+Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyecto Borg (nombre que hace referencia a una raza de humanoides de la serie de ciencia ficción Star Trek) y donado a la Cloud Native Foundation.
 
 ## **¿Qué ofrece?**<a name="queofrece"></a>
 
