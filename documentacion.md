@@ -17,21 +17,21 @@
 		
 		- **[Master](#master)**
 
-			- [API-server](#api)
+			- **[API-server](#api)**
 				
-			- [Scheduler](#scheduler)
+			- **[Scheduler](#scheduler)**
 
-			- [Controller-manager](#controller)
+			- **[Controller-manager](#controller)**
 
-			- [etcd](#etcd)				
+			- **[etcd](#etcd)**				
 
 		- **[Workers](#workers)**
 
-			- [Container-runtime](#containerruntime)
+			- **[Container-runtime](#containerruntime)**
 
-			- [Kubetet](#kubelet)
+			- **[Kubetet](#kubelet)**
 
-			- [Kube Proxy](#kubeproxy)
+			- **[Kube Proxy](#kubeproxy)**
 	
 	- **[Pods](#pods)**
 
@@ -121,25 +121,24 @@
 - **[Creación clúster local](#clusterlocal)**
 
 
+- **[Proveedores de servicio](#proveedores)**
+	
+	- **[Google Kubernetes Engine (GKE)](#gke)**
+
+	- **[Amazon Elastic Kubernetes Service (EKS)](#eks)**
+
+	- **[Azure Kubernetes Service (AKS)](aks)**
+
+
 - **[Anexo](#anexo)**
 
 	- **[Comandos básicos kubectl](#comandos)**
 
 	- **[Helm](helm)**
 
-- **[Proveedores de servicio](#proveedores)**
-	
-	- **[Google Kubernetes Engine (GKE)]()**
-
-	- **[Amazon Elastic Kubernetes Service (EKS)]()**
-
-	- **[Azure Kubernetes Service]()**
-
 
 - **[Bibliografía](#biblio)**
 
-
-	
 
 ---
 
@@ -2713,20 +2712,60 @@ Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 
 # PROVEEDORES DE SERVICIO
 
-Hemos visto como implementar y a autogestionar nuestro propio servicio de Kubernetes, pero existen también diferentes plataformas que nos lo proporcionan.
+Hemos visto como implementar y autogestionar nuestro propio servicio de Kubernetes, pero existen también diferentes plataformas que nos lo proporcionan.
 POdemos implementar el clúster de Kubernetes en servicios administrados por proveedores, como Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), entro otros muchos.
 Al hacerlo no tenemos que administrar el control-plane del clúster, solo debemos preocuparnos por cómo implementar la aplicación y seleccionar el tipo de instancia.
 Aparte de eso, los proveedores manejan todas las demás inquietudes (soporte, entornos preconfigurados, alojamiento, ...)
 
+![](images/proveedores.jpg)
+
 ## Google Kubernetes Engine (GKE)
+
+Kubernetes fue creado por Google para su propia herramienta de orquestación de contenedores inicialmente llamada BORG, luego cambiaron su nombre a Omega; esta larga historia es la razón por la que se considera el servicio de Kubernetes administrado más avanzado.
+También incluye una verificación de estado y reparación automática de microservicios, registro y monitoreo. 
+Además, viene con escalado automático de cuatro vías y soporte para múltiples clústeres.
+
+Algunas de las características principales del servicio Google Kubernetes son:
+
+- Se inicia rápidamente con clústeres de un solo clic
+
+- Aprovecha un plano de control de alta disponibilidad que incluye clústeres regionales y multizona.
+
+- Elimina la sobrecarga operativa con canales de liberación, actualización automática y reparación automática.
+
+- Es seguro de forma predeterminada, incluido el escaneo de vulnerabilidades de las imágenes del contenedor y el cifrado de datos.
+
+- Monitoreo integrado en la nube con vistas específicas de infraestructura, aplicaciones y Kubernetes.
+
+- Función de escalado automático de cuatro vías: Autoescalado horizontal de pods basado en el uso de CPU o métricas personalizadas, autoescalado de clúster que funciona por grupo de nodos y autoescalado vertical de pods que escanea automáticamente el uso de CPU y memoria de los pods, y ajusta dinámicamente su CPU y aplicaciones de memoria en respuesta.
+Escala automáticamente el grupo de nodos y los clústeres en varios grupos de nodos, según los requisitos cambiantes de la carga de trabajo.
+
+Costo: GKE cobra 0.10 $ por hora por la administración del clúster de Kubernetes y cobra por el resto de servicios según una escala de precios.
 
 
 ## Amazon Elastic Kubernetes Service (EKS)
 
+El servicio web de Amazon tiene su propio servicio de Kubernetes administrado llamado EKS.
+También es otro servicio de Kubernetes administrado en el que no es necesario mantener o crear el control plane del clúster.
+EKS ejecuta un plano de control de clúster en varias zonas de disponibilidad para garantizar que mantiene una alta disponibilidad y reemplaza automáticamente las instancias en mal estado.
+Funciona con diferentes AWS para proporcionar escalabilidad y seguridad para su aplicación, como las siguientes:
 
-## Azure Kubernetes Service
+- Amazon ECR para imágenes de contenedor.
 
+- Equilibrio de carga elástico para distribución de carga.
 
+- IAM para autenticación.
+    
+- Amazon VPC para aislamiento.
+
+ EKS cobra 0.10 $ por hora por la administración del clúster de Kubernetes y cobra por los servicios subyacentes de acuerdo con una escala de precios.
+
+## Azure Kubernetes Service (AKS)
+
+AKS también es un servicio administrado de Kubernetes, que reduce la complejidad y la sobrecarga operativa de administrar Kubernetes al descargar gran parte de esa responsabilidad a Azure.
+Maneja todas sus tareas críticas, monitoreo de salud y mantenimiento. Ofrece Kubernetes sin servidor, una experiencia integrada de integración continua y entrega continua (CI / CD), y seguridad y gobernanza de nivel empresarial.
+
+Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo cobra por sus servicios subyacentes.
 
 ---
 
