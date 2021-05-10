@@ -62,7 +62,7 @@
 
 	- **[Historial/rollout](#historialdp)**
 
-	- **[Escalar app](#escalar)**
+	- **[Escalar app](#escalardp)**
 
 
 - **[Services/Endpoints](#service)**
@@ -110,14 +110,14 @@
 
 	- **[ClusterRole](#clusterrole)**
 
-	- **[ClusterRoleBinding](clusterrolebinding)**
+	- **[ClusterRoleBinding](#clusterrolebinding)**
 
-	- **[ServiceAccount](serviceaccount)**
+	- **[ServiceAccount](#serviceaccount)**
 
 
 - **[Ingress](#ingress)**
 
-	- **[Ingress Controller](ingresscontroller)**
+	- **[Ingress Controller](#ingresscontroller)**
 
 	- **[Instalación y configuración](#insconf)**
 
@@ -131,14 +131,14 @@
 
 	- **[Amazon Elastic Kubernetes Service (EKS)](#eks)**
 
-	- **[Azure Kubernetes Service (AKS)](aks)**
+	- **[Azure Kubernetes Service (AKS)](#aks)**
 
 
 - **[Anexo](#anexo)**
 
 	- **[Comandos básicos kubectl](#comandos)**
 
-	- **[Helm](helm)**
+	- **[Helm](#helm)**
 
 
 - **[Bibliografía](#biblio)**
@@ -510,7 +510,7 @@ Sin embargo, un deployment es un concepto de más alto nivel que gestiona replic
 
 Por lo tanto, se recomienda el uso de deployments en vez del uso directo de replicasets, a no ser que se necesite una orquestración personalizada de actualización o no se necesite las actualizaciones en absoluto.
 
-### Crear replicaset
+### Crear replicaset<a name="crearrp"></a>
 
 Realizamos un ejemplo de la ultilidad de este objeto:
 
@@ -582,7 +582,7 @@ Y también la información más detallada.
 			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-rrjtb
 			  Normal  SuccessfulCreate  17m   replicaset-controller  Created pod: frontend-4nwkk
 
-### Escalar pods con replicaset
+### Escalar pods con replicaset<a name="escalarrp"></a>
 
 Podemos escalar el número de réplicas del pod que hemos lanzado en caliente.
 Para ellos podemos modificar el fichero .yaml y cambiar el número de replicas, en este caso vamos a reducir a 3.
@@ -672,7 +672,7 @@ Esta característica de recuperación de fallos mediante la creación de nuevas 
 Al crear un deployment se especifica la imagen del contenedor que usará la aplicación y el número de réplicas que se quieren mantener en ejecución.
 El número de réplicas se puede modificar en cualquier momento actualizando el deployment.
 
-### Crear deployment<a name="crear"></a>
+### Crear deployment<a name="creardp"></a>
 
 Vamos a crear un ejemplo de un deployment que crea un replicaset de pods de un servidor wen nginx.
 
@@ -749,7 +749,7 @@ También podemos ver las etiquetas (**labels**) creadas automáticamente.
 
 
 
-### Actualizar deployment<a name="actualizar"></a>
+### Actualizar deployment<a name="actualizardp"></a>
 
 
 Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
@@ -878,7 +878,7 @@ Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
 	
-### Historial/rollout<a name="historial"></a>
+### Historial/rollout<a name="historialdp"></a>
 		
 Podemos también revisar el historial de los despliegues realizados y de uno en concreto.
 
@@ -915,7 +915,7 @@ O especificarlo con un parámetro.
 			deployment.apps/nginx-deployment
 
 
-### Escalar pods horizontal<a name="escalar"></a>
+### Escalar pods horizontal<a name="escalardp"></a>
 
 Otra de las funciones que nos ofrece deployment es la de poder escalar los pods del clúster de manera horizontal.
 		
@@ -967,7 +967,7 @@ El **endpoint** de un servicio es el encargado de guardar la lista de direccione
 Las IP's de los pods son dinámicas.
 
 
-### Agupación de pods en servicios (labels)
+### Agupación de pods en servicios (labels)<a name="agrupacion"></a>
 
 Los pods pueden ser etiquetados con metadatos. Estos metadatos posteriormente pueden ser usados por otros objetos Kubernetes (p.e. ReplicaSet, Deployment) para seleccionar los pods y crear una unidad lógica (p.e. todas las réplicas de un contenedor de frontend)
 
@@ -1020,7 +1020,7 @@ Esta información está realmente en el objeto replicaSet creado por el deployme
 Cada pod tiene una dirección IP única, pero esa IP no se expone fuera del cluster sin lo que se denomina un servicio.
 Los servicios pemiten que las aplicaciones reciban tráfico.
 
-### Tipos de servicios
+### Tipos de servicios<a name="tipossv"></a>
 
 En función del ámbito de la exposición del servicio tenemos cuatro tipos de servicios:
 
@@ -1044,7 +1044,7 @@ Expone el servicio usando un nombre arbitrario (especificado en externalName).
 
 
 
-### Desplegar servicio
+### Desplegar servicio<a name="desplegar"></a>
 
 Vamos a crear un archivo de servicio denominado json-reader-service.yaml.
 Este fichero, básicamente, contiene entre otros el nombre de servicio, el tipo del servicio (ClusterIP, NodePort, etc), el puerto de acceso a los pods del despliegue y el selector que identifica al despliegue con el que se corresponde el servicio creado.
@@ -1144,7 +1144,7 @@ Vamos a visualizarlo:
 			kube-public       Active   23h
 			kube-system       Active   23h
 
-### Administración de namespaces
+### Administración de namespaces<a name="admin"></a>
 
 Crear namespace.
 
@@ -1207,7 +1207,7 @@ En cualquier caso, los volúmenes son montados por los pods y accederían a sus 
 
 ![](images/volumes.png)
 
-### Tipos de volumes
+### Tipos de volumes<a name="tiposvol"></a>
 
 - **emptyDir:**
 es un directorio vacio que se crea como volumen y va ligado a la vida del pod.
@@ -1255,7 +1255,7 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 
 - Delete: Borrar contenido
 
-### Creación volumes
+### Creación volumes<a name="creacionvol"></a>
 
 - **emptyDir**
 
@@ -1469,7 +1469,7 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 			pv-claim   Bound    pv-volume   10Gi       RWO            manual         4m21s
 
 					
-### StorageClass
+### StorageClass<a name="storageclass"></a>
 
 Es un objeto que proporciona a los administradores una forma de describir las clases de almacenamiento que ofrecen.
 Cada StorageClass contiene los campos provisioner, parameters y reclaimPolicy, que se usan cuando un PV que pertenece a la clase necesita almacenamiento dinámico.
@@ -1556,7 +1556,7 @@ Comprobamos como se ha deplegado el pod y accedemos a la app con la contraseña 
 
 			MariaDB [(none)]>
 
-### Configuración app ConfigMaps
+### Configuración app ConfigMaps<a name="configmaps"></a>
 
 Los objetos ConfigMap permiten almacenar datos en forma de pares clave-valor (tuplas) para que puedan usarse posteriormente en despliegues.
 Son muy útiles para terner diferentes configuraciones de un mismo contenedor y utilizar la más adecuada según nuestras necesidades.
@@ -1767,7 +1767,7 @@ Por defecto el acceso está restringido por completo, con lo cual construimos la
 ![](images/rbac1.png)
 
 
-### Usuarios
+### Usuarios<a name="usuarios"></a>
 En Kubernetes no tiene una API para crear usuarios, sin embargo puede autenticar y autorizar usuarios externos.
 Hay varios métodos para la autenticación (clients certs x509 , token files, passwords, ...).
 El método más utilizados son los certificados.
@@ -1879,12 +1879,12 @@ Comprobamos visualizando lo que hemos ejecutado.
 				    client-certificate: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_crt.pem
 				    client-key: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_key.pem
 	
-### Permisos
+### Permisos<a name="permisos"></a>
 Diferenciamos dos tipos de permisos según el ámbito en el que se aplican: Role y ClusterRole.
 El primero hace referencia a los permisos según namespace y el segundo al clúster.
 Por defecto, no se permite hacer nada a los usuarios.
 	
-### Role
+### Role<a name="role"></a>
 
 Un rol en Kubernetes RBAC define lo que hará con un grupo de recursos.
 Contiene un grupo de reglas que definen un conjunto de permisos.
@@ -1994,7 +1994,7 @@ Para asignar este rol a un usuario o grupo se tiene que utilizar Rolebinding.
 			  ---------  -----------------  --------------  -----
 			  “pods”.“”  []                 []              [“get” “watch” “list”]
 
-### RoleBinding
+### RoleBinding<a name="rolebinding"></a>
 
 ![](images/rbac3.png)
 
@@ -2049,7 +2049,7 @@ Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
 			  ----  ----     ---------
 			  User  roberto 
 
-### ClusterRole
+### ClusterRole<a name="clusterrole"></a>
 
 Tiene el mismo funcionamiento que Role con la diferencia que con este objeto aplicamos las reglas de permisos sobre el clúster, no sobre el namespace.
 En este caso vamos a asignar permisos de lectura de pods y deployments del clústeral usuario roberto.
@@ -2090,7 +2090,7 @@ En este caso vamos a asignar permisos de lectura de pods y deployments del clús
 			system:controller:clusterrole-aggregation-controller                   2021-05-05T07:07:01Z
 
 
-### ClusterRoleBinding
+### ClusterRoleBinding<a name="clusterrolebinding"></a>
 
 Se usa para otorgar permisos a un sujeto a nivel de clúster en todos los namespace
 En el siguiente ejemplo se crea un clusterRoleBinding de el grupo de usuarios dev asignando los permisos del clusterRole con nombre svc-clusterrole.
@@ -2123,7 +2123,7 @@ Nuestro usuario está asignado a ese grupo.
 			clusterrole.rbac.authorization.k8s.io/svc-clusterrole created
 			clusterrolebinding.rbac.authorization.k8s.io/cluster-svc created
 
-### ServiceAccount
+### ServiceAccount<a name="serviceaccount"></a>
 
 El serviceAccount es usado en Kubernetes para proporcionar una identidad a los pods.
 Todo Pod que quiera interaccionar con el API Server deberá de autenticarse con un ServiceAccount.
@@ -2340,13 +2340,13 @@ Además de dar a tus aplicaciones una URL externa que permita el acceso, tambié
 ![](images/ingress.png)
 
 
-### Ingress Controller
+### Ingress Controller<a name="ingresscontroller"></a>
 
 Es un contenedor que enruta las peticiones hacia los servicios correspondientes en base a la definición del recurso ingress.
 Hay una gran cantidad de controladores (Traefik, HAproxy, Envoy,...) pero nosotros vamos a utilizar el NGINX controller para exponer las apps.
 
 
-### Instalación y configuración Ingress
+### Instalación y configuración Ingress<a name="insconf"></a>
 
 Vamos a realizar un ejemplo desplegando la aplicación hello, world a cual le aplicaremos un ingress para exponerla y comprobaremos el resultado.
 
@@ -2746,7 +2746,7 @@ Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 		$ ipvsadm -C
 
 
-# PROVEEDORES DE SERVICIO
+# PROVEEDORES DE SERVICIO<a name="proveedores"></a>
 
 Hemos visto como implementar y autogestionar nuestro propio servicio de Kubernetes, pero existen también diferentes plataformas que nos lo proporcionan.
 
@@ -2757,7 +2757,7 @@ Aparte de eso, los proveedores manejan todas las demás inquietudes (soporte, en
 
 ![](images/proveedores.jpg)
 
-## Google Kubernetes Engine (GKE)
+## Google Kubernetes Engine (GKE)<a name="gke"></a>
 
 Kubernetes fue creado por Google para su propia herramienta de orquestación de contenedores inicialmente llamada BORG, luego cambiaron su nombre a Omega; esta larga historia es la razón por la que se considera el servicio de Kubernetes administrado más avanzado.
 
@@ -2782,7 +2782,7 @@ Escala automáticamente el grupo de nodos y los clústeres en varios grupos de n
 Costo: GKE cobra 0.10 $ por hora por la administración del clúster de Kubernetes y cobra por el resto de servicios según una escala de precios.
 
 
-## Amazon Elastic Kubernetes Service (EKS)
+## Amazon Elastic Kubernetes Service (EKS)<a name="eks"></a>
 
 El servicio web de Amazon tiene su propio servicio de Kubernetes administrado llamado EKS.
 También es otro servicio de Kubernetes administrado en el que no es necesario mantener o crear el control plane del clúster.
@@ -2800,7 +2800,7 @@ Funciona con diferentes AWS para proporcionar escalabilidad y seguridad para su 
 
  EKS cobra 0.10 $ por hora por la administración del clúster de Kubernetes y cobra por los servicios subyacentes de acuerdo con una escala de precios.
 
-## Azure Kubernetes Service (AKS)
+## Azure Kubernetes Service (AKS)<a name="aks"></a>
 
 AKS también es un servicio administrado de Kubernetes, que reduce la complejidad y la sobrecarga operativa de administrar Kubernetes al descargar gran parte de esa responsabilidad a Azure.
 Maneja todas sus tareas críticas, monitoreo de salud y mantenimiento. Ofrece Kubernetes sin servidor, una experiencia integrada de integración continua y entrega continua (CI / CD), y seguridad y gobernanza de nivel empresarial.
@@ -3046,7 +3046,7 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 		$ kubectl explain deploy.spec
 
 
-## HELM 
+## HELM<a name="helm"></a>
 
 ![](images/helm.png)
 
@@ -3095,7 +3095,7 @@ https://helm.sh/es/docs/intro/install/
 
 ---
 
-# BIBLIOGRAFÍA<a name="bibliografia"></a>
+# BIBLIOGRAFÍA<a name="biblio"></a>
 
 ![](images/bibliografia.jpg)
 
