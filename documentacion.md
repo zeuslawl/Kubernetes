@@ -2749,8 +2749,10 @@ Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 # PROVEEDORES DE SERVICIO
 
 Hemos visto como implementar y autogestionar nuestro propio servicio de Kubernetes, pero existen también diferentes plataformas que nos lo proporcionan.
+
 Podemos implementar el clúster de Kubernetes en servicios administrados por proveedores, como Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), entro otros muchos.
 Al hacerlo no tenemos que administrar el control-plane del clúster, solo debemos preocuparnos por cómo implementar la aplicación y seleccionar el tipo de instancia.
+
 Aparte de eso, los proveedores manejan todas las demás inquietudes (soporte, entornos preconfigurados, alojamiento, ...)
 
 ![](images/proveedores.jpg)
@@ -2758,6 +2760,7 @@ Aparte de eso, los proveedores manejan todas las demás inquietudes (soporte, en
 ## Google Kubernetes Engine (GKE)
 
 Kubernetes fue creado por Google para su propia herramienta de orquestación de contenedores inicialmente llamada BORG, luego cambiaron su nombre a Omega; esta larga historia es la razón por la que se considera el servicio de Kubernetes administrado más avanzado.
+
 También incluye una verificación de estado y reparación automática de microservicios, registro y monitoreo. 
 Además, viene con escalado automático de cuatro vías y soporte para múltiples clústeres.
 
@@ -2783,6 +2786,7 @@ Costo: GKE cobra 0.10 $ por hora por la administración del clúster de Kubernet
 
 El servicio web de Amazon tiene su propio servicio de Kubernetes administrado llamado EKS.
 También es otro servicio de Kubernetes administrado en el que no es necesario mantener o crear el control plane del clúster.
+
 EKS ejecuta un plano de control de clúster en varias zonas de disponibilidad para garantizar que mantiene una alta disponibilidad y reemplaza automáticamente las instancias en mal estado.
 Funciona con diferentes AWS para proporcionar escalabilidad y seguridad para su aplicación, como las siguientes:
 
