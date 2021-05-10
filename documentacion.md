@@ -48,7 +48,11 @@
 
 
 - **[Replicasets](#replicaset)**
+	
+	- **[Crear](#crearrp)**
 
+	- **[Escalar](#escalarrp)**
+	
 
 - **[Deployments](#deployment)**
 	
@@ -160,21 +164,28 @@ Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyect
 
 Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las siguientes:
 
-- **Escalado.** Kubernetes permite escalar nuestra aplicaciones en función del número de réplicas que necesitemos de manera automática (autoescalado) o manual (comando).
+- **Escalado.**
+Kubernetes permite escalar nuestra aplicaciones en función del número de réplicas que necesitemos de manera automática (autoescalado) o manual (comando).
 
-- **Reparación automática.** En caso de ocurrir un fallo en un contenedor podemos reiniciar automáticamente, así como reemplazarlo o replanificarlo cuando un nodo muere.
+- **Reparación automática.**
+En caso de ocurrir un fallo en un contenedor podemos reiniciar automáticamente, así como reemplazarlo o replanificarlo cuando un nodo muere.
 
-- **Planificación de nodos y contenedores.** Kubernetes nos ayuda a decidir en qué nodo se ejecutará cada contenedor, en función de los recursos necesarios y otras restricciones. Además, podemos mezclar cargas de trabajo críticas y best-effort con el objetivo de potenciar el ahorro de recursos.
+- **Planificación de nodos y contenedores.**
+Kubernetes nos ayuda a decidir en qué nodo se ejecutará cada contenedor, en función de los recursos necesarios y otras restricciones. Además, podemos mezclar cargas de trabajo críticas y best-effort con el objetivo de potenciar el ahorro de recursos.
 
-- **Despliegues y rollbacks automáticos.** Podemos desplegar los cambios de manera progresiva cuando actualizamos una aplicación o cambiamos su configuración, y así poder realizar un rollback automático en caso de fallo en alguna de las instancias.
+- **Despliegues y rollbacks automáticos.**
+Podemos desplegar los cambios de manera progresiva cuando actualizamos una aplicación o cambiamos su configuración, y así poder realizar un rollback automático en caso de fallo en alguna de las instancias.
 
-- **Almacenamiento persistente.** Kubernetes permite montar de forma automática el sistema de almacenamiento necesario para los contenedores: en modo local, en un proveedor de cloud pública, o en un sistema de red como NFS, Flocker o Gluster. Tien soporte en plataformas como Amazon Web Services o Google Cloud Platform, y los proveedores (Red Hat, Dell EMC, NetApp, etc) le proporcionan almacenamiento persistente.
+- **Almacenamiento persistente.**
+Kubernetes permite montar de forma automática el sistema de almacenamiento necesario para los contenedores: en modo local, en un proveedor de cloud pública, o en un sistema de red como NFS, Flocker o Gluster. Tien soporte en plataformas como Amazon Web Services o Google Cloud Platform, y los proveedores (Red Hat, Dell EMC, NetApp, etc) le proporcionan almacenamiento persistente.
 
-- **Descubrimiento de servicios.** Con Kubernetes asignamos a los contenedores sus propias direcciones IP y un nombre DNS específico para cada conjunto de contenedores. Así, no resulta necesario utilizar recursos externos para el descubrimiento de servicios.
+- **Descubrimiento de servicios.**
+Con Kubernetes asignamos a los contenedores sus propias direcciones IP y un nombre DNS específico para cada conjunto de contenedores. Así, no resulta necesario utilizar recursos externos para el descubrimiento de servicios.
 
-- **Seguridad.** Toda nuestra información sensible, como contraseñas o claves ssh, podemos almacenarla de manera segura en secrets. En este sentido, Kubernetes no expone nuestra información confidencial a la hora de desplegar y configurar nuestras aplicaciones.
+- **Seguridad.**
+Toda nuestra información sensible, como contraseñas o claves ssh, podemos almacenarla de manera segura en secrets. En este sentido, Kubernetes no expone nuestra información confidencial a la hora de desplegar y configurar nuestras aplicaciones.
 
-- **Clusters grandes y heterogéneos.** Kubernetes puede desplegarse en clusters muy grandes, incluyendo contenedores Docker. Por otro lado, nos permite crear un clúster como resultado de combinar diferentes máquinas virtuales o servidores locales.
+- **Clústers grandes y heterogéneos.** Kubernetes puede desplegarse en clusters muy grandes, incluyendo contenedores Docker. Por otro lado, nos permite crear un clúster como resultado de combinar diferentes máquinas virtuales o servidores locales.
 
 ---
 
@@ -186,13 +197,17 @@ Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las sig
 
 ## **Clústers**<a name="clusters"></a>
 
-Un clúster de Kubernetes es un conjunto de máquinas de nodos que ejecutan aplicaciones en contenedores. Si ejecuta Kubernetes, está ejecutando un clúster.
+Un clúster de Kubernetes es un conjunto de máquinas de nodos que ejecutan aplicaciones en contenedores.
+Si ejecuta Kubernetes, está ejecutando un clúster.
 
-Como mínimo, un clúster contiene un plano de control y una o varias máquinas informáticas o nodos. El control plane es el encargado de mantener el estado deseado del clúster y de controlar, por ejemplo, las aplicaciones que se ejecutan y las imágenes de contenedores que se utilizan. Los nodos son los que realmente ejecutan las aplicaciones y las cargas de trabajo.
+Como mínimo, un clúster contiene un plano de control y una o varias máquinas informáticas o nodos.
+El control plane es el encargado de mantener el estado deseado del clúster y de controlar, por ejemplo, las aplicaciones que se ejecutan y las imágenes de contenedores que se utilizan.
+Los nodos son los que realmente ejecutan las aplicaciones y las cargas de trabajo.
 
-La ventaja más importante de Kubernetes es la capacidad de programar y ejecutar contenedores en un grupo de máquinas, ya sean físicas o virtuales, en local o en un cloud, y esto es posible gracias al clúster. Los contenedores de Kubernetes no están ligados a ninguna máquina individual. De hecho, están aislados en el clúster.
+La ventaja más importante de Kubernetes es la capacidad de programar y ejecutar contenedores en un grupo de máquinas, ya sean físicas o virtuales, en local o en un cloud, y esto es posible gracias al clúster.
+Los contenedores de Kubernetes no están ligados a ninguna máquina individual. De hecho, están aislados en el clúster.
 
-Podemos crear clusters en local, en el cloud, híbridos y también minikube, virtualización de un cluster en un solo nodo virtual que se utiliza para hacer tests y que luego explicaremos con más detalle.
+Podemos crear clústers en local, en el cloud, híbridos y también minikube, virtualización de un cluster en un solo nodo virtual que se utiliza para hacer tests y que luego explicaremos con más detalle.
 
 
 
@@ -202,7 +217,8 @@ Podemos crear clusters en local, en el cloud, híbridos y también minikube, vir
 ![](images/archi_cluster.png)
 
 
-Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como minion. Un nodo puede ser una máquina virtual o física, dependiendo del tipo de clúster. Hay dos tipos de nodos: master o control plane y workers. Cada uno de ellos ejecuta diferentes procesos según su clasificación:
+Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como minion. Un nodo puede ser una máquina virtual o física, dependiendo del tipo de clúster. Hay dos tipos de nodos: master o control plane y workers.
+Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
 - ### **Node master:**<a name="master"></a>
 
@@ -227,9 +243,8 @@ Un nodo es una máquina de trabajo en Kubernetes, previamente conocida como mini
 
     - **Controladores de tokens y cuentas de servicio:** crean cuentas y tokens de acceso a la API por defecto para los nuevos Namespaces
 
-
 	· **Etcd:**<a name="etcd"></a>
-	 Es la base de datos donde se guarda toda la información que utiliza el cluster.
+	 Es la base de datos donde se guarda toda la información que utiliza el clúster.
 
 
 
@@ -942,12 +957,14 @@ Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes
 ![](images/service2.svg)
 
 
-El elemento **service** es el conjunto abstracto de pods que queremos exponer. Balancea la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
+El elemento **service** es el conjunto abstracto de pods que queremos exponer.
+Balancea la carga entre los diferentes pods. Lo gestiona mediante labels para identificarlos, sin importar que esos pods están en un replicaset u otro.
 
 El balanceo de carga sirve (en el caso de una web) para aumentar las peticiones que puede llegar a recibir al mismo tiempo, ya que se distribuirán entre los múltiples pods en vez de uno solo, es decir un cliente hace la petición a una IP y se encarga a redirigir esa petición al pod indicado.
 
 
-El **endpoint** de un servicio es el encargado de guardar la lista de direcciones IP de los pods, en el caso de que un pod muera y se arranque otro, borrará la IP del pod muerto y añadirá la del pod nuevo. Las IP's de los pods son dinámicas.
+El **endpoint** de un servicio es el encargado de guardar la lista de direcciones IP de los pods, en el caso de que un pod muera y se arranque otro, borrará la IP del pod muerto y añadirá la del pod nuevo.
+Las IP's de los pods son dinámicas.
 
 
 ### Agupación de pods en servicios (labels)
@@ -1007,19 +1024,23 @@ Los servicios pemiten que las aplicaciones reciban tráfico.
 
 En función del ámbito de la exposición del servicio tenemos cuatro tipos de servicios:
 
-- **Cluster IP:** El servicio recibe una IP interna a nivel de clúster y hace que el servicio sólo sea accesible al mismo nivel.
+- **Cluster IP:**
+El servicio recibe una IP interna a nivel de clúster y hace que el servicio sólo sea accesible al mismo nivel.
 
 ![](images/clusterip.png)
 
-- **NodePort:** Expone el servicio fuera del clúster concatenando la IP del nodo en el que está el pod y un número de puerto entre 30000 y 32767, que es el mismo en todos los nodos
+- **NodePort:**
+Expone el servicio fuera del clúster concatenando la IP del nodo en el que está el pod y un número de puerto entre 30000 y 32767, que es el mismo en todos los nodos
 
 ![](images/nodeport.png)
 
-- **LoadBalancer:** Crea en cloud, si es posible, un balanceador externo con una IP externa asignada.
+- **LoadBalancer:**
+Crea en cloud, si es posible, un balanceador externo con una IP externa asignada.
 
 ![](images/loadbalancer.png)
 
-- **ExternalName:** Expone el servicio usando un nombre arbitrario (especificado en externalName)
+- **ExternalName:**
+Expone el servicio usando un nombre arbitrario (especificado en externalName).
 
 
 
@@ -1096,7 +1117,8 @@ Comprobamos como el servicio crea IPs asociadas al deployment
 
 Namespaces son espacios de trabajo dentro de un clúster, donde cada namespace es independiente del otro.
 
-En clústers con varios usuarios los namespaces proporcionan una forma de agrupar los recursos de cada usuario. Además, los administradores pueden establecer cuotas a nivel de namespace limitando a los usuarios la cantidad de objetos que pueden crear y la cantidad de recursos del cluster que pueden consumir (p.e. CPU, memoria).
+En clústers con varios usuarios los namespaces proporcionan una forma de agrupar los recursos de cada usuario.
+Además, los administradores pueden establecer cuotas a nivel de namespace limitando a los usuarios la cantidad de objetos que pueden crear y la cantidad de recursos del cluster que pueden consumir (p.e. CPU, memoria).
 
 No es necesario usar múltiples espacios de nombres sólo para separar recursos ligeramente diferentes, como versiones diferentes de la misma aplicación: para ello utiliza etiquetas para distinguir tus recursos dentro del mismo espacio de nombres.
 
@@ -1104,11 +1126,14 @@ No es necesario usar múltiples espacios de nombres sólo para separar recursos 
 
 Inicialmente tenemos 3 namespaces por defecto:
 
-- **default:** Espacio de nombres por defecto.
+- **default:**
+Espacio de nombres por defecto.
 
-- **kube-system:** Espacio de nombres creado y gestionado por Kubernetes.
+- **kube-system:**
+Espacio de nombres creado y gestionado por Kubernetes.
 
-- **kube-public:** Espacio de nombres accesible por todos los usuarios, reservado para uso interno del cluster.
+- **kube-public:**
+Espacio de nombres accesible por todos los usuarios, reservado para uso interno del clúster.
 
 Vamos a visualizarlo:
 
@@ -1174,32 +1199,39 @@ Eliminar namespace.
 El almacenamiento en contenedores es efímero. Una vez que el contenedor se elimina son eliminados también sus ficheros.
 Pero además, cuando un contenedor falla, kubelet lo reiniciará con un estado limpio habiéndose perdido todo lo que había en sus ficheros.
 
-Kubernetes cuenta con una gran cantidad de tipos de volúmenes. Los hay de almacenamiento local, almacenamiento en el sistema de archivos de los nodos de Kubernetes, NFS y almacenamiento cloud, como en AWS, Azure, Google y OpenStack, etc.
+Kubernetes cuenta con una gran cantidad de tipos de volúmenes.
+Los hay de almacenamiento local, almacenamiento en el sistema de archivos de los nodos de Kubernetes, NFS y almacenamiento cloud, como en AWS, Azure, Google y OpenStack, etc.
 
-También permite volúmenes configmap y secret, útiles para el compartir entre pods datos de configuración o información sensible, como contraseñas. En cualquier caso, los volúmenes son montados por los pods y accederían a sus datos.
+También permite volúmenes configmap y secret, útiles para el compartir entre pods datos de configuración o información sensible, como contraseñas.
+En cualquier caso, los volúmenes son montados por los pods y accederían a sus datos.
 
 ![](images/volumes.png)
 
 ### Tipos de volumes
 
-- **emptyDir:** es un directorio vacio que se crea como volumen y va ligado a la vida del pod.
+- **emptyDir:**
+es un directorio vacio que se crea como volumen y va ligado a la vida del pod.
 Mientras el pod siga corriendo, el volumen seguirá existiendo y manteniendo sus datos.
 Si el pod muere, el volumen desaparece
 
-- **hostPath:** es un directorio que va ligado a la vida del nodo.
+- **hostPath:**
+es un directorio que va ligado a la vida del nodo.
 Si un pod muere y se despliega en otro nodo no podrá acceder a la información del volumen donde murió.
 Este volumen existirá hasta que se elimine o el nodo muera.
 
-- **Cloud Volumes:** son directorios de almacenamiento que proporcionan puntos de montanje en diferentes plataformas cloud (Azure, AWS, Google, OpenStack, ...).
+- **Cloud Volumes:**
+son directorios de almacenamiento que proporcionan puntos de montanje en diferentes plataformas cloud (Azure, AWS, Google, OpenStack, ...).
 
-- **Persistent Volumes (PV):** los recursos PersistentVolume se usan para administrar el almacenamiento duradero en un clúster.
+- **Persistent Volumes (PV):**
+los recursos PersistentVolume se usan para administrar el almacenamiento duradero en un clúster.
 A diferencia de lo que sucede con los volúmenes, el ciclo de vida de PersistentVolume es administrado por Kubernetes.
 No necesitamos crear y borrar manualmente el almacenamiento de copia de seguridad.
 Los recursos PersistentVolume son recursos de clúster que existen de forma independiente de los pods.
 Esto significa que el disco y los datos representados por un PersistentVolume continúan existiendo a medida que el clúster cambia y los pods se borran y se vuelven a crear.
 Los recursos PersistentVolume se pueden aprovisionar de manera dinámica a través de PersistentVolumeClaims, o el administrador del clúster puede crearlos de manera estática.
 
-- **Persistent Volumes Claims (PVC):** es una solicitud y una reclamación de un recurso PersistentVolume.
+- **Persistent Volumes Claims (PVC):**
+es una solicitud y una reclamación de un recurso PersistentVolume.
 Los objetos PVC solicitan un tamaño específico, un modo de acceso y una StorageClass para PersistentVolume.
 Si existe un PV que satisface la solicitud o se puede aprovisionar, PersistentVolumeClaim se vincula a ese PersistentVolume.
 Los pods usan reclamaciones como volúmenes. El clúster inspecciona la reclamación a fin de encontrar el volumen vinculado y lo activa para el pod.
@@ -1625,9 +1657,11 @@ Eliminamos el configMap
 
 ![](images/secrets.jpg)
 
-Los objetos Secret se usan para almacenar información sensible, como contraseñas, tokens, autenticación y claves ssh, etc. Almacenar esta información en objetos Secret es más seguro que colocarla en texto plano y legible como hace ConfigMap.
+Los objetos Secret se usan para almacenar información sensible, como contraseñas, tokens, autenticación y claves ssh, etc.
+Almacenar esta información en objetos Secret es más seguro que colocarla en texto plano y legible como hace ConfigMap.
 
-No obstante, los datos de los objetos Secret no están cifrados. Están codificados en base64, con lo cual hay que tener en cuenta que pueden hacerse visibles fácilmente.
+No obstante, los datos de los objetos Secret no están cifrados.
+Están codificados en base64, con lo cual hay que tener en cuenta que pueden hacerse visibles fácilmente.
 
 Creamos el secret y lo examinamos.
 
@@ -1964,7 +1998,8 @@ Para asignar este rol a un usuario o grupo se tiene que utilizar Rolebinding.
 
 ![](images/rbac3.png)
 
-El control de acceso basado en roles se usa para otorgar permiso a un sujeto en un clúster. Los sujetos no son más que un grupo de usuarios, servicios o equipos que intentan acceder a la API de Kubernetes.
+El control de acceso basado en roles se usa para otorgar permiso a un sujeto en un clúster.
+Los sujetos no son más que un grupo de usuarios, servicios o equipos que intentan acceder a la API de Kubernetes.
 Define qué operaciones puede realizar un usuario, servicio o grupo.
 
 Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
@@ -2015,6 +2050,7 @@ Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
 			  User  roberto 
 
 ### ClusterRole
+
 Tiene el mismo funcionamiento que Role con la diferencia que con este objeto aplicamos las reglas de permisos sobre el clúster, no sobre el namespace.
 En este caso vamos a asignar permisos de lectura de pods y deployments del clústeral usuario roberto.
 
@@ -2430,7 +2466,7 @@ Creamos y exponemos el segundo deployment y aplicamos cambio en las reglas.
 			ingress.networking.k8s.io/example-ingress configured
 
 Ahora comprobamos como podemos acceder tanto ala primera como a la segunda versión de la app.
-AL primero accedemos por dominio y al segundo por ruta y dominio a la vez.
+Al primero accedemos por dominio y al segundo por ruta y dominio a la vez.
 
 		$ curl hello-world.info
 			Hello, world!
@@ -2713,7 +2749,7 @@ Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 # PROVEEDORES DE SERVICIO
 
 Hemos visto como implementar y autogestionar nuestro propio servicio de Kubernetes, pero existen también diferentes plataformas que nos lo proporcionan.
-POdemos implementar el clúster de Kubernetes en servicios administrados por proveedores, como Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), entro otros muchos.
+Podemos implementar el clúster de Kubernetes en servicios administrados por proveedores, como Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), entro otros muchos.
 Al hacerlo no tenemos que administrar el control-plane del clúster, solo debemos preocuparnos por cómo implementar la aplicación y seleccionar el tipo de instancia.
 Aparte de eso, los proveedores manejan todas las demás inquietudes (soporte, entornos preconfigurados, alojamiento, ...)
 
@@ -2979,7 +3015,7 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 
 		$ kubectl run [pod_name] --image=busybox --rm -it --restart=Never -- /bin/bash
 
--- **Crear fichero mediante output yaml:**
+- **Crear fichero mediante output yaml:**
 
 		$ kubectl create deploy  [deploy_name] --image=nginx --dry-run -o yaml > deploy.yaml
 
