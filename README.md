@@ -3099,24 +3099,14 @@ https://helm.sh/es/docs/intro/install/
 
 ![](images/bibliografia.jpg)
 
-[Arquitectura](https://kubernetes.io/es/docs/concepts/architecture/)
+[Página oficial Kubernetes](https://kubernetes.io/)
 
-[Crear un cluster](https://kubernetes.io/es/docs/tutorials/kubernetes-basics/create-cluster/)
+[Red hat + Kubernetes](https://www.redhat.com/es/topics/containers/what-is-kubernetes)
 
-[Web editor md](https://stackedit.io/app#)
+[Curso Kubernetes (OpenWebinars)](https://openwebinars.net/buscador/?s=kubernetes)
 
-[explicación](https://www.itshellws.org/kubernetes/)
+[Vídeo arquitectura](https://www.youtube.com/watch?v=8C_SCDbUJTg)
 
-[Componentes arquitectura](https://aprenderdevops.com/arquitectura-de-kubernetes/)
+[Apuntes universidad de Almería](https://ualmtorres.github.io/SeminarioKubernetes/#truedeployments)
 
-[pdf universidad](https://core.ac.uk/download/pdf/288501998.pdf)
-
-[video arquitectura](https://www.youtube.com/watch?v=8C_SCDbUJTg)
-
-[instalación minikube](https://marvin.monge.me/post/instalar-minikube-en-fedora-32/)
-
-[git uni almeria](https://ualmtorres.github.io/SeminarioKubernetes/#truedeployments)
-
-https://www.devopsschool.com/tutorial/kubernetes/index.html
-
-https://www.josedomingo.org/pledin/2018/12/kubernetes-ingress/
+[Tutoriales devopsschool](https://www.devopsschool.com/tutorial/kubernetes/index.html)

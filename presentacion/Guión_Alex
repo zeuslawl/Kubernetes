@@ -66,8 +66,14 @@ ELEMENTOS (Alejandro y Roberto) 14 minutos en total
 5 Minutos (ALEJANDRO) 
 -Replicaset 
 
+Replicaset es el componente que se encarga de mantener el número de réplicas de los pods.
+
+Crea o elimina el número de pods que sea necesario para alcanzar el número que deseamos.
+
 
 -Deployment			
+
+
 
 
 -Volumenes
