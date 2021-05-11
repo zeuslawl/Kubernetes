@@ -17,29 +17,40 @@ Empezaremos explicando que es kubernetes y que ofrece, después mi compañero ex
 
 	¿Qué ofrece? 
 
+
 	Las principales carácteristicas de kubernetes son:
 
-	· Escalado:
-	
+	· Escalado: Permite escalar nuestras apliaciones en función del número de réplicas que necesitamos de manera automática.
+
 
 	· Reparación automática:
+
+	En caso de ocurrir un fallo en un contenedeor, se reinicia automáticamente. También se reemplaza cuando un nodo muere.
 
 
 	· Planificación de nodos y contenedores:
 
+	Kubernetes nos ayuda a decidir en qué nodo se ejecutará cada contenedor, en función de los recursos necesarios.
 
-	· Despliegues y rollbacks automáticos 
+
+	· Despliegues y rollbacks automáticos
+
+	Podemos desplegar los cambios de manera progresiva cuando actualizamos una aplicación y podemos hacer un rollback en caso de fallo (volver a la versión anterior). 
 
 
 	· Almacenamiento persistente:
 
-	· Descubrimiento de servicios
+	Kubernetes permite montar de forma automática el sistema de almacenamiento necesario para los contenedores: en modo local, en un proveedor de cloud o en un sistema de red como NFS.
 
+
+	· Servicios
+
+	Podemos asingar a los contenedores sus propias direcciones IP y un nombre DNS específico para cada conjunto de contenedores.
+
+	
 	· Seguridad
 
-
-	· Clústers grandes y herogéneos:
-
+	Kubernetes no expone nuestra información confidencial a la hora de desplegar y configurar nuestras aplicaciones, esto se consigue gracias a secrets.
 
 
 
@@ -47,9 +58,6 @@ Empezaremos explicando que es kubernetes y que ofrece, después mi compañero ex
 
 
 ARQUITECTURA (Roberto) 5 minutos
-
-
-
 
 
 ELEMENTOS (Alejandro y Roberto) 14 minutos en total
