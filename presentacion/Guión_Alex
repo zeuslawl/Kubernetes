@@ -17,7 +17,32 @@ Empezaremos explicando que es kubernetes y que ofrece, después mi compañero ex
 
 	¿Qué ofrece? 
 
-	Las principales carácteristicas  
+	Las principales carácteristicas de kubernetes son:
+
+	· Escalado:
+	
+
+	· Reparación automática:
+
+
+	· Planificación de nodos y contenedores:
+
+
+	· Despliegues y rollbacks automáticos 
+
+
+	· Almacenamiento persistente:
+
+	· Descubrimiento de servicios
+
+	· Seguridad
+
+
+	· Clústers grandes y herogéneos:
+
+
+
+
 
 
 
@@ -27,7 +52,7 @@ ARQUITECTURA (Roberto) 5 minutos
 
 
 
-ELEMENTOS (Alejandro y Roberto) 14
+ELEMENTOS (Alejandro y Roberto) 14 minutos en total
 
 5Minutos
 -Replicaset 
