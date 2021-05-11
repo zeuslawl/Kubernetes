@@ -500,7 +500,7 @@ Ejemplo de 4GB de memoria RAM
 
 ![](images/replicaset.png)
 
-Es el componente que se encarga de mantener el número de réplicas de los pods activa.
+Es el componente que se encarga de mantener el número de réplicas de los pods activos.
 Alcanza su propósito mediante la creación y eliminación de pods que sea necesario para alcanzar el número que deseamos.
 
 El enlace que un replicaset tiene hacia sus pods es a través del campo del Pod denominado metadata.ownerReferences, el cual indica qué recurso es el propietario del objeto actual.

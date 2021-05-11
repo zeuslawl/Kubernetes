@@ -62,21 +62,26 @@ ARQUITECTURA (Roberto) 5 minutos
 
 ELEMENTOS (Alejandro y Roberto) 14 minutos en total
 
-5Minutos
+
+5 Minutos (ALEJANDRO) 
 -Replicaset 
 
--Deployment
+
+-Deployment			
+
 
 -Volumenes
 
 
+
+(ROBERTO)
 -Namespaces
--Config Maps   5 Minutos
+-Config Maps   5 Minutos (ROBERTO)
 -Secret
 -RBAC
 
 -Services  
--Ingress    4 Minutos
+-Ingress    4 Minutos (ALEJANDRO)
 
 
 
