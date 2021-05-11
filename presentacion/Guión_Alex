@@ -12,6 +12,10 @@ Empezaremos explicando que es kubernetes y que ofrece, después mi compañero ex
 
 
 
+	¿Qué ofrece? 
+
+
+
 
 
 ARQUITECTURA (Roberto) 5 minutos
@@ -40,5 +44,5 @@ ELEMENTOS (Alejandro y Roberto) 14
 
 
 
-Ahora pasaremos a la parte demo y desplegaremos una app de mongo + mongo express. 
+Ahora pasaremos a la parte demo que consistirá en desplegar una app mongodb + mongo express que permite gestionar las bases de datos desde un navegador web. 
 
