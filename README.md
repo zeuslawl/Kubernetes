@@ -162,7 +162,7 @@ Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyect
 
 ## **¿Qué ofrece?**<a name="queofrece"></a>
 
-Las principales carácterísticas de K8s (abreviatura de Kubernetes) son las siguientes:
+Las principales características de K8s (abreviatura de Kubernetes) son las siguientes:
 
 - **Escalado.**
 Kubernetes permite escalar nuestra aplicaciones en función del número de réplicas que necesitemos de manera automática (autoescalado) o manual (comando).

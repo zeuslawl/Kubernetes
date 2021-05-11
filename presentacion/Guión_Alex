@@ -2,19 +2,22 @@ Guión presentación
 
 INTRO (Alejandro) 2 minutos
 
-Hola, como habeis visto en el video de la presentación hoy os enseñaremos como 
+Hola, como habéis visto en el vídeo de la presentación hoy os enseñaremos como 
 funciona kubernetes y la gran utilidad que tiene.
 
 Empezaremos explicando que es kubernetes y que ofrece, después mi compañero explicará su arquitectura y por último explicaremos sus elementos. 
 
 	¿Qué es Kubernetes? 
 
+	Kubernetes es un software de código libre que permite implementar, administrar y escalar aplicaciones.
+
+	Fue diseñado por Google en 2014
 
 
 
 	¿Qué ofrece? 
 
-
+	Las principales carácteristicas  
 
 
 
