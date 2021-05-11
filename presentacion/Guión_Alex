@@ -66,14 +66,24 @@ ELEMENTOS (Alejandro y Roberto) 14 minutos en total
 5 Minutos (ALEJANDRO) 
 -Replicaset 
 
-Replicaset es el componente que se encarga de mantener el número de réplicas de los pods.
+Replicaset es el componente que se encarga de mantener el número de réplicas en los pods.
 
-Crea o elimina el número de pods que sea necesario para alcanzar el número que deseamos.
+Crea o elimina el número de pods que sea necesario para alcanzar el número que deseamos. (de manera automática)
+
+En resumen, tenemos dos formas, o con comando o editando el fichero .yaml
+
+Sin embargo un deployment es un concepto de más alto nivel que gestiona replicasets y proporciona actualiaciones de forma declarativa de los pods.
+
+Por lo tanto se recomienda usar deployments en vez del uso directo de replicasets a no ser que no se necesite las actualizaciones. 
 
 
--Deployment			
+-Deployment
 
+El deployment, cuando creas un deployment, el master organiza las instancias de aplicación en los nodos disponibles del clúster además al crearlo, especificamos la aplicación y el número de réplicas que se quieren mantener en ejecución.
 
+Podemos modificar el número de réplicas en cualquier momento actualizando el deployment. 
+
+Una vez creadas si un nodo en el que está una instancia cae o es eliminado, el controlador sustituye la instancia por otra en otro nodo disponible del clúster.
 
 
 -Volumenes

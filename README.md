@@ -227,17 +227,17 @@ Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 	Consta de diferentes procesos:
 
 	· **API-Server:**<a name="api"></a>
-	Es el componenete que interactúa con el cliente. Se trata del frontend de Kubernetes, recibe las peticiones y actualiza acordemente el estado en etcd.
+	Es el componente que interactúa con el cliente. Se trata del frontend de Kubernetes, recibe las peticiones y actualiza acordemente el estado en etcd.
 
 	· **Scheduler:**<a name="scheduler"></a>
-	Este proceso se encarga de decidir en qúe nodo se ejecutaran los pods. Para ello tiene en cuenta los siguientes factores: requisitos de recursos, restricciones de hardware/software/políticas, afinidad y anti-afinidad, localización de datos dependientes, entre otros.
+	Este proceso se encarga de decidir en qué nodo se ejecutarán los pods. Para ello tiene en cuenta los siguientes factores: requisitos de recursos, restricciones de hardware/software/políticas, afinidad y anti-afinidad, localización de datos dependientes, entre otros.
 
 	· **Controller-manager:**<a name="controller"></a>
 	Es el componente que ejecuta los controles de k8s. Cada controlador es un proceso independiente, pero para reducir la complejidad, todos se compilan en un único binario y se ejecuta en un mismo proceso. Estos controladores incluyen:
 
-    - **Controlador de nodo:** es el responsable de detectar y responder cuándo un nodo deja de funcionar.
+    - **Controlador de nodo:** Es el responsable de detectar y responder cuándo un nodo deja de funcionar.
 
-    - **Controlador de replicación:** es el responsable de mantener el número correcto de pods para cada controlador de replicación del sistema.
+    - **Controlador de replicación:** Es el responsable de mantener el número correcto de pods para cada controlador de replicación del sistema.
     
     - **Controlador de endpoints:** construye el objeto Endpoints, es decir, hace una unión entre los Services y los Pods.
 
@@ -250,7 +250,7 @@ Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
 - ### **Node worker:**<a name="workers"></a>
 
-	El worker node, nos proporcionara un entrono de ejecución para las aplicaciones. Estas aplicaciones que se encuentran contenerizadas en pods y son controladas por los anteriores processos que hemos descrito del Control Plane que se ejecutan en el Master Node.
+	El worker node, nos proporcionará un entorno de ejecución para las aplicaciones. Estas aplicaciones que se encuentran contenerizadas en pods y son controladas por los anteriores procesos que hemos descrito del Control Plane que se ejecutan en el Master Node.
 
 	· **Container runtime:**<a name="containerruntime"></a>
 		es el software responsable de la ejecución y gestión de los contenedores.
@@ -271,7 +271,7 @@ Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
 Un Pod es un grupo de uno o más contenedores, con almacenamiento/red compartidos, y unas especificaciones de cómo ejecutar los contenedores. Los contenidos de un Pod son siempre coubicados, coprogramados y ejecutados en un contexto compartido. Un Pod modela un "host lógico" específico de la aplicación: contiene uno o más contenedores de aplicaciones relativamente entrelazados.
 
-Los contenedores dentro de un Pod comparten dirección IP y puerto, y pueden encontrarse a través de localhost. También pueden comunicarse entre sí mediante comunicaciones estándar entre procesos. Los contenedores en diferentes normalmente se comunican entre sí a través de las IP's.
+Los contenedores dentro de un Pod comparten dirección IP y puerto, y pueden encontrarse a través de localhost. También pueden comunicarse entre sí mediante comunicaciones estándar entre procesos. Los contenedores en nodos diferentes, normalmente se comunican entre sí a través de las IP's.
 
 Las aplicaciones dentro de un Pod también tienen acceso a volúmenes compartidos, que se definen como parte de un Pod y están disponibles para ser montados en el sistema de archivos de cada aplicación.
 
@@ -320,7 +320,7 @@ https://docs.docker.com/engine/install/
 
 Debemos instalar los siguientes componentes: 
 
-- **kubectl**: Aplicación cliente que interactúa con el cluster a través del API a través del API-Server y mediante la líniea de comandos.
+- **kubectl**: Aplicación cliente que interactúa con el cluster a través del API a través del API-Server y mediante la línea de comandos.
 
 - **kubeadm**: Instrucción que nos permite crear el cluster.
 
@@ -432,7 +432,7 @@ los siguientes comandos:
 		$ minikube delete
 
 Por defecto va a crear un cluster de un nodo con la última versión disponible de Kubernetes,
-el nodo se le asignarán los recursos:
+al nodo se le asignarán los recursos:
 
 * vCPU = 2
 * Memoria = 6000MB
@@ -508,11 +508,11 @@ El enlace que un replicaset tiene hacia sus pods es a través del campo del Pod 
 Un replicaset garantiza que un número específico de réplicas de un pod se está ejecutando en todo momento.
 Sin embargo, un deployment es un concepto de más alto nivel que gestiona replicasets y proporciona actualizaciones de forma declarativa de los pods junto con muchas otras características útiles.
 
-Por lo tanto, se recomienda el uso de deployments en vez del uso directo de replicasets, a no ser que se necesite una orquestración personalizada de actualización o no se necesite las actualizaciones en absoluto.
+Por lo tanto, se recomienda el uso de deployments en vez del uso directo de replicasets, a no ser que se necesite una orquestación personalizada de actualización o no se necesite las actualizaciones en absoluto.
 
 ### Crear replicaset<a name="crearrp"></a>
 
-Realizamos un ejemplo de la ultilidad de este objeto:
+Realizamos un ejemplo de la utilidad de este objeto:
 
 Analizamos el fichero de configuración
 
@@ -544,7 +544,7 @@ A través del fichero ymal lanzamos la configuración de la réplicas y kubernet
 		$ kubectl apply -f fronted.yaml
 			replicaset.apps/frontend created
 
-Comprovamos el estado del replicaset.
+Comprobamos el estado del replicaset.
 		
 		$ kubectl get replicasets
 			NAME       DESIRED   CURRENT   READY   AGE
@@ -585,7 +585,7 @@ Y también la información más detallada.
 ### Escalar pods con replicaset<a name="escalarrp"></a>
 
 Podemos escalar el número de réplicas del pod que hemos lanzado en caliente.
-Para ellos podemos modificar el fichero .yaml y cambiar el número de replicas, en este caso vamos a reducir a 3.
+Para ellos podemos modificar el fichero .yaml y cambiar el número de réplicas, en este caso vamos a reducir a 3.
 
 		$ vim frondend.yaml
 			apiVersion: apps/v1
@@ -612,7 +612,7 @@ Para ellos podemos modificar el fichero .yaml y cambiar el número de replicas, 
 		$ kubectl apply -f fronted.yaml
 			replicaset.apps/frontend configured
 
-Comprobamos como ha cambiado el número de pods que está corriendo en el orquestador.
+Comprobamos cómo ha cambiado el número de pods que está corriendo en el orquestador.
 
 		$ kubectl get pods
 			NAME             READY   STATUS    RESTARTS   AGE
@@ -674,7 +674,7 @@ El número de réplicas se puede modificar en cualquier momento actualizando el 
 
 ### Crear deployment<a name="creardp"></a>
 
-Vamos a crear un ejemplo de un deployment que crea un replicaset de pods de un servidor wen nginx.
+Vamos a crear un ejemplo de un deployment que crea un replicaset de pods de un servidor web nginx.
 
 		$ vim deployment-nginx
 			apiVersion: apps/v1
@@ -707,7 +707,7 @@ El campo selector define cómo el deployment identifica los pods que debe gestio
 
 **matchLabels** es un mapa de entradas {clave,valor}.
 
-El campo template contiene los siguientes sub-campos:
+El campo template contiene los siguientes subcampos:
 
 - Los Pods se etiquetan como app: nginx usando el campo **labels.**
 
@@ -824,7 +824,7 @@ También podemos editar el fichero .yaml. Ahora vamos a volver a la versión ini
   			  reason: MinimumReplicasAvailable
  			   status: "True"
 
-Comprobamos el estado del desployment y de los pods (debemos tener 3 réplicas).
+Comprobamos el estado del deployment y de los pods (debemos tener 3 réplicas).
 
 		$ kubectl rollout status deployment.v1.apps/nginx-deployment
 			deployment "nginx-deployment" successfully rolled out
@@ -942,7 +942,7 @@ Otra de las funciones que nos ofrece deployment es la de poder escalar los pods 
 
 ### Pausar y reanudar deployment
 
-Para pausar y reanudar un deployemt es tan sencillo como ejecutar los siguientes comandos.
+Para pausar y reanudar un deployment es tan sencillo como ejecutar los siguientes comandos.
 
 		$ kubectl rollout pause deployment.v1.apps/nginx-deployment
 			deployment.apps/nginx-deployment paused
@@ -967,7 +967,7 @@ El **endpoint** de un servicio es el encargado de guardar la lista de direccione
 Las IP's de los pods son dinámicas.
 
 
-### Agupación de pods en servicios (labels)<a name="agrupacion"></a>
+### Agrupación de pods en servicios (labels)<a name="agrupacion"></a>
 
 Los pods pueden ser etiquetados con metadatos. Estos metadatos posteriormente pueden ser usados por otros objetos Kubernetes (p.e. ReplicaSet, Deployment) para seleccionar los pods y crear una unidad lógica (p.e. todas las réplicas de un contenedor de frontend)
 
@@ -1203,14 +1203,14 @@ Kubernetes cuenta con una gran cantidad de tipos de volúmenes.
 Los hay de almacenamiento local, almacenamiento en el sistema de archivos de los nodos de Kubernetes, NFS y almacenamiento cloud, como en AWS, Azure, Google y OpenStack, etc.
 
 También permite volúmenes configmap y secret, útiles para el compartir entre pods datos de configuración o información sensible, como contraseñas.
-En cualquier caso, los volúmenes son montados por los pods y accederían a sus datos.
+En cualquier caso, los volúmenes son montados por los pods y accederán a sus datos.
 
 ![](images/volumes.png)
 
 ### Tipos de volumes<a name="tiposvol"></a>
 
 - **emptyDir:**
-es un directorio vacio que se crea como volumen y va ligado a la vida del pod.
+es un directorio vacío que se crea como volumen y va ligado a la vida del pod.
 Mientras el pod siga corriendo, el volumen seguirá existiendo y manteniendo sus datos.
 Si el pod muere, el volumen desaparece
 
@@ -1260,7 +1260,7 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 - **emptyDir**
 
 	Vamos a crear un primer ejemplo con emptyDir. Como hemos indicado antes, este tipo de volúmenes dejan de existir una vez el pod muere.
-	Con lo cual estos volúmenes se utilizan para guardar información que si perdermos nos es indeferente. Un ejemplo sería utlizarlo para chaché o memória volátil.
+	Con lo cual estos volúmenes se utilizan para guardar información que si perdermos nos es indiferente. Un ejemplo sería utilizarlo para caché o memoria volátil.
 	Lo creamos, ejecutamos el pod y observamos su contenido.
 		
 		$ vim emptydir.yaml
