@@ -1538,7 +1538,7 @@ También podemos configurarlo directamente pasando parámetros al cliente kubect
 
 		$ kubectl run mariadb --image=mariadb --env MYSQL_ROOT_PASSWORD=secret
 
-Comprobamos como se ha deplegado el pod y accedemos a la app con la contraseña que hemos configurado.
+Comprobamos como se ha desplegado el pod y accedemos a la app con la contraseña que hemos configurado.
 
 		$ kubectl get pods -l app=mariadb
 			NAME                                  READY   STATUS    RESTARTS   AGE
@@ -1559,7 +1559,7 @@ Comprobamos como se ha deplegado el pod y accedemos a la app con la contraseña 
 ### Configuración app ConfigMaps<a name="configmaps"></a>
 
 Los objetos ConfigMap permiten almacenar datos en forma de pares clave-valor (tuplas) para que puedan usarse posteriormente en despliegues.
-Son muy útiles para terner diferentes configuraciones de un mismo contenedor y utilizar la más adecuada según nuestras necesidades.
+Son muy útiles para tener diferentes configuraciones de un mismo contenedor y utilizar la más adecuada según nuestras necesidades.
 
 Hay que tener en cuenta que nuestros datos sensibles como las contraseñas estarán en texto plano.
 Para estos casos utilizaremos el objeto secrets que después explicaremos.
@@ -1770,7 +1770,7 @@ Por defecto el acceso está restringido por completo, con lo cual construimos la
 ### Usuarios<a name="usuarios"></a>
 En Kubernetes no tiene una API para crear usuarios, sin embargo puede autenticar y autorizar usuarios externos.
 Hay varios métodos para la autenticación (clients certs x509 , token files, passwords, ...).
-El método más utilizados son los certificados.
+El método más utilizado es el certificado.
 Debemos tener instalado el cliente kubectl ya que es el modo de interactuar con el API-Server.
 
 Vamos a crear un usuario siguiendo los pasos que describimos a continuación:
@@ -1822,7 +1822,7 @@ Vamos a crear un usuario siguiendo los pasos que describimos a continuación:
 				subject=CN = roberto, O = adm
 				Getting CA Private Key
 	
-- Como cliente, configuramos kubectl para acceder a al clúster de minikube, añadimos credenciales y creamos y accedemos a nuestro espacio de trabajo.
+- Como cliente, configuramos kubectl para acceder al clúster de minikube, añadimos credenciales y creamos y accedemos a nuestro espacio de trabajo.
 Comprobamos visualizando lo que hemos ejecutado.
 		
 			$ kubectl config set-cluster minikube --certificate-authority=ca.crt
@@ -2052,7 +2052,7 @@ Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
 ### ClusterRole<a name="clusterrole"></a>
 
 Tiene el mismo funcionamiento que Role con la diferencia que con este objeto aplicamos las reglas de permisos sobre el clúster, no sobre el namespace.
-En este caso vamos a asignar permisos de lectura de pods y deployments del clústeral usuario roberto.
+En este caso vamos a asignar permisos de lectura de pods y deployments del clúster al usuario roberto.
 
 		$ vim clusterrole.yaml
 			apiVersion: rbac.authorization.k8s.io/v1
@@ -2369,7 +2369,7 @@ Primeramente habilitamos el controlador NGINX Ingress y lo verificamos.
 			kube-scheduler-minikube            1/1     Running   0          23h
 			storage-provisioner                1/1     Running   0          23h
 
-Una vez comprobado que el contralador está habilitado desplegamos y exponemos la app por el puerto 8080 mediante node-port.
+Una vez comprobado que el controlador está habilitado desplegamos y exponemos la app por el puerto 8080 mediante node-port.
 
 		$ kubectl create deployment web --image=gcr.io/google-samples/hello-app:1.0
 			deployment.apps/web created
@@ -2618,7 +2618,7 @@ https://docs.docker.com/engine/install/fedora/
 
 ### Creación de master
 
-En la creación del master hay que tener en que red se crearan los Pods, esta opción kubernetes lo deja en addons externos,
+En la creación del master hay que tener en qué red se crearan los Pods, esta opción kubernetes lo deja en addons externos,
 en nuestro caso utilizaremos el addon calico.
 
 	Nota importante: El dns del cluster CoreDNS no se iniciará si no hay antes una red de Pods instalada.
@@ -2748,7 +2748,7 @@ Si desea restablecer las tablas IPVS, debe ejecutar el siguiente comando:
 
 # PROVEEDORES DE SERVICIO<a name="proveedores"></a>
 
-Hemos visto como implementar y autogestionar nuestro propio servicio de Kubernetes, pero existen también diferentes plataformas que nos lo proporcionan.
+Hemos visto cómo implementar y autogestionar nuestro propio servicio de Kubernetes, pero existen también diferentes plataformas que nos lo proporcionan.
 
 Podemos implementar el clúster de Kubernetes en servicios administrados por proveedores, como Amazon Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), entro otros muchos.
 Al hacerlo no tenemos que administrar el control-plane del clúster, solo debemos preocuparnos por cómo implementar la aplicación y seleccionar el tipo de instancia.
@@ -2802,7 +2802,7 @@ Funciona con diferentes AWS para proporcionar escalabilidad y seguridad para su 
 
 ## Azure Kubernetes Service (AKS)<a name="aks"></a>
 
-AKS también es un servicio administrado de Kubernetes, que reduce la complejidad y la sobrecarga operativa de administrar Kubernetes al descargar gran parte de esa responsabilidad a Azure.
+AKS también es un servicio administrado por Kubernetes, que reduce la complejidad y la sobrecarga operativa de administrar Kubernetes al descargar gran parte de esa responsabilidad a Azure.
 Maneja todas sus tareas críticas, monitoreo de salud y mantenimiento. Ofrece Kubernetes sin servidor, una experiencia integrada de integración continua y entrega continua (CI / CD), y seguridad y gobernanza de nivel empresarial.
 
 Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo cobra por sus servicios subyacentes.
