@@ -92,7 +92,7 @@
 
 	- **[Variables entorno](#var)**
 
-	- **[ConfigMaps](#configmaps)**
+	- **[ConfigMaps](#conf)**
 
 
 - **[Secrets](#secrets)**
@@ -459,7 +459,7 @@ Ejemplo de 4GB de memoria RAM
 	1024*4= 4096
 
 
-## Comandos básicos minikube
+## Comandos básicos minikube<a name="comandosminikube"></a>
 
 	Encender
 		$ minikube start
@@ -1494,7 +1494,7 @@ Mostramos un fichero yaml para ver sus opciones.
 
 ![](images/configmap.png)
 
-### Configuración app con variables de entorno
+### Configuración app con variables de entorno<a name="var"></a>
 
 Para configurar las aplicaciones que vamos a desplegar usamos variables de entorno.
 Por ejemplo podemos ver las variables de entorno que podemos definir para configurar la imagen docker de MariaDB.
@@ -1556,7 +1556,7 @@ Comprobamos como se ha desplegado el pod y accedemos a la app con la contraseña
 
 			MariaDB [(none)]>
 
-### Configuración app ConfigMaps<a name="configmaps"></a>
+### Configuración app ConfigMaps<a name="conf"></a>
 
 Los objetos ConfigMap permiten almacenar datos en forma de pares clave-valor (tuplas) para que puedan usarse posteriormente en despliegues.
 Son muy útiles para tener diferentes configuraciones de un mismo contenedor y utilizar la más adecuada según nuestras necesidades.
