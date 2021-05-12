@@ -1599,18 +1599,15 @@ Vamos a crear y desplegar un configMap, a examinar su contenido y a comprobar su
 			Events:  <none>
 
 		$ vim mariadb-deployment-cm.yaml
-			apiVersion: apps/v1
+			apiVersion: apps/v1beta1
 			kind: Deployment
 			metadata:
-			  name: mariadb-deploymentcm
+			  name: mariadb-deploy-cm
 			  labels:
 			    app: mariadb
 			    type: database
 			spec:
 			  replicas: 1
-			  selector:
-			    matchLabels:
-			      app: mariadb
 			  template:
 			    metadata:
 			      labels:
@@ -1625,7 +1622,25 @@ Vamos a crear y desplegar un configMap, a examinar su contenido y a comprobar su
 			              name: db-port
 			          env:
 			            - name: MYSQL_ROOT_PASSWORD
-			              value: secret
+			              valueFrom:
+			                configMapKeyRef:
+			                  name: mariadb
+			                  key: root_password
+			            - name: MYSQL_USER
+			              valueFrom:
+			                configMapKeyRef:
+			                  name: mariadb
+			                  key: mysql_usuario
+			            - name: MYSQL_PASSWORD
+			              valueFrom:
+			                configMapKeyRef:
+			                  name: mariadb
+			                  key: mysql_password
+			            - name: MYSQL_DATABASE
+			              valueFrom:
+			                configMapKeyRef:
+			                  name: mariadb
+			                  key: basededatos
 
 		$ kubectl apply -f mariadb-deployment-cm.yaml
 			deployment.apps/mariadb-deployment configured
