@@ -12,7 +12,9 @@
 
 # Deployment
 ![](./fotos/deployment.png)
+
 # Volumenes
+![](./fotos/volumes.png)
 
 # Namespaces
 
@@ -23,6 +25,7 @@
 # RBAC
 
 # Services
+![](./fotos/service2.svg)
 
 # Ingress
-
+![](./fotos/ingress.png)
