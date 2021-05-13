@@ -87,7 +87,10 @@ Una vez creadas si un nodo en el que está una instancia cae o es eliminado, el 
 
 
 -Volumenes
+El almacenamiento en contenedores es efímero. Cuando se elimina un contenedor, sus datos también se eliminan y cuando un contenedor falla y es reemplazado, se reemplaza sin datos, como si fuera nuevo.
 
+Hay varios tipos de volumenes:
+Almacenamiento local, almacenamiento en sistema de archivos 
 
 
 (ROBERTO)
