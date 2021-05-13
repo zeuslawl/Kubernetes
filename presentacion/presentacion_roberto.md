@@ -1,7 +1,3 @@
-# ARQUITECTURA
-
-Tenemos 3 partes fundamentales: clúster, nodos, pods.
-
 
 ## CLUSTER
 
@@ -72,17 +68,17 @@ Tenemos 3 partes fundamentales: clúster, nodos, pods.
 
 ---
 
-# CONFIGMAPS/ENV-VAR/SECRETS
-
-- Para que utilizamos variables de entorno
-
-- Configmaps que son y para que se utilizan
-
-- Secret, que es y diferencias con CM
+# CONFIGMAPS
 
 ![](../images/configmap.png)
 
 ---
+
+[](../images/secret.jpg)
+
+---
+
+
 
 # RBAC
 
