@@ -9,6 +9,8 @@ Tenemos 3 partes fundamentales: clúster, nodos, pods.
 
 - manera de implementar un clúster
 
+![](../images/archi_cluster.png)
+
 
 ## NODES
 
@@ -40,6 +42,8 @@ Tenemos 3 partes fundamentales: clúster, nodos, pods.
 
 		- kube-proxy
 
+![](../images/archi3.png)
+
 ## PODS
 
 - definición
@@ -49,6 +53,8 @@ Tenemos 3 partes fundamentales: clúster, nodos, pods.
 - acceso a volúmenes compartidos
 
 - uso
+
+![](../images/archi_pods2.png)
 
 ---
 
@@ -62,6 +68,8 @@ Tenemos 3 partes fundamentales: clúster, nodos, pods.
 
 - crear namespaces
 
+![](../images/namespaces.jpg)
+
 ---
 
 # CONFIGMAPS/ENV-VAR/SECRETS
@@ -71,6 +79,8 @@ Tenemos 3 partes fundamentales: clúster, nodos, pods.
 - Configmaps que son y para que se utilizan
 
 - Secret, que es y diferencias con CM
+
+![](../images/configmap.png)
 
 ---
 
@@ -90,8 +100,7 @@ Tenemos 3 partes fundamentales: clúster, nodos, pods.
 
 	- ClusterRoleBinding
 
-
-
+![](../images/rbac_diapo)
 
 
 
