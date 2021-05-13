@@ -23,18 +23,35 @@ author: Alejandro López y Roberto Martínez
 <center><img src="fotos/volume.png" width="50%"></img></center>
 ---------------------------------------------------
 
+<h4 align="center">Namespaces</h4>
+<div style="border:2px solid black; margin-bottom:50px"></div>
+<center><img src="fotos/volume.png" width="50%"></img></center>
+---------------------------------------------------
+
+<h4 align="center">Configmaps</h4>
+<div style="border:2px solid black; margin-bottom:50px"></div>
+<center><img src="fotos/volume.png" width="50%"></img></center>
+---------------------------------------------------
+
+<h4 align="center">Secret</h4>
+<div style="border:2px solid black; margin-bottom:50px"></div>
+<center><img src="fotos/volume.png" width="50%"></img></center>
+---------------------------------------------------
+
+<h4 align="center">RBAC</h4>
+<div style="border:2px solid black; margin-bottom:50px"></div>
+<center><img src="fotos/volume.png" width="50%"></img></center>
+---------------------------------------------------
+
+<h4 align="center">Services</h4>
+<div style="border:2px solid black; margin-bottom:50px"></div>
+<center><img src="fotos/services.png" width="50%"></img></center>
+---------------------------------------------------
+
+<h4 align="center">Ingress</h4>
+<div style="border:2px solid black; margin-bottom:50px"></div>
+<center><img src="fotos/ingress.png" width="50%"></img></center>
+---------------------------------------------------
 
 
-# Namespaces
 
-# Configmaps
-
-# Secret
-
-# RBAC
-
-# Services
-![](./fotos/services.jpg)
-
-# Ingress
-![](./fotos/ingress.png)
