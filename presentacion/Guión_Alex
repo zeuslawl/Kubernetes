@@ -100,9 +100,18 @@ Almacenamiento local, almacenamiento en sistema de archivos
 -RBAC
 
 -Services  
+Service es la red de kubernetes, es la manera de enlazar los pods.
 -Ingress    4 Minutos (ALEJANDRO)
 
 
 
 Ahora pasaremos a la parte demo que consistirá en desplegar una app mongodb + mongo express que permite gestionar las bases de datos desde un navegador web. 
+
+
+PARTE DEMO
+
+
+
+
+Una vez enseñado el mongo express, mi compañero y yo diremos unas conclusiones sobre el proyecto. 
 
