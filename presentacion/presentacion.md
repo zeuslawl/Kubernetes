@@ -36,11 +36,6 @@ author: Alejandro López y Roberto Martínez
 <center><img src="fotos/volume.png" width="50%"></img></center>
 ---------------------------------------------------
 
-<h4 align="center">Namespaces</h4>
-<div style="border:2px solid black; margin-bottom:50px"></div>
-<center><img src="fotos/namespaces.jpg" width="70%"></img></center>
----------------------------------------------------
-
 <h4 align="center">Configmaps</h4>
 <div style="border:2px solid black; margin-bottom:50px"></div>
 <center><img src="fotos/configmap.png" width="100%"></img></center>
@@ -49,6 +44,10 @@ author: Alejandro López y Roberto Martínez
 <h4 align="center">Secret</h4>
 <div style="border:2px solid black; margin-bottom:70px"></div>
 <center><img src="fotos/secrets.jpg" width="50%"></img></center>
+---------------------------------------------------
+<h4 align="center">Namespaces</h4>
+<div style="border:2px solid black; margin-bottom:50px"></div>
+<center><img src="fotos/namespaces.jpg" width="70%"></img></center>
 ---------------------------------------------------
 
 <h4 align="center">Rbac</h4>

@@ -1,11 +1,11 @@
 ![](images/timon2.jpg)
 
-# ÍNDICE
+# ÍNDICE 
 
 - **[Introducción](#introduccion)**
-
+	
 	- **[¿Qué es Kubernetes?](#queeskubernetes)**
-
+	
 	- **[¿Qué ofrece?](#queofrece)**
 
 
@@ -14,16 +14,16 @@
 	- **[Clústers](#clusters)**
 
 	- **[Nodes](#nodes)**
-
+		
 		- **[Master](#master)**
 
 			- **[API-server](#api)**
-
+				
 			- **[Scheduler](#scheduler)**
 
 			- **[Controller-manager](#controller)**
 
-			- **[etcd](#etcd)**
+			- **[etcd](#etcd)**				
 
 		- **[Workers](#workers)**
 
@@ -32,12 +32,12 @@
 			- **[Kubetet](#kubelet)**
 
 			- **[Kube Proxy](#kubeproxy)**
-
+	
 	- **[Pods](#pods)**
 
 
 - **[Instalación](#instalacion)**
-
+	
 	- **[Requisitos hardware](#requisitos)**
 
 	- **[Elementos](#elementos)**
@@ -48,14 +48,14 @@
 
 
 - **[Replicasets](#replicaset)**
-
+	
 	- **[Crear](#crearrp)**
 
 	- **[Escalar](#escalarrp)**
-
+	
 
 - **[Deployments](#deployment)**
-
+	
 	- **[Crear](#creardp)**
 
 	- **[Actualizar](#actualizardp)**
@@ -66,7 +66,7 @@
 
 
 - **[Services/Endpoints](#service)**
-
+	
 	- **[Agrupación pods en services](#agrupacion)**
 
 	- **[Tipos services](#tipossv)**
@@ -126,7 +126,7 @@
 
 
 - **[Proveedores de servicio](#proveedores)**
-
+	
 	- **[Google Kubernetes Engine (GKE)](#gke)**
 
 	- **[Amazon Elastic Kubernetes Service (EKS)](#eks)**
@@ -154,11 +154,15 @@ Hemos seleccionado  Kubernetes para nuestro proyecto final porque creemos que ac
 
 ## **¿Qué es Kubernetes?**<a name="queeskubernetes"></a>
 
-Kubernetes (timonel o piloto en griego) es un software de orquestación de código abierto que permite implementar, administrar y escalar aplicaciones en  unidades lógicas para gestionarlas y darles visibilidad.
+Kubernetes (timonel o piloto en griego) es un software de orquestación de código abierto que permite implementar, administrar y escalar aplicaciones en  unidades lógicas para gestionarlas y darles visibilidad. 
 Tiene un ecosistema grande y en rápido crecimiento. El soporte, las herramientas y los servicios para Kubernetes están ampliamente disponibles.
 
 Kubernetes ofrece un entorno de administración centrado en contenedores, orquesta la infraestructura de cómputo, redes y almacenamiento para que las cargas de trabajo de los usuarios no tengan que hacerlo.
 Fue diseñado por Google en 2014 y su diseño estuvo influenciado por el proyecto Borg (nombre que hace referencia a una raza de humanoides de la serie de ciencia ficción Star Trek) y donado a la Cloud Native Foundation.
+
+	
+	
+
 
 ## **¿Qué ofrece?**<a name="queofrece"></a>
 
@@ -227,7 +231,7 @@ Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
 - ### **Node master:**<a name="master"></a>
 
-	Aquí se encuentran los elementos de Kubernetes que controlan el clúster, junto con los datos sobre su estado y configuración. Los elementos principales de Kubernetes tienen la importante tarea de garantizar que los contenedores se ejecuten en cantidades suficientes y con los recursos necesarios.
+	Aquí se encuentran los elementos de Kubernetes que controlan el clúster, junto con los datos sobre su estado y configuración. Los elementos principales de Kubernetes tienen la importante tarea de garantizar que los contenedores se ejecuten en cantidades suficientes y con los recursos necesarios. 
 	El plano de control está en contacto permanente con las máquinas informáticas. Garantiza que el clúster se ejecute según la configuración que hayamos elegido.
 	Consta de diferentes procesos:
 
@@ -245,11 +249,11 @@ Cada uno de ellos ejecuta diferentes procesos según su clasificación:
 
     - **Controlador de replicación:**
     Es el responsable de mantener el número correcto de pods para cada controlador de replicación del sistema.
-
+    
     - **Controlador de endpoints:**
     Construye el objeto Endpoints, es decir, hace una unión entre los Services y los Pods.
 
-    - **Controladores de tokens y cuentas de servicio:**
+    - **Controladores de tokens y cuentas de servicio:** 
     Crean cuentas y tokens de acceso a la API por defecto para los nuevos Namespaces
 
 	· **Etcd:**<a name="etcd"></a>
@@ -324,11 +328,11 @@ Los pods individuales no están diseñados para ejecutar varias instancias de la
 
 
 Necesitamos tener instalado previamente **docker** para poder trabajar en Kubernetes.
-
+	
 https://docs.docker.com/engine/install/
 
 
-Debemos instalar los siguientes componentes:
+Debemos instalar los siguientes componentes: 
 
 - **kubectl**:
 Aplicación cliente que interactúa con el cluster a través del API a través del API-Server y mediante la línea de comandos.
@@ -342,15 +346,15 @@ Es el responsable del estado de ejecución de cada nodo. Se encarga del inicio, 
 - **minikube**:
 Entorno de pruebas para aprender kubernetes. Es un cluster de un solo nodo lanzado a través de una máquina virtual
 
-
+		 
 		$ dnf -y install kubeadm kubelet kubectl
 
 
 ## Minikube. Instalación en Fedora 32<a name="minikube"></a>
 
-Para trabajar con ambientes de Kubernetes normalmente es más sencillo poder instalar
-un cluster local en nuestro equipo que nos permita probar de una forma más expedita sin
-tener que interactuar con un servidor externo. Una de las herramientas que nos sirve
+Para trabajar con ambientes de Kubernetes normalmente es más sencillo poder instalar 
+un cluster local en nuestro equipo que nos permita probar de una forma más expedita sin 
+tener que interactuar con un servidor externo. Una de las herramientas que nos sirve 
 para esta tarea es Minikube.
 
 
@@ -367,7 +371,7 @@ Para instalar Minikube, se debe validar los siguientes requisitos:
 
 **Tener instalado Kubectl**
 
-		 $ kubectl version --client
+		 $ kubectl version --client 
 
 Si no lo tenemos instalado, lo instalamos.
 
@@ -390,7 +394,7 @@ Para instalar Kubectl vamos a habilitar un YUM repo de Google e instalar el paqu
 **Tener instalado un hipervisor**
 
 Se requiere tener instalado un hipervisor, el Minikube soporta varios pero en este caso
-vamos a instalar KVM. Para revisar si lo tenemos instalado podemos validar si está
+vamos a instalar KVM. Para revisar si lo tenemos instalado podemos validar si está 
 habilitado el módulo en el Kernel ejecutando el comando:
 
 		 $ lsmod | grep kvm
@@ -467,7 +471,7 @@ y 20GB de disco duro, usando la versión 1.17.6 de Kubernetes.
 		  --disk-size=20000mb \
 		  --kubernetes-version=1.17.6
 
-Para calcular la memoria RAM, 1024 * los GB que queramos
+Para calcular la memoria RAM, 1024 * los GB que queramos 
 Ejemplo de 4GB de memoria RAM
 
 	1024*4= 4096
@@ -477,17 +481,17 @@ Ejemplo de 4GB de memoria RAM
 
 	Encender
 		$ minikube start
-
+	
 	Detener
 		$ minikube stop
 
-	Pausar
+	Pausar 
 		$ minikube pause
-
+		
 	Reanudar
 		$ minikube unpause
 
-	Status
+	Status 
 		$ minikube status
 
 	Obtener url service
@@ -499,7 +503,7 @@ Ejemplo de 4GB de memoria RAM
 	Copiar fichero al clúster
 		$ minikube cp [path/file]
 
-	Versión
+	Versión	
 		$ minikube version
 
 	Logs
@@ -559,7 +563,7 @@ A través del fichero ymal lanzamos la configuración de la réplicas y kubernet
 			replicaset.apps/frontend created
 
 Comprobamos el estado del replicaset.
-
+		
 		$ kubectl get replicasets
 			NAME       DESIRED   CURRENT   READY   AGE
 			frontend   5         5         5       16m
@@ -644,7 +648,7 @@ En este caso volveremos a tener 3 réplicas de nuevo.
 
 		$ kubectl scale replicaset frontend --replicas=5
 			replicaset.apps/frontend scaled
-
+			
 		$ kubectl get pods
 			NAME             READY   STATUS    RESTARTS   AGE
 			frontend-4nwkk   1/1     Running   0          21m
@@ -653,12 +657,12 @@ En este caso volveremos a tener 3 réplicas de nuevo.
 			frontend-n672g   1/1     Running   0          21m
 			frontend-pn728   1/1     Running   0          21m
 
-		$ kubectl get rs
+		$ kubectl get rs 
 			NAME       DESIRED   CURRENT   READY   AGE
 			frontend   5         5         5       22m
 
 ### Eliminar replicasets
-
+			
 Eliminamos el replicaset
 
 		$ kubectl delete replicaset frontend
@@ -726,7 +730,7 @@ El campo template contiene los siguientes subcampos:
 - Los Pods se etiquetan como app: nginx usando el campo **labels.**
 
 - La especificación de la plantilla Pod, o el campo **.template.spec**, indica que los pods ejecutan un contenedor, nginx, que utiliza la versión 1.7.9 de la imagen de nginx.
-
+    
 - Crea un contenedor y lo llamar nginx usando el campo **name.**
 
 - Ejecuta la imagen nginx en su versión 1.7.9.
@@ -767,13 +771,13 @@ También podemos ver las etiquetas (**labels**) creadas automáticamente.
 
 
 Actualizamos la versión de nuestra app de la version nginx:1.7.9 a nginx:1.9.1.
-
+	
 		$ kubectl --record deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1
 			deployment.apps/nginx-deployment image updated
 			deployment.apps/nginx-deployment image updated
 
 También podemos editar el fichero .yaml. Ahora vamos a volver a la versión inicial.
-
+		
 		$ kubectl edit deployment.v1.apps/nginx-deployment
 			# Please edit the object below. Lines beginning with a '#' will be ignored,
 			# and an empty file will abort the edit. If an error occurs while saving this file will be
@@ -851,7 +855,7 @@ Comprobamos el estado del deployment y de los pods (debemos tener 3 réplicas).
 			nginx-deployment-5d59d67564-4kqkd   1/1     Running   0          14m
 			nginx-deployment-5d59d67564-fwp5v   1/1     Running   0          14m
 			nginx-deployment-5d59d67564-vfdbn   1/1     Running   0          14m
-
+			
 		$ kubectl describe deployments
 			Name:                   nginx-deployment
 			Namespace:              default
@@ -891,17 +895,17 @@ Comprobamos el estado del deployment y de los pods (debemos tener 3 réplicas).
 			  Normal  ScalingReplicaSet  17m (x2 over 117m)  deployment-controller  Scaled up replica set nginx-deployment-5d59d67564 to 3
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 1
 			  Normal  ScalingReplicaSet  17m                 deployment-controller  Scaled down replica set nginx-deployment-69c44dfb78 to 0
-
+	
 ### Historial/rollout<a name="historialdp"></a>
-
+		
 Podemos también revisar el historial de los despliegues realizados y de uno en concreto.
 
 		$ kubectl rollout history deployment.v1.apps/nginx-deployment
-			deployment.apps/nginx-deployment
+			deployment.apps/nginx-deployment 
 			REVISION  CHANGE-CAUSE
 			2         kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
 			3         kubectl deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
-
+		
 		$ kubectl rollout history deployment.v1.apps/nginx-deployment --revision=2
 			deployment.apps/nginx-deployment with revision #2
 			Pod Template:
@@ -932,10 +936,10 @@ O especificarlo con un parámetro.
 ### Escalar pods horizontal<a name="escalardp"></a>
 
 Otra de las funciones que nos ofrece deployment es la de poder escalar los pods del clúster de manera horizontal.
-
+		
 		$ kubectl scale deployment.v1.apps/nginx-deployment --replicas=10
 			deployment.apps/nginx-deployment scaled
-
+		
 		$ kubectl get deployment
 			NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 			nginx-deployment   10/10   10           10          153m
@@ -1001,11 +1005,11 @@ La siguiente imagen muestra como un servicio agrupa mediante el selector app:ngn
 			spec:
 			  replicas: 2
 			  selector:
-			    matchLabels:
+			    matchLabels: 
 			      app: nginx
 			  template:
 			    metadata:
-			      labels:
+			      labels: 
 			        app: nginx
 			    spec:
 			      containers:
@@ -1020,13 +1024,13 @@ Al desplegar este deployment se crearán dos pods (replicas: 2), que quedarán a
 			deployment.apps/nginx created
 
 Observamos ahora como los dos pods de nginx creados están agrupados lógicamente en el deployment ngnix.
-Esta información está realmente en el objeto replicaSet creado por el deployment.
+Esta información está realmente en el objeto replicaSet creado por el deployment. 
 
 		$ kubectl get pods
 			NAME                    READY   STATUS    RESTARTS   AGE
 			nginx-59d9d8477-7wjr7   1/1     Running   0          101s
 			nginx-59d9d8477-rbl29   1/1     Running   0          101s
-
+	
 		$ kubectl get deployments
 			NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 			nginx   2/2     2            2           3m1s
@@ -1185,7 +1189,7 @@ Mostrar los pods de un namespace.
 		$ kubectl get pods --namespace prod
 			NAME         READY   STATUS    RESTARTS   AGE
 			nginx-prod   1/1     Running   0          2m10s
-
+	
 Cambiar de namespace (dev).
 
 Nota: Antes de cambiarlo, necesitamos crear el namespace.
@@ -1276,7 +1280,7 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 	Vamos a crear un primer ejemplo con emptyDir. Como hemos indicado antes, este tipo de volúmenes dejan de existir una vez el pod muere.
 	Con lo cual estos volúmenes se utilizan para guardar información que si perdermos nos es indiferente. Un ejemplo sería utilizarlo para caché o memoria volátil.
 	Lo creamos, ejecutamos el pod y observamos su contenido.
-
+		
 		$ vim emptydir.yaml
 			apiVersion: v1
 			kind: Pod
@@ -1326,10 +1330,10 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
   			    /var/run/secrets/kubernetes.io/serviceaccount from default-token-jclqr (ro)
 			Conditions:
 			  Type              Status
-			  Initialized       True
-			  Ready             True
-			  ContainersReady   True
-			  PodScheduled      True
+			  Initialized       True 
+			  Ready             True 
+			  ContainersReady   True 
+			  PodScheduled      True 
 			Volumes:
 			  cache-volume:
 			    Type:       EmptyDir (a temporary directory that shares a pods lifetime)
@@ -1356,7 +1360,7 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 
 	Este tipo de volúmenes montan un sistema de ficheros en el pod a nivel de nodo.
 	Realizamos las mismas acciones que en la prueba anterior pero con la configuración de hostPath.
-
+			
 		$ vim hostpath.yaml
 			apiVersion: v1
 			kind: Pod
@@ -1384,7 +1388,7 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 			test-pd                 1/1     Running   0          29m
 			test-pd-hp              1/1     Running   0          9m7s
 
-		$ kubectl describe pod
+		$ kubectl describe pod 	
 			Name:         test-pd-hp
 			Namespace:    default
 			Priority:     0
@@ -1408,15 +1412,15 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 			    Ready:          True
 			    Restart Count:  0
 			    Environment:    <none>
-			    Mounts:
+			    Mounts:	
 			      /test-pd-hp from test-volume (rw)
 			      /var/run/secrets/kubernetes.io/serviceaccount from default-token-jclqr (ro)
 			Conditions:
 			  Type              Status
-			  Initialized       True
-			  Ready             True
-			  ContainersReady   True
-			  PodScheduled      True
+			  Initialized       True 
+			  Ready             True 
+			  ContainersReady   True 
+			  PodScheduled      True 
 			Volumes:
 			  test-volume:
 			    Type:          HostPath (bare host directory volume)
@@ -1437,12 +1441,12 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 			  Normal  Pulled     10m   kubelet            Successfully pulled image "k8s.gcr.io/test-webserver"
 			  Normal  Created    10m   kubelet            Created container test-container
 			  Normal  Started    10m   kubelet            Started container test-container
-
+			
 - **PersistentVolume y PersistentVolumeClaims (PV/PVC)**
-
+	
 	En el siguiente ejemplo observamos que cada uno de los dos elementos desempeñan funciones distintas.
 	PVC solicita espacio de almacenamiento y PV lo asigna si es posible. Comprobamos que es así.
-
+		
 		$ vim pvpvc.yaml
 			# PV
 			apiVersion: v1
@@ -1471,8 +1475,8 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 			  resources:
 			    requests:
 			      storage: 10Gi
-
-		$ kubectl apply -f pvpvc.yaml
+		
+		$ kubectl apply -f pvpvc.yaml 
 			persistentvolume/pv-volume created
 			persistentvolumeclaim/pv-claim created
 
@@ -1482,7 +1486,7 @@ Las políticas de reciclaje de volúmenes también depende del backend y son:
 			NAME       STATUS   VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 			pv-claim   Bound    pv-volume   10Gi       RWO            manual         4m21s
 
-
+					
 ### StorageClass<a name="storageclass"></a>
 
 Es un objeto que proporciona a los administradores una forma de describir las clases de almacenamiento que ofrecen.
@@ -1514,7 +1518,7 @@ Para configurar las aplicaciones que vamos a desplegar usamos variables de entor
 Por ejemplo podemos ver las variables de entorno que podemos definir para configurar la imagen docker de MariaDB.
 
 Definimos un deployment que despliegue un contenedor configurado por medio de variables de entorno y lo aplicamos.
-
+		
 		$ vim mariadb-deployment.yaml
 			apiVersion: apps/v1
 			kind: Deployment
@@ -1544,7 +1548,7 @@ Definimos un deployment que despliegue un contenedor configurado por medio de va
 			            - name: MYSQL_ROOT_PASSWORD
 			              value: secret
 
-		$ kubectl apply -f mariadb-deployment.yaml
+		$ kubectl apply -f mariadb-deployment.yaml 
 			deployment.apps/mariadb-deployment created
 
 
@@ -1559,7 +1563,7 @@ Comprobamos como se ha desplegado el pod y accedemos a la app con la contraseña
 			mariadb-deployment-68768cb968-flljq   1/1     Running   0          5m54s
 
 		$ kubectl exec -it mariadb-deployment-68768cb968-flljq -- mysql -u root -p
-			Enter password:
+			Enter password: 
 			Welcome to the MariaDB monitor.  Commands end with ; or \g.
 			Your MariaDB connection id is 3
 			Server version: 10.5.9-MariaDB-1:10.5.9+maria~focal mariadb.org binary distribution
@@ -1589,7 +1593,7 @@ Vamos a crear y desplegar un configMap, a examinar su contenido y a comprobar su
 		$ kubectl get configmaps
 			NAME      DATA   AGE
 			mariadb   4      2m14s
-
+	
 		$ kubectl describe cm mariadb
 			Name:         mariadb
 			Namespace:    default
@@ -1664,7 +1668,7 @@ Vamos a crear y desplegar un configMap, a examinar su contenido y a comprobar su
 			mariadb-deployment-68768cb968-flljq   1/1     Running                      0          36m
 
 		$ kubectl exec -it mariadb-deploy-cm-57f7b9c7d7-ll6pv --mysql -u usuario -p
-			Enter password:
+			Enter password: 
 			Welcome to the MariaDB monitor.  Commands end with ; or \g.
 			Your MariaDB connection id is 3
 			Server version: 10.5.9-MariaDB-1:10.5.9+maria~focal mariadb.org binary distribution
@@ -1733,7 +1737,7 @@ Observamos ahora porque los secrets no son del todo seguros.
 		$ echo 'cm9vdA==' | base64 --decode
 			root
 Creamos el despliegue y probamos el acceso:
-
+		
 		$ vim mariadb-deployment-secret.yaml
 			apiVersion: apps/v1
 			kind: Deployment
@@ -1768,9 +1772,9 @@ Creamos el despliegue y probamos el acceso:
 
 		$ kubectl create -f mariadb-deployment-secret.yaml
 			deployment.apps/mariadb-deployment-secret created
-
+		
 		$ kubectl exec -it mariadb-deploy-secret-f946dddfd-kkmlb -- mysql -u root -p
-			Enter password:
+			Enter password: 
 			Welcome to the MariaDB monitor.  Commands end with ; or \g.
 			Your MariaDB connection id is 8
 			Server version: 10.2.15-MariaDB-10.2.15+maria~jessie mariadb.org binary distribution
@@ -1779,7 +1783,7 @@ Creamos el despliegue y probamos el acceso:
 
 			Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-			MariaDB [(none)]>
+			MariaDB [(none)]> 
 
 Eliminamos el secret.
 
@@ -1805,13 +1809,13 @@ Debemos tener instalado el cliente kubectl ya que es el modo de interactuar con 
 Vamos a crear un usuario siguiendo los pasos que describimos a continuación:
 
 - Generamos el certificado de cliente.
-
+	
 			$ openssl genrsa  -out roberto_key.pem 2048
 
 			$ openssl req -new -key roberto_key.pem -out roberto_csr.pem -subj "/CN=roberto/O=adm"
 
 - Como administradores consultamos la petición y firmamos el certificado
-
+		
 			$ kubectl config view
 				apiVersion: v1
 				clusters:
@@ -1824,15 +1828,15 @@ Vamos a crear un usuario siguiendo los pasos que describimos a continuación:
 				        version: v1.19.0
 				      name: cluster_info
 				    server: https://192.168.39.210:8443
-				  name: minikube
+				  name: minikube	
 				contexts:
 				- context:
 				    cluster: minikube
 				    extensions:
 				    - extension:
-				        last-update: Tue, 04 May 2021 09:39:54 CEST
+				        last-update: Tue, 04 May 2021 09:39:54 CEST	
 				        provider: minikube.sigs.k8s.io
-				        version: v1.19.0
+				        version: v1.19.0	
 				      name: context_info
 				    namespace: default
 				    user: minikube
@@ -1845,27 +1849,27 @@ Vamos a crear un usuario siguiendo los pasos que describimos a continuación:
 				  user:
 				    client-certificate: /home/users/inf/hisx2/isx43457566/.minikube/profiles/minikube/client.crt
 				    client-key: /home/users/inf/hisx2/isx43457566/.minikube/profiles/minikube/client.key
-
-			$ openssl x509 -req -in roberto_csr.pem -CAkey ~/.minikube/ca.key -CA ~/.minikube/ca.crt -days 365 -CAcreateserial -out roberto_crt.pem
+				
+			$ openssl x509 -req -in roberto_csr.pem -CAkey ~/.minikube/ca.key -CA ~/.minikube/ca.crt -days 365 -CAcreateserial -out roberto_crt.pem 
 				Signature ok
 				subject=CN = roberto, O = adm
 				Getting CA Private Key
-
+	
 - Como cliente, configuramos kubectl para acceder al clúster de minikube, añadimos credenciales y creamos y accedemos a nuestro espacio de trabajo.
 Comprobamos visualizando lo que hemos ejecutado.
-
+		
 			$ kubectl config set-cluster minikube --certificate-authority=ca.crt
 				Cluster "minikube" set.
-
+	
 			$ kubectl config set-credentials roberto --client-certificate=roberto_crt.pem --client-key=roberto_key.pem
 				User "roberto" set.
-
+	
 			$ kubectl config set-context roberto --cluster=minikube --user=roberto
 				Context "roberto" created.
-
+	
 			$ kubectl config use-context roberto
 				Switched to context "roberto".
-
+	
 			$ kubectl config view
 				apiVersion: v1
 				clusters:
@@ -1907,12 +1911,12 @@ Comprobamos visualizando lo que hemos ejecutado.
 				  user:
 				    client-certificate: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_crt.pem
 				    client-key: /home/users/inf/hisx2/isx43457566/Kubernetes/roberto_key.pem
-
+	
 ### Permisos<a name="permisos"></a>
 Diferenciamos dos tipos de permisos según el ámbito en el que se aplican: Role y ClusterRole.
 El primero hace referencia a los permisos según namespace y el segundo al clúster.
 Por defecto, no se permite hacer nada a los usuarios.
-
+	
 ### Role<a name="role"></a>
 
 Un rol en Kubernetes RBAC define lo que hará con un grupo de recursos.
@@ -1980,7 +1984,7 @@ Hay que tener en cuenta el namespace en el que se asignan los permisos, los reso
 			volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment
 
 - **Verbs:** get, list, watch, create, delete, update, edit, exec.
-
+		
 		$ kubectl api-resources --no-headers --sort-by name -o wide | sed 's/.*\[//g' | tr -d "]" | tr " " "\n" | sort | uniq
 			create
 			delete
@@ -2007,7 +2011,7 @@ Para asignar este rol a un usuario o grupo se tiene que utilizar Rolebinding.
 			 resources: [“pods”]
 			 verbs: [“get”, “watch”, “list”]
 
-		$ kubectl apply -f role.yaml
+		$ kubectl apply -f role.yaml 
 			role.rbac.authorization.k8s.io/pod-reader created
 
 		$ kubectl get roles
@@ -2040,7 +2044,7 @@ Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
 			  namespace: default
 			  name: pod-reader
 			rules:
-			- apiGroups: [""]
+			- apiGroups: [""] 
 			  resources: ["pods"]
 			  verbs: ["get", "watch", "list"]
 			# --------------------------------------
@@ -2054,8 +2058,8 @@ Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
 			  name: roberto
 			  apiGroup: rbac.authorization.k8s.io
 			roleRef:
-			  kind: Role
-			  name: pod-reader
+			  kind: Role 
+			  name: pod-reader 
 			  apiGroup: rbac.authorization.k8s.io
 
 		$ kubectl apply -f rolebinding.yaml
@@ -2076,7 +2080,7 @@ Vamos a enlazar nuestro usuario con el pod que hemos creado anteriormente.
 			Subjects:
 			  Kind  Name     Namespace
 			  ----  ----     ---------
-			  User  roberto
+			  User  roberto 
 
 ### ClusterRole<a name="clusterrole"></a>
 
@@ -2089,10 +2093,10 @@ En este caso vamos a asignar permisos de lectura de pods y deployments del clús
 			metadata:
  			 name: cluster-pod-deploy-reader
 			rules:
-			- apiGroups: ["apps"]
+			- apiGroups: ["apps"] 
 			  resources: ["deployments"]
 			  verbs: ["get", "watch", "list"]
-			- apiGroups: [""]
+			- apiGroups: [""] 
 			  resources: ["pods"]
 			 verbs: ["get", "watch", "list"]
 			#-------------------------------
@@ -2105,14 +2109,14 @@ En este caso vamos a asignar permisos de lectura de pods y deployments del clús
 			  name: roberto
 			  apiGroup: rbac.authorization.k8s.io
 			roleRef:
-			  kind: ClusterRole
-			  name: cluster-pod-deploy-reader
+			  kind: ClusterRole 
+			  name: cluster-pod-deploy-reader 
 			  apiGroup: rbac.authorization.k8s.io
 
-		$ kubectl apply -f clusterrole.yaml
+		$ kubectl apply -f clusterrole.yaml 
 			clusterrole.rbac.authorization.k8s.io/cluster-pod-deploy-reader created
 			clusterrolebinding.rbac.authorization.k8s.io/users-read-pods-deploy created
-
+		
 		$ kubectl get clusterrole | grep cluster
 			cluster-admin                                                          2021-05-05T07:07:01Z
 			cluster-pod-deploy-reader                                              2021-05-05T07:42:45Z
@@ -2131,7 +2135,7 @@ Nuestro usuario está asignado a ese grupo.
 			metadata:
  			 name: svc-clusterrole
 			rules:
-			- apiGroups: ["apps"]
+			- apiGroups: ["apps"] 
 			  resources: ["services","Pods","replicasets","deployments"]
 			  verbs: ["*"]
 			#----------------------------------------------------------
@@ -2144,11 +2148,11 @@ Nuestro usuario está asignado a ese grupo.
 			  name: dev
 			  apiGroup: rbac.authorization.k8s.io
 			roleRef:
-			  kind: ClusterRole
+			  kind: ClusterRole 
 			  name: svc-clusterrole
 			  apiGroup: rbac.authorization.k8s.io
 
-		$ kubectl apply -f clusterrolebinding.yaml
+		$ kubectl apply -f clusterrolebinding.yaml						
 			clusterrole.rbac.authorization.k8s.io/svc-clusterrole created
 			clusterrolebinding.rbac.authorization.k8s.io/cluster-svc created
 
@@ -2162,10 +2166,10 @@ Cada Pod hará uso de un ServiceAccount con un token y con unos roles establecid
 
 Listamos y consultamos la información que contiene.
 
-		$ kubectl get serviceaccount
+		$ kubectl get serviceaccount 
 			NAME      SECRETS   AGE
 			default   1         147m
-
+		
 		$ kubectl describe sa default
 			Name:                default
 			Namespace:           default
@@ -2187,7 +2191,7 @@ Observamos que contiene un secret. Vamos a examinarlo.
 
 			Type:  kubernetes.io/service-account-token
 
-			Data
+			Data	
 			====
 			token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IkdGNHNHM0lrOThDbHdJY0d6Ymx1MHpxTXItMXEwYzNOVlBYNENDaEF4NEUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tMnc2dzIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjIwNzc1Y2YwLWZhYmYtNDliYi04ZmYyLTU4NWFhYjY0NGNlOSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.ONhtGWEFEKDeRMhkm6TntdC1dCMtQDgYlnHcdwjtXygtPfhd7ugpgR5MC88osr-C3AqSvI3Zp-pWuFUhL4duZ0yy-bBWDSXGx_4UdRl5bFhMxSVBPb5i7B02NsNuw3ijBNETdfOr7Jq577DHbxc8wJR8Dw0-63diPVXNeZAsNMc7Z8HCixo7y5HXbQzwg7-bxPFxMI6Ib00Ct6ZC1ciKY8qV2DEbP2SlfIXhrqv9cRKKID_5AcGxhEif4nwMHlBHaTvhlqMM1TRtQdE893DsaNdbhhq7Anv_MNVq65kwjCQD4T4eH2SdEynkQcxTgUC0Hl3p5z23shxqfQVfJ-eQBA
 			ca.crt:     1111 bytes
@@ -2225,7 +2229,7 @@ Primeramente creamos un serviceAccount, lo asignamos a un pod y creamos un rol a
 			      containers:
 			      - name: nginx
 			        image: nginx:alpine
-
+		
 		$ kubectl apply -f sa-test.yaml
 			serviceaccount/my-sa created
 			deployment.apps/deployment-test created
@@ -2255,11 +2259,11 @@ Asignamos el rol al serviceAccount y lo verificamos.
 			  name: my-sa
 			  apiGroup: ""
 			roleRef:
-			  kind: Role
-			  name: sa-reader
+			  kind: Role 
+			  name: sa-reader 
 			  apiGroup: rbac.authorization.k8s.io
 
-		$ kubectl apply -f assign-role-sa.yaml
+		$ kubectl apply -f assign-role-sa.yaml 
 			rolebinding.rbac.authorization.k8s.io/sa-read-pods created
 
 		$ kubectl get pod deployment-test-57bfcc4f79-jwtdb -o yaml
@@ -2356,8 +2360,8 @@ Asignamos el rol al serviceAccount y lo verificamos.
 			  - ip: 172.17.0.7
 			  qosClass: BestEffort
 			  startTime: "2021-05-05T10:06:33Z"
-
-
+			
+			
 
 # INGRESS<a name="ingress"></a>
 
@@ -2452,7 +2456,7 @@ Desplegamos y verificamos el primer ejemplo.
 		$ kubectl get ingress
 			NAME              CLASS    HOSTS              ADDRESS        PORTS   AGE
 			example-ingress   <none>   hello-world.info   192.168.49.2   80      523s
-
+		
 Editamos el nombre de dominio en el fichero de configuración de DNS **/etc/hosts** y verificamos que podemos acceder a la app.
 
 		$ vim /etc/hosts
@@ -2464,7 +2468,7 @@ Editamos el nombre de dominio en el fichero de configuración de DNS **/etc/host
 			Hostname: web-79d88c97d6-l26fh
 
 Creamos y exponemos el segundo deployment y aplicamos cambio en las reglas.
-
+	
 		$ kubectl create deployment web2 --image=gcr.io/google-samples/hello-app:2.0
 			deployment.apps/web2 created
 
@@ -2507,7 +2511,7 @@ Al primero accedemos por dominio y al segundo por ruta y dominio a la vez.
 			Version: 2.0.0
 			Hostname: web2-89cd47949f-t8rst
 
-
+		
 
 ---
 
@@ -2518,8 +2522,8 @@ Al primero accedemos por dominio y al segundo por ruta y dominio a la vez.
 # Instalación
 
 En este ejemplo de instalación se muestra como instalar un cluster de tres máquinas,
-un master (control-plane) y dos workers,
-esta instalación se realiza en máquinas virtuales Fedora 32
+un master (control-plane) y dos workers, 
+esta instalación se realiza en máquinas virtuales Fedora 32 
 y la tipología del master es stacked.
 
 ### Preparación de nodos
@@ -2551,7 +2555,7 @@ Asignar hostname a cada nodo
 
 ### Ip fijas (para cada nodo)
 
-	[root@master ~]# cat /etc/sysconfig/network-scripts/ifcfg-enp1s0
+	[root@master ~]# cat /etc/sysconfig/network-scripts/ifcfg-enp1s0 
 	TYPE=Ethernet
 	PROXY_METHOD=none
 	BROWSER_ONLY=no
@@ -2584,7 +2588,7 @@ Asignar hostname a cada nodo
 
 	# Enable IP Forwarding
 	$ echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-
+	
 	$ cat <<EOF >  /etc/sysctl.d/k8s.conf
 	  net.bridge.bridge-nf-call-ip6tables = 1
 	  net.bridge.bridge-nf-call-iptables = 1
@@ -2682,7 +2686,7 @@ Una vez finalizado el comando kubeadm init --pod-network-cidr=192.168.0.0/16 nos
 	Then you can join any number of worker nodes by running the following on each as root:
 
 	$ kubeadm join 192.168.122.2:6443 --token cp5ayc.pbsbruka2leselbe \
-       --discovery-token-ca-cert-hash sha256:d41acb35ced40eae84f731f2892a8c131e55a63fa7c663f7b0555e23c713480d
+       --discovery-token-ca-cert-hash sha256:d41acb35ced40eae84f731f2892a8c131e55a63fa7c663f7b0555e23c713480d 
 
 Es muy importante guardarse bien la línea de kubeadm join ya que con esta juntaremos los nodos al master.
 
@@ -2705,7 +2709,7 @@ En caso de no querer gestionar el cluster como root y quererlo gestionar como us
 Para juntar un worker al nodo master simplemente hay que ejecutar kubeadm join con el token del master.
 
 	$ kubeadm join 192.168.122.2:6443 --token c2bn4c.qzpskak8ryp1uotd \
-		--discovery-token-ca-cert-hash sha256:485a9c649a4d2a4ad9ec03932f6353fc559a1a60dbf1fe00bf71d8e57c6b6b83
+		--discovery-token-ca-cert-hash sha256:485a9c649a4d2a4ad9ec03932f6353fc559a1a60dbf1fe00bf71d8e57c6b6b83 
 
 En caso de no tener el token, siempre se puede crear uno nuevo desde el master con el siguiente comando:
 
@@ -2713,7 +2717,7 @@ En caso de no tener el token, siempre se puede crear uno nuevo desde el master c
 
 
 Comprobamos desde el master que hemos añadido el nodo y asignaremos el nodo como worker para identificarlo correctamente.
-
+	
 	[root@master ~]# kubectl get nodes
 	NAME     STATUS   ROLES                  AGE   VERSION
 	master   Ready    control-plane,master   68m   v1.21.0
@@ -2721,7 +2725,7 @@ Comprobamos desde el master que hemos añadido el nodo y asignaremos el nodo com
 
 ### Añadir nodo como worker
 
-	[root@master ~]# kubectl label node node1 node-role.kubernetes.io/worker=worker
+	[root@master ~]# kubectl label node node1 node-role.kubernetes.io/worker=worker 
 		node/node1 labeled
 
 	[root@master ~]# kubectl get nodes
@@ -2746,8 +2750,8 @@ Desde el nodo master quitamos todas las tareas del nodo y después lo eliminamos
 
 	$ kubectl delete node node2
 
-	[root@master ~]# kubectl drain node2 --delete-local-data --force --ignore-daemonsets
-
+	[root@master ~]# kubectl drain node2 --delete-local-data --force --ignore-daemonsets 
+	
 		Flag --delete-local-data has been deprecated, This option is deprecated and will be deleted. Use --delete-emptydir-data.
 		node/node2 cordoned
 		WARNING: ignoring DaemonSet-managed Pods: kube-system/calico-node-4nmzb, kube-system/kube-proxy-5gt2r
@@ -2790,7 +2794,7 @@ Aparte de eso, los proveedores manejan todas las demás inquietudes (soporte, en
 
 Kubernetes fue creado por Google para su propia herramienta de orquestación de contenedores inicialmente llamada BORG, luego cambiaron su nombre a Omega; esta larga historia es la razón por la que se considera el servicio de Kubernetes administrado más avanzado.
 
-También incluye una verificación de estado y reparación automática de microservicios, registro y monitoreo.
+También incluye una verificación de estado y reparación automática de microservicios, registro y monitoreo. 
 Además, viene con escalado automático de cuatro vías y soporte para múltiples clústeres.
 
 Algunas de las características principales del servicio Google Kubernetes son:
@@ -2824,7 +2828,7 @@ Funciona con diferentes AWS para proporcionar escalabilidad y seguridad para su 
 - Equilibrio de carga elástico para distribución de carga.
 
 - IAM para autenticación.
-
+    
 - Amazon VPC para aislamiento.
 
  EKS cobra 0.10 $ por hora por la administración del clúster de Kubernetes y cobra por los servicios subyacentes de acuerdo con una escala de precios.
@@ -2849,111 +2853,111 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 - **Nodos:**
 
 		$ kubectl get no
-
+	
 		$ kubectl get no -o wide
-
+	
 		$ kubectl describe no
-
+	
 		$ kubectl get no -o yaml
-
+	
 		$ kubectl get nodes -o [jsonpath]
-
+	
 		$ kubectl top node [node-name]
-
-
+	
+	
 - **Pods**
 
 		$ kubectl get po
-
+	
 		$ kubectl get pod -o wide
-
+	
 		$ kubectl describe pods
-
+	
 		$ kubectl get po --show-labels
-
+	 
 		$ kubectl get po -l app=nginx
-
+	
 		$ kubectl get po -o yaml
-
+	
 		$ kubectl get pod [pod_name] -o yaml --export
-
+	
 		$ kubectl get pod [pod_name] -o yaml --export > file.yaml
-
+	
 
 - **Namespaces:**
 
-		$ kubectl get namespaces
-
+		$ kubectl get namespaces 
+	
 		$ kubectl get ns -o yaml
-
+	
 		$ kubectl describe ns
-
-
+	
+	
 - **Deployments:**
 
 		$ kubectl get deployments
-
+	
 		$ kubectl describe deploy
-
+	
 		$ kubectl get deploy -o wide
-
+	
 		$ kubectl get deploy -o yaml
-
-
+	
+	
 - **Services:**
 
 		$ kubectl get services
-
+	
 		$ kubectl describe svc
-
+	
 		$ kubectl get svc -o wide
-
+	
 		$ kubectl get svc -o yaml
-
+	
 		$ kubectl get svc --show-labels
-
-
+	
+	
 - **ServiceAccounts:**
 
-		$ kubectl get serviceaccounts
-
+		$ kubectl get serviceaccounts 
+	
 		$ kubectl get sa -o yaml
-
+	
 		$ kubectl get serviceaccounts default -o yaml > sa.yaml
-
+	
 		$ kubectl replace serviceaccount default -f sa.yaml
-
-
+	
+	
 - **ReplicaSets:**
 
 		$ kubectl get replicasets
-
+	
 		$ kubectl describe rs
-
+	
 		$ kubectl get rs -o wide
-
+	
 		$ kubectl get rs -o yaml
-
-
+	
+	
 - **Secrets:**
 
 		$ kubectl get secrets
-
+	
 		$ kubectl get secrets --all-namespaces
-
+	
 		$ kubectl get secrets -o yaml
 
 
 - **ConfigMaps:**
 
-		$ kubectl get configmaps
+		$ kubectl get configmaps 
 
 		$ kubectl get cm --all-namespaces
 
 		$ kubectl get cm --all-namespaces - o yaml
 
 - **Ingress:**
-
+		
 		$ kubectl get ingress
 
 		$ kubectl get ing --all-namespaces
@@ -3006,7 +3010,7 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 
 - **Namespaces:**
 
-		$ kubectl delete ns
+		$ kubectl delete ns  
 
 		$ kubectl edit ns [ns_name]
 
@@ -3014,14 +3018,14 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 
 		$ kubectl edit sa [sa_name]
 
-		$ kubectl delete sa [sa_name]
-
-
+		$ kubectl delete sa [sa_name]	
+	
+	
 ### Crear recursos
 
 - **Crear Pod:**
 
-		$ kubectl create -f [file]
+		$ kubectl create -f [file] 
 
 		$ kubectl apply -f [file]
 
@@ -3029,7 +3033,7 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 
 
 - **Crear/Exponer Service:**
-
+	
 		$ kubectl create svc nodeport [svc_name] --tcp=8080:80
 
 		$ kubectl expose -f file.yaml --port=80 --target-port=8080
@@ -3039,7 +3043,7 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 
 		$ kubectl create -f [deploymentfile]
 
-		$ kubectl apply -f [deploymentfile]
+		$ kubectl apply -f [deploymentfile]	
 
 		$ kubectl create deploy [deploy_name] --image nginx
 
@@ -3053,9 +3057,9 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 		$ kubectl create deploy  [deploy_name] --image=nginx --dry-run -o yaml > deploy.yaml
 
 		$ kubectl get po [pod_name] -o yaml --export > pod.yaml
-
+	
 ### Info cluster
-
+		
 		$ kubectl config
 
 		$ kubectl cluster -info
@@ -3064,9 +3068,9 @@ Costo: AKS no cobra nada por la administración del clúster de Kubernetes. Solo
 
 
 
-### Help
-
-		$ kubectl -h
+### Help	
+		
+		$ kubectl -h 
 
 		$ kubectl  create - h$
 
@@ -3120,7 +3124,7 @@ Una de las funciones más interesantes de este software es que nos permite crear
 ### Instalación y documentación
 
 https://helm.sh/es/docs/intro/install/
-
+		
 
 ---
 
