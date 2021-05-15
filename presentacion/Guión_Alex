@@ -2,7 +2,7 @@ Guión presentación
 
 INTRO (Alejandro) 2 minutos
 
-Hola, como habéis visto en el vídeo de la presentación hoy os enseñaremos como 
+Hola, como habéis visto en el vídeo de la presentación, hoy os enseñaremos como 
 funciona kubernetes y la gran utilidad que tiene.
 
 Empezaremos explicando que es kubernetes y que ofrece, después mi compañero explicará su arquitectura y por último explicaremos sus elementos. 
@@ -19,12 +19,15 @@ Empezaremos explicando que es kubernetes y que ofrece, después mi compañero ex
 
 
 	Las principales carácteristicas de kubernetes son:
+	
 
-	· Escalado: Permite escalar nuestras apliaciones en función del número de réplicas que necesitamos de manera automática.
+	· Escalado: 
+	
+	Permite escalar nuestras aplicaciones en función del número de réplicas que necesitemos.
 
 
-	· Reparación automática:
-
+	· Reparación automática: 
+	
 	En caso de ocurrir un fallo en un contenedeor, se reinicia automáticamente. También se reemplaza cuando un nodo muere.
 
 
@@ -35,17 +38,19 @@ Empezaremos explicando que es kubernetes y que ofrece, después mi compañero ex
 
 	· Despliegues y rollbacks automáticos
 
-	Podemos desplegar los cambios de manera progresiva cuando actualizamos una aplicación y podemos hacer un rollback en caso de fallo (volver a la versión anterior). 
+	Podemos desplegar los cambios de manera progresiva cuando actualizamos una aplicación y podemos hacer un rollback en caso de fallo 
+	(volver a la versión anterior). 
 
 
 	· Almacenamiento persistente:
 
-	Kubernetes permite montar de forma automática el sistema de almacenamiento necesario para los contenedores: en modo local, en un proveedor de cloud o en un sistema de red como NFS.
+	Kubernetes permite montar de forma automática el sistema de almacenamiento necesario para los contenedores: 
+	en modo local, en un proveedor de cloud o en un sistema de red como NFS.
 
 
 	· Servicios
 
-	Podemos asingar a los contenedores sus propias direcciones IP y un nombre DNS específico para cada conjunto de contenedores.
+	Podemos asignar a los contenedores sus propias direcciones IP y un nombre DNS específico para cada conjunto de contenedores.
 
 	
 	· Seguridad
@@ -68,18 +73,23 @@ ELEMENTOS (Alejandro y Roberto) 14 minutos en total
 
 Replicaset es el componente que se encarga de mantener el número de réplicas en los pods.
 
-Crea o elimina el número de pods que sea necesario para alcanzar el número que deseamos. (de manera automática)
+Crea o elimina el número de pods para llegar al número que le hemos indicado.
 
-En resumen, tenemos dos formas, o con comando o editando el fichero .yaml
+Tenemos dos formas, o con comando o editando el fichero .yaml
 
-Sin embargo un deployment es un concepto de más alto nivel que gestiona replicasets y proporciona actualiaciones de forma declarativa de los pods.
 
-Por lo tanto se recomienda usar deployments en vez del uso directo de replicasets a no ser que no se necesite las actualizaciones. 
+
+Sin embargo un deployment (PONER DIAPOSITIVA DEPLOYMENT)
+ 
+es un concepto de más alto nivel que gestiona replicasets y proporciona actualizaciones de los pods.
+
+Por lo tanto se recomienda usar deployments en vez de usar replicasets a no ser que no se necesite las actualizaciones. 
 
 
 -Deployment
 
-El deployment, cuando creas un deployment, el master organiza las instancias de aplicación en los nodos disponibles del clúster además al crearlo, especificamos la aplicación y el número de réplicas que se quieren mantener en ejecución.
+El deployment, cuando creas un deployment, el master organiza las instancias de aplicación en los nodos disponibles del clúster además al crearlo, 
+especificamos la aplicación y el número de réplicas que se quieren mantener en ejecución.
 
 Podemos modificar el número de réplicas en cualquier momento actualizando el deployment. 
 
@@ -87,10 +97,25 @@ Una vez creadas si un nodo en el que está una instancia cae o es eliminado, el 
 
 
 -Volumenes
-El almacenamiento en contenedores es efímero. Cuando se elimina un contenedor, sus datos también se eliminan y cuando un contenedor falla y es reemplazado, se reemplaza sin datos, como si fuera nuevo.
+El almacenamiento en contenedores es efímero. Cuando se elimina un contenedor, sus datos también se eliminan y cuando un contenedor falla y es reemplazado, 
+se reemplaza sin datos, como si fuera nuevo.
 
-Hay varios tipos de volumenes:
-Almacenamiento local, almacenamiento en sistema de archivos 
+Hay dos tipos de volumenes:
+
+Temporales:
+EmptyDir --> Es un directorio vacío que se crea como volumen y va ligado a la vida del pod. Si muere el pod, desaparecen sus datos.
+
+HostPath --> Directorio que va ligado al nodo, Si un pod muere y se despliega en otro pod, no podrá acceder a sus datos. 
+El volumen existe hasta que el nodo muera o se elimine.
+
+
+Persistentes:
+Volumen externo de red (PV o PVC) persistent volumes o persistent volumes claims
+
+PV --> El ciclo de vida de Persistent Volume es administrado por Kubernetes.
+y los recursos existen a pesar de que un pod muera.
+
+Y el PVC es: Necesito 10GB de memoria para el pod y que sea read,write. Pues si hay un PV con esas caracteristicas, se vincula a ese PV.
 
 
 (ROBERTO)
@@ -100,9 +125,21 @@ Almacenamiento local, almacenamiento en sistema de archivos
 -RBAC
 
 -Services  
-Service es la red de kubernetes, es la manera de enlazar los pods.
+Service es la red de kubernetes, es para dar acceso a una aplicación.
+
+ClusterIP--> Servicio de comunicación entre aplicaciones dentro del clúster.
+
+NodePort --> Servicio de acceso desde el exterior a las aplicaciones del clúster.
+Puertos permitidos (30000-32767)
+
+ExternalIP --> Servicio que expone una aplicación a una ip concreta.
+
+
+
 -Ingress    4 Minutos (ALEJANDRO)
 
+Ingress es otra forma de acceder a los pods desde el exterior del clúster. Nos permite acceder a servicios
+a través del protocolo web http/https. Le damos una url externa que permite el acceso.
 
 
 Ahora pasaremos a la parte demo que consistirá en desplegar una app mongodb + mongo express que permite gestionar las bases de datos desde un navegador web. 
