@@ -2,9 +2,11 @@
 
 # ÍNDICE 
 
-- **[¿Qué es Kubernetes?](#queeskubernetes)**
+- **[Introducción](#introduccion)**
+
+	- **[¿Qué es Kubernetes?](#queeskubernetes)**
 	
-- **[¿Qué ofrece?](#queofrece)**
+	- **[¿Qué ofrece?](#queofrece)**
 
 
 - **[Arquitectura](#arquitectura)**
@@ -143,6 +145,7 @@
 
 
 ---
+# INTRODUCCIÓN<a name="introduccion"></a>
 
 ## **¿Qué es Kubernetes?**<a name="queeskubernetes"></a>
 
